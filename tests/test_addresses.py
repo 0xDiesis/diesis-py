@@ -7,6 +7,7 @@ def test_staking_address_is_checksummed() -> None:
 
 def test_all_addresses_are_checksummed() -> None:
     from web3 import Web3
+
     for name in dir(addresses):
         if name.startswith("_"):
             continue
@@ -17,16 +18,30 @@ def test_all_addresses_are_checksummed() -> None:
 
 def test_address_count() -> None:
     expected = {
-        "DIESIS_STAKING", "DIESIS_PATRON", "DIESIS_CONFIG",
-        "BOOTSTRAP_ORACLE", "BOOTSTRAP_CONFIG",
-        "DIESIS_STATE_WRITER", "DIESIS_POSITION",
-        "WRAPPED_DS", "LIQUID_STAKED_DS",
-        "DIESIS_MARKETS", "DIESIS_SPOT_BOOK", "DIESIS_PERPS_BOOK",
-        "DIESIS_MARGIN", "DIESIS_SETTLEMENT",
-        "VRF", "STEALTH_REGISTRY", "STEALTH_ANNOUNCER",
-        "SHIELDED_POOL", "PRIVACY_POOLS", "GROTH16_VERIFIER",
-        "SECP256R1", "POSEIDON",
-        "MULTICALL3", "PERMIT2",
+        "DIESIS_STAKING",
+        "DIESIS_PATRON",
+        "DIESIS_CONFIG",
+        "BOOTSTRAP_ORACLE",
+        "BOOTSTRAP_CONFIG",
+        "DIESIS_STATE_WRITER",
+        "DIESIS_POSITION",
+        "WRAPPED_DS",
+        "LIQUID_STAKED_DS",
+        "DIESIS_MARKETS",
+        "DIESIS_SPOT_BOOK",
+        "DIESIS_PERPS_BOOK",
+        "DIESIS_MARGIN",
+        "DIESIS_SETTLEMENT",
+        "VRF",
+        "STEALTH_REGISTRY",
+        "STEALTH_ANNOUNCER",
+        "SHIELDED_POOL",
+        "PRIVACY_POOLS",
+        "GROTH16_VERIFIER",
+        "SECP256R1",
+        "POSEIDON",
+        "MULTICALL3",
+        "PERMIT2",
     }
     actual = {n for n in dir(addresses) if not n.startswith("_")}
     assert expected == actual

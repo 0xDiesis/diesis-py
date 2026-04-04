@@ -4,14 +4,13 @@
 from __future__ import annotations
 
 import json
-from typing import Any, TypedDict
+from typing import Any
 
 from eth_typing import ChecksumAddress
 from web3 import Web3
 from web3.contract import Contract
 
-
-IDIESISSPOTBOOK_ABI: list[dict[str, Any]] = json.loads('''
+IDIESISSPOTBOOK_ABI: list[dict[str, Any]] = json.loads("""
 [
   {
     "inputs": [
@@ -305,7 +304,7 @@ IDIESISSPOTBOOK_ABI: list[dict[str, Any]] = json.loads('''
     "type": "event"
   }
 ]
-''')
+""")
 
 
 class IDiesisSpotBookContract:
@@ -313,7 +312,8 @@ class IDiesisSpotBookContract:
 
     def __init__(self, address: ChecksumAddress, w3: Web3) -> None:
         self.contract: Contract = w3.eth.contract(
-            address=address, abi=IDIESISSPOTBOOK_ABI,
+            address=address,
+            abi=IDIESISSPOTBOOK_ABI,
         )
 
     # Write functions
@@ -321,4 +321,6 @@ class IDiesisSpotBookContract:
     def cancel_all_orders(self, market_id: bytes) -> dict[str, Any]: ...
     def cancel_order(self, market_id: bytes, order_id: bytes) -> dict[str, Any]: ...
     def place_order(self, market_id: bytes, side: int, price: int, amount: int, order_type: int) -> dict[str, Any]: ...
-    def place_order_gtd(self, market_id: bytes, side: int, price: int, amount: int, expiry_block: int) -> dict[str, Any]: ...
+    def place_order_gtd(
+        self, market_id: bytes, side: int, price: int, amount: int, expiry_block: int
+    ) -> dict[str, Any]: ...

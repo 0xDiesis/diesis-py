@@ -1,5 +1,7 @@
 from unittest.mock import MagicMock
+
 from diesis.patronage.actions import PatronageActions, PatronFund
+
 
 def test_patron_fund_frozen() -> None:
     pf = PatronFund(balance=1000, patron="0xabc", fund_type=1)
@@ -9,6 +11,7 @@ def test_patron_fund_frozen() -> None:
         raise AssertionError("Should be frozen")
     except AttributeError:
         pass
+
 
 def test_get_patron_fund_rpc() -> None:
     mock_w3 = MagicMock()

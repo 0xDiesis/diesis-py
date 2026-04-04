@@ -1,4 +1,5 @@
 """Intent data types for EIP-712 signed orders."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass

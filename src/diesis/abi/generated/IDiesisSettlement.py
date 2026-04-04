@@ -10,8 +10,7 @@ from eth_typing import ChecksumAddress
 from web3 import Web3
 from web3.contract import Contract
 
-
-IDIESISSETTLEMENT_ABI: list[dict[str, Any]] = json.loads('''
+IDIESISSETTLEMENT_ABI: list[dict[str, Any]] = json.loads("""
 [
   {
     "inputs": [
@@ -198,7 +197,7 @@ IDIESISSETTLEMENT_ABI: list[dict[str, Any]] = json.loads('''
     "type": "event"
   }
 ]
-''')
+""")
 
 
 class IDiesisSettlementTradingAccount(TypedDict):
@@ -212,11 +211,14 @@ class IDiesisSettlementContract:
 
     def __init__(self, address: ChecksumAddress, w3: Web3) -> None:
         self.contract: Contract = w3.eth.contract(
-            address=address, abi=IDIESISSETTLEMENT_ABI,
+            address=address,
+            abi=IDIESISSETTLEMENT_ABI,
         )
 
     # View/pure functions
-    def get_account(self, trader: ChecksumAddress) -> dict[str, Any]: ...  # {available: int, locked_in_orders: int, locked_in_margin: int}
+    def get_account(
+        self, trader: ChecksumAddress
+    ) -> dict[str, Any]: ...  # {available: int, locked_in_orders: int, locked_in_margin: int}
     def get_token_balance(self, trader: ChecksumAddress, token: ChecksumAddress) -> int: ...
 
     # Write functions

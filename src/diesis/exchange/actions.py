@@ -1,7 +1,11 @@
 """Exchange RPC actions wrapping exchange_* methods."""
+
 from __future__ import annotations
+
 from typing import Any
+
 from web3 import Web3
+from web3.types import RPCEndpoint
 
 
 class ExchangeActions:
@@ -9,7 +13,7 @@ class ExchangeActions:
         self._w3 = w3
 
     def _rpc(self, method: str, params: list[Any]) -> Any:
-        response = self._w3.provider.make_request(method, params)
+        response = self._w3.provider.make_request(RPCEndpoint(method), params)
         if "error" in response:
             raise RuntimeError(f"RPC error: {response['error']}")
         return response["result"]

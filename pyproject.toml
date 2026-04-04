@@ -28,6 +28,7 @@ dev = [
 [tool.ruff]
 target-version = "py310"
 line-length = 120
+exclude = ["src/diesis/abi/generated/**"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM"]
@@ -37,6 +38,10 @@ python_version = "3.10"
 strict = true
 warn_return_any = true
 warn_unused_configs = true
+
+[[tool.mypy.overrides]]
+module = "diesis.abi.generated.*"
+ignore_errors = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

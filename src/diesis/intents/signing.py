@@ -1,5 +1,8 @@
 """EIP-712 signing for order intents and trading key authorizations."""
+
 from __future__ import annotations
+
+from typing import Any
 
 from eth_account import Account
 from eth_account.messages import encode_typed_data
@@ -30,13 +33,11 @@ _TRADING_KEY_TYPES = {
 }
 
 
-def _get_domain(chain_id: int) -> dict:
+def _get_domain(chain_id: int) -> dict[str, Any]:
     return {"name": "Diesis Exchange", "version": "1", "chainId": chain_id}
 
 
-def sign_order_intent(
-    private_key: str, intent: OrderIntent, chain_id: int = 1980
-) -> SignedOrderIntent:
+def sign_order_intent(private_key: str, intent: OrderIntent, chain_id: int = 1980) -> SignedOrderIntent:
     """Sign a gasless order intent using EIP-712 typed data."""
     domain = _get_domain(chain_id)
     message = {
@@ -62,9 +63,7 @@ def sign_order_intent(
     )
 
 
-def sign_trading_key_authorization(
-    private_key: str, auth: TradingKeyAuthorization, chain_id: int = 1980
-) -> str:
+def sign_trading_key_authorization(private_key: str, auth: TradingKeyAuthorization, chain_id: int = 1980) -> str:
     """Sign a trading key authorization using EIP-712 typed data."""
     domain = _get_domain(chain_id)
     message = {
@@ -80,4 +79,4 @@ def sign_trading_key_authorization(
         message_data=message,
     )
     signed = Account.sign_message(signable, private_key)
-    return "0x" + signed.signature.hex()
+    return "0x" + signed.signature.hex()  # type: ignore[no-any-return]

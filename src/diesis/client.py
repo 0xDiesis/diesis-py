@@ -1,8 +1,11 @@
 """DiesisClient — unified entry point for the Diesis Python SDK."""
+
 from __future__ import annotations
+
 from typing import Any
 
 from web3 import Web3
+from web3.types import RPCEndpoint
 
 from .bundles.actions import BundleActions
 from .chains import Chain, diesis
@@ -42,7 +45,7 @@ class DiesisClient:
         return self._w3
 
     def _rpc(self, method: str, params: list[Any]) -> Any:
-        response = self._w3.provider.make_request(method, params)
+        response = self._w3.provider.make_request(RPCEndpoint(method), params)
         if "error" in response:
             raise RuntimeError(f"RPC error: {response['error']}")
         return response["result"]
@@ -90,20 +93,25 @@ class DiesisClient:
 
     def submit_intent(self, intent: SignedOrderIntent) -> Any:
         """Submit a signed order intent via ``diesis_submitIntent``."""
-        return self._rpc("diesis_submitIntent", [{
-            "intent": {
-                "marketId": intent.intent.market_id,
-                "side": intent.intent.side,
-                "price": hex(intent.intent.price),
-                "amount": hex(intent.intent.amount),
-                "orderType": intent.intent.order_type,
-                "nonce": hex(intent.intent.nonce),
-                "expiry": hex(intent.intent.expiry),
-                "reduceOnly": intent.intent.reduce_only,
-            },
-            "signature": intent.signature,
-            "signer": intent.signer,
-        }])
+        return self._rpc(
+            "diesis_submitIntent",
+            [
+                {
+                    "intent": {
+                        "marketId": intent.intent.market_id,
+                        "side": intent.intent.side,
+                        "price": hex(intent.intent.price),
+                        "amount": hex(intent.intent.amount),
+                        "orderType": intent.intent.order_type,
+                        "nonce": hex(intent.intent.nonce),
+                        "expiry": hex(intent.intent.expiry),
+                        "reduceOnly": intent.intent.reduce_only,
+                    },
+                    "signature": intent.signature,
+                    "signer": intent.signer,
+                }
+            ],
+        )
 
     def send_stealth_bundle(self, funding_tx: str, announce_tx: str) -> Any:
         """Send a stealth bundle via ``diesis_sendStealthBundle``."""

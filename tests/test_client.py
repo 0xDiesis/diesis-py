@@ -1,20 +1,20 @@
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
-from diesis.client import DiesisClient
-from diesis.chains import diesis, diesis_testnet
-from diesis.exchange.actions import ExchangeActions
 from diesis.bundles.actions import BundleActions
+from diesis.chains import diesis, diesis_testnet
+from diesis.client import DiesisClient
+from diesis.exchange.actions import ExchangeActions
 from diesis.patronage.actions import PatronageActions
 
 
 def test_client_creates_with_rpc_url() -> None:
-    with patch("diesis.client.Web3") as MockWeb3:
+    with patch("diesis.client.Web3"):
         client = DiesisClient("https://rpc.diesis.xyz")
         assert client.chain == diesis
 
 
 def test_client_creates_with_testnet() -> None:
-    with patch("diesis.client.Web3") as MockWeb3:
+    with patch("diesis.client.Web3"):
         client = DiesisClient("https://rpc.testnet.diesis.xyz", chain=diesis_testnet)
         assert client.chain == diesis_testnet
 

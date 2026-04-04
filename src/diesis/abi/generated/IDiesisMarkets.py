@@ -10,8 +10,7 @@ from eth_typing import ChecksumAddress
 from web3 import Web3
 from web3.contract import Contract
 
-
-IDIESISMARKETS_ABI: list[dict[str, Any]] = json.loads('''
+IDIESISMARKETS_ABI: list[dict[str, Any]] = json.loads("""
 [
   {
     "inputs": [
@@ -277,7 +276,7 @@ IDIESISMARKETS_ABI: list[dict[str, Any]] = json.loads('''
     "type": "event"
   }
 ]
-''')
+""")
 
 
 class IDiesisMarketsMarketInfo(TypedDict):
@@ -295,14 +294,30 @@ class IDiesisMarketsContract:
 
     def __init__(self, address: ChecksumAddress, w3: Web3) -> None:
         self.contract: Contract = w3.eth.contract(
-            address=address, abi=IDIESISMARKETS_ABI,
+            address=address,
+            abi=IDIESISMARKETS_ABI,
         )
 
     # View/pure functions
-    def get_market(self, market_id: bytes) -> dict[str, Any]: ...  # {market_id: bytes, base_token: ChecksumAddress, quote_token: ChecksumAddress, market_type: int, status: int, tick_size: int, lot_size: int}
+    def get_market(
+        self, market_id: bytes
+    ) -> dict[
+        str, Any
+    ]: ...  # {market_id: bytes, base_token: ChecksumAddress, quote_token: ChecksumAddress, market_type: int, status: int, tick_size: int, lot_size: int}
 
     # Write functions
-    def create_perp_market(self, base_asset: ChecksumAddress, quote_token: ChecksumAddress, tick_size: int, lot_size: int, max_leverage: int, maintenance_margin_bps: int, oracle_source: ChecksumAddress) -> dict[str, Any]: ...
-    def create_spot_market(self, base_token: ChecksumAddress, quote_token: ChecksumAddress, tick_size: int, lot_size: int, bond: int) -> dict[str, Any]: ...
+    def create_perp_market(
+        self,
+        base_asset: ChecksumAddress,
+        quote_token: ChecksumAddress,
+        tick_size: int,
+        lot_size: int,
+        max_leverage: int,
+        maintenance_margin_bps: int,
+        oracle_source: ChecksumAddress,
+    ) -> dict[str, Any]: ...
+    def create_spot_market(
+        self, base_token: ChecksumAddress, quote_token: ChecksumAddress, tick_size: int, lot_size: int, bond: int
+    ) -> dict[str, Any]: ...
     def pause_market(self, market_id: bytes, reason: str) -> dict[str, Any]: ...
     def resume_market(self, market_id: bytes) -> dict[str, Any]: ...

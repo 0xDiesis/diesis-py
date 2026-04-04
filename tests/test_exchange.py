@@ -1,11 +1,12 @@
 from unittest.mock import MagicMock
 
+from diesis.exchange.actions import ExchangeActions
 from diesis.exchange.types import (
-    FillEstimate, FundingRate, MarginType, MarketInfo, MarketStatus, MarketType,
-    OrderBook, OrderType, PriceLevel, Side, Trade, TradingAccount,
+    OrderType,
+    PriceLevel,
+    Side,
 )
 from diesis.exchange.utils import market_id
-from diesis.exchange.actions import ExchangeActions
 
 
 def test_side_enum() -> None:
@@ -48,9 +49,7 @@ def test_price_level_frozen() -> None:
 
 def test_exchange_actions_get_order_book() -> None:
     mock_w3 = MagicMock()
-    mock_w3.provider.make_request.return_value = {
-        "result": {"bids": [], "asks": []}
-    }
+    mock_w3.provider.make_request.return_value = {"result": {"bids": [], "asks": []}}
     actions = ExchangeActions(mock_w3)
     actions.get_order_book("0x" + "ab" * 32)
     call_args = mock_w3.provider.make_request.call_args

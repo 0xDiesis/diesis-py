@@ -10,7 +10,8 @@ from eth_typing import ChecksumAddress
 from web3 import Web3
 from web3.contract import Contract
 
-DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads("""
+
+DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
 [
   {
     "inputs": [
@@ -673,6 +674,25 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads("""
     "inputs": [
       {
         "internalType": "uint256",
+        "name": "validatorId",
+        "type": "uint256"
+      }
+    ],
+    "name": "mintEmptyPositionForSplit",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
       }
@@ -756,6 +776,44 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads("""
   {
     "inputs": [],
     "name": "participationPoolBps",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "pendingCommissionEpoch",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "pendingCommissionRate",
     "outputs": [
       {
         "internalType": "uint256",
@@ -1155,6 +1213,24 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads("""
     "inputs": [
       {
         "internalType": "uint256",
+        "name": "validatorId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "rate",
+        "type": "uint256"
+      }
+    ],
+    "name": "setValidatorCommission",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
         "name": "toValidatorId",
         "type": "uint256"
       }
@@ -1465,6 +1541,25 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads("""
         "type": "uint256"
       }
     ],
+    "name": "validatorCommissionRate",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "name": "validatorPubkeys",
     "outputs": [
       {
@@ -1542,6 +1637,19 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads("""
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "validatorId",
+        "type": "uint256"
+      }
+    ],
+    "name": "withdrawValidator",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -1954,6 +2062,50 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads("""
         "type": "uint256"
       },
       {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newRate",
+        "type": "uint256"
+      }
+    ],
+    "name": "ValidatorCommissionApplied",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "validatorId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newRate",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "effectiveEpoch",
+        "type": "uint256"
+      }
+    ],
+    "name": "ValidatorCommissionScheduled",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "validatorId",
+        "type": "uint256"
+      },
+      {
         "indexed": true,
         "internalType": "address",
         "name": "authority",
@@ -2311,7 +2463,7 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads("""
     "type": "error"
   }
 ]
-""")
+''')
 
 
 class DiesisStakingEpochMetrics(TypedDict):
@@ -2329,8 +2481,7 @@ class DiesisStakingContract:
 
     def __init__(self, address: ChecksumAddress, w3: Web3) -> None:
         self.contract: Contract = w3.eth.contract(
-            address=address,
-            abi=DIESISSTAKING_ABI,
+            address=address, abi=DIESISSTAKING_ABI,
         )
 
     # View/pure functions
@@ -2346,14 +2497,12 @@ class DiesisStakingContract:
     def aggregate_active_stake(self) -> int:
         """Returns the aggregate active stake across all validators."""
         ...
-
     def aggregate_stake(self) -> int: ...
     def balance_of(self, owner: ChecksumAddress) -> int: ...
     def cheater_refund_ratio(self, arg0: int) -> int: ...
     def circulating_supply(self) -> int:
         """Circulating supply = gross supply - tokens burned to address(0)."""
         ...
-
     def config(self) -> ChecksumAddress: ...
     def get_approved(self, token_id: int) -> ChecksumAddress: ...
     def is_approved_for_all(self, owner: ChecksumAddress, operator: ChecksumAddress) -> bool: ...
@@ -2367,24 +2516,26 @@ class DiesisStakingContract:
     def participation_pool_bps(self) -> int:
         """Fraction of epoch reward budget allocated to participation pool (default 3000 = 30%)"""
         ...
-
+    def pending_commission_epoch(self, arg0: int) -> int:
+        """Epoch at which the pending commission change takes effect."""
+        ...
+    def pending_commission_rate(self, arg0: int) -> int:
+        """Pending commission change: validatorId → new rate."""
+        ...
     def pending_recovery(self, arg0: ChecksumAddress) -> ChecksumAddress: ...
     def pending_treasury_fees(self) -> int: ...
     def positions(self, arg0: int) -> tuple[int, int, int]:
         """Staking position data, keyed by ERC-721 token ID"""
         ...
-
     def pubkey_to_validator(self, arg0: bytes) -> int: ...
     def recovery_authorizer(self) -> ChecksumAddress: ...
     def rewards_accrued_through(self, arg0: int) -> int:
         """Latest epoch through which rewards have been settled for each position"""
         ...
-
     def stake_observer(self) -> ChecksumAddress: ...
     def sub_score_weights(self, arg0: int) -> int:
         """Weights for participation sub-scores [slotFill, inclusion, leader] summing to 10000"""
         ...
-
     def supports_interface(self, interface_id: bytes) -> bool: ...
     def symbol(self) -> str: ...
     def token_uri(self, token_id: int) -> str: ...
@@ -2392,150 +2543,118 @@ class DiesisStakingContract:
     def unclaimed_rewards(self, token_id: int) -> int:
         """View pending rewards for a position."""
         ...
-
     def unstake_requests(self, arg0: int, arg1: int) -> tuple[int, int, int]:
         """Unstake requests keyed by (tokenId => requestID => request)"""
         ...
-
     def validator_by_address(self, arg0: ChecksumAddress) -> int: ...
+    def validator_commission_rate(self, arg0: int) -> int:
+        """Per-validator commission override (0 means use global default from DiesisConfig)."""
+        ...
     def validator_pubkeys(self, arg0: int) -> bytes: ...
     def validator_self_stake_position(self, arg0: int) -> int:
         """tokenId of the validator's own self-stake position"""
         ...
-
     def validators(self, arg0: int) -> tuple[int, int, ChecksumAddress, int, int, int, int]: ...
 
     # Write functions
     def accrue_rewards(self, token_id: int) -> dict[str, Any]:
         """Settle accrued rewards without claiming them."""
         ...
-
     def allocate_extra_reward(self, epoch: int, with_burn: bool) -> dict[str, Any]: ...
     def approve(self, to: ChecksumAddress, token_id: int) -> dict[str, Any]: ...
     def approve_key_recovery(self, old_address: ChecksumAddress, new_address: ChecksumAddress) -> dict[str, Any]: ...
-    def bootstrap_delegation(
-        self, delegator: ChecksumAddress, to_validator_id: int, stake_amount: int
-    ) -> dict[str, Any]:
+    def bootstrap_delegation(self, delegator: ChecksumAddress, to_validator_id: int, stake_amount: int) -> dict[str, Any]:
         """Bootstrap a delegation at genesis (driver only)."""
         ...
-
-    def bootstrap_validator(
-        self, auth: ChecksumAddress, validator_id: int, pubkey: bytes, created_time: int
-    ) -> dict[str, Any]:
+    def bootstrap_validator(self, auth: ChecksumAddress, validator_id: int, pubkey: bytes, created_time: int) -> dict[str, Any]:
         """Bootstrap a validator at genesis (driver only)."""
         ...
-
     def burn_tokens(self) -> dict[str, Any]:
         """Burn tokens by accepting msg.value (node credits address(0) separately)."""
         ...
-
     def commit_validator_set(self, next_validator_ids: list[int]) -> dict[str, Any]:
         """Record the active validator set and their stakes for the new epoch."""
         ...
-
     def complete_unstake(self, token_id: int, request_id: int) -> dict[str, Any]:
         """Complete an unstake request and withdraw tokens (subject to cooldown + slash). Caller must own the position NFT."""
         ...
-
-    def complete_unstake_for_position(
-        self, token_id: int, request_id: int, recipient: ChecksumAddress
-    ) -> dict[str, Any]:
+    def complete_unstake_for_position(self, token_id: int, request_id: int, recipient: ChecksumAddress) -> dict[str, Any]:
         """Complete unstake and send payout to recipient."""
         ...
-
     def compound_rewards(self, token_id: int) -> dict[str, Any]:
         """Re-stake pending rewards into the same position. Caller must own the position NFT."""
         ...
-
     def compound_rewards_for_position(self, token_id: int) -> dict[str, Any]:
         """Compound rewards back into the position."""
         ...
-
     def execute_key_recovery(self, new_address: ChecksumAddress) -> dict[str, Any]: ...
-    def finalize_epoch(
-        self, metrics: dict[str, Any]
-    ) -> dict[
-        str, Any
-    ]:  # metrics keys: offline_durations, missed_blocks, uptime_durations, tx_fees_originated, slot_fill_rates, inclusion_rates, leader_performances
+    def finalize_epoch(self, metrics: dict[str, Any]) -> dict[str, Any]:
         """Seal the current epoch with validator performance metrics. Called by the Rust node as a system transaction (msg.sender == address(0))."""
         ...
-
     def flush_treasury_fees(self) -> dict[str, Any]: ...
     def harvest_rewards(self, token_id: int) -> dict[str, Any]:
         """Claim all pending rewards for a position. Caller must own the position NFT. Rewards are sent to the NFT owner."""
         ...
-
     def harvest_rewards_for_position(self, token_id: int, recipient: ChecksumAddress) -> dict[str, Any]:
         """Harvest rewards and send to recipient."""
         ...
-
-    def initialize(
-        self, sealed_epoch: int, total_supply: int, config_contract: ChecksumAddress, owner: ChecksumAddress
-    ) -> dict[str, Any]:
+    def initialize(self, sealed_epoch: int, total_supply: int, config_contract: ChecksumAddress, owner: ChecksumAddress) -> dict[str, Any]:
         """Initialize the staking contract at genesis."""
         ...
-
+    def mint_empty_position_for_split(self, validator_id: int) -> dict[str, Any]:
+        """Create an empty staking position for atomic splits (controller version)."""
+        ...
     def mint_tokens(self, amount: int) -> dict[str, Any]:
         """Mint (issue) new tokens to issuedTokensRecipient."""
         ...
-
     def record_epoch_fees(self, epoch: int, fee: int) -> dict[str, Any]:
         """Record fees collected in an epoch (called by node during block processing)."""
         ...
-
     def register_validator(self, pubkey: bytes) -> dict[str, Any]:
         """Register a new validator with a public key."""
         ...
-
     def renounce_ownership(self) -> dict[str, Any]: ...
     def request_key_recovery(self, new_address: ChecksumAddress) -> dict[str, Any]: ...
     def request_unstake(self, token_id: int, request_id: int, amount: int) -> dict[str, Any]:
         """Request to unstake `amount` from a position NFT. Caller must own the position NFT."""
         ...
-
     def request_unstake_for_position(self, token_id: int, request_id: int, amount: int) -> dict[str, Any]:
         """Request unstake for a position controlled by DiesisPosition."""
         ...
-
-    def safe_transfer_from_address_address_uint256(
-        self, from_: ChecksumAddress, to: ChecksumAddress, token_id: int
-    ) -> dict[str, Any]: ...
-    def safe_transfer_from_address_address_uint256_bytes(
-        self, from_: ChecksumAddress, to: ChecksumAddress, token_id: int, data: bytes
-    ) -> dict[str, Any]: ...
+    def safe_transfer_from_address_address_uint256(self, _from: ChecksumAddress, to: ChecksumAddress, token_id: int) -> dict[str, Any]: ...
+    def safe_transfer_from_address_address_uint256_bytes(self, _from: ChecksumAddress, to: ChecksumAddress, token_id: int, data: bytes) -> dict[str, Any]: ...
     def set_approval_for_all(self, operator: ChecksumAddress, approved: bool) -> dict[str, Any]: ...
     def set_config_contract(self, config_contract: ChecksumAddress) -> dict[str, Any]: ...
     def set_participation_pool_bps(self, bps: int) -> dict[str, Any]:
         """Update the participation pool share of epoch rewards."""
         ...
-
     def set_recovery_authorizer(self, auth: ChecksumAddress) -> dict[str, Any]: ...
     def set_slashing_refund(self, validator_id: int, refund_ratio: int) -> dict[str, Any]: ...
     def set_stake_observer(self, observer: ChecksumAddress) -> dict[str, Any]: ...
     def set_sub_score_weights(self, weights: list[int]) -> dict[str, Any]:
         """Update the weights for participation sub-scores."""
         ...
-
     def set_treasury(self, treasury: ChecksumAddress) -> dict[str, Any]: ...
+    def set_validator_commission(self, validator_id: int, rate: int) -> dict[str, Any]:
+        """Schedule a commission rate change for a validator."""
+        ...
     def stake(self, to_validator_id: int) -> dict[str, Any]:
         """Delegate native tokens to a validator."""
         ...
-
     def stake_for_position(self, to_validator_id: int) -> dict[str, Any]:
         """Create a new staking position controlled by DiesisPosition."""
         ...
-
     def suspend_validator(self, validator_id: int, reason: int) -> dict[str, Any]:
         """Suspend (deactivate) a validator with a given reason bitmask."""
         ...
-
     def swap_delegate(self, from_token_id: int, to_token_id: int, swap_amount: int) -> dict[str, Any]:
         """Atomically re-delegate stake from one position to another on the same validator."""
         ...
-
     def swap_delegate_for_position(self, from_token_id: int, to_token_id: int, swap_amount: int) -> dict[str, Any]:
         """Swap stake between two positions (controller version)."""
         ...
-
-    def transfer_from(self, from_: ChecksumAddress, to: ChecksumAddress, token_id: int) -> dict[str, Any]: ...
+    def transfer_from(self, _from: ChecksumAddress, to: ChecksumAddress, token_id: int) -> dict[str, Any]: ...
     def transfer_ownership(self, new_owner: ChecksumAddress) -> dict[str, Any]: ...
+    def withdraw_validator(self, validator_id: int) -> dict[str, Any]:
+        """Withdraw a validator from the active set and release its pubkey for reuse."""
+        ...

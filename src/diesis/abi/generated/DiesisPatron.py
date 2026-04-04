@@ -4,13 +4,14 @@
 from __future__ import annotations
 
 import json
-from typing import Any
+from typing import Any, TypedDict
 
 from eth_typing import ChecksumAddress
 from web3 import Web3
 from web3.contract import Contract
 
-DIESISPATRON_ABI: list[dict[str, Any]] = json.loads("""
+
+DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
 [
   {
     "inputs": [
@@ -703,7 +704,7 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads("""
     "type": "error"
   }
 ]
-""")
+''')
 
 
 class DiesisPatronContract:
@@ -711,8 +712,7 @@ class DiesisPatronContract:
 
     def __init__(self, address: ChecksumAddress, w3: Web3) -> None:
         self.contract: Contract = w3.eth.contract(
-            address=address,
-            abi=DIESISPATRON_ABI,
+            address=address, abi=DIESISPATRON_ABI,
         )
 
     # View/pure functions
@@ -720,51 +720,38 @@ class DiesisPatronContract:
     def fund_key_for_approval(self, sender: ChecksumAddress, token: ChecksumAddress, input: bytes) -> bytes:
         """Key for patroning ERC20 approve() calls with safety guards. Returns zero if: token is zero, input is wrong length, wrong selector, value == 0, current allowance != 0 (prevent double-approve attack), or sender holds no tokens."""
         ...
-
     def fund_key_for_function(self, target: ChecksumAddress, input: bytes) -> bytes:
         """Key for patroning txs calling a specific function on a specific contract."""
         ...
-
     def fund_key_for_onboarding(self, nonce: int) -> bytes:
         """Key for patroning first 5 txs from new accounts (nonce < 5)."""
         ...
-
     def fund_key_for_referral(self, referrer: ChecksumAddress, referred: ChecksumAddress) -> bytes:
         """Key for referral patronage."""
         ...
-
     def fund_key_for_sender(self, sender: ChecksumAddress) -> bytes:
         """Key for patroning all txs from `sender`."""
         ...
-
     def fund_key_for_sender_function(self, sender: ChecksumAddress, target: ChecksumAddress, input: bytes) -> bytes:
         """Key for patroning txs from a specific sender calling a specific function."""
         ...
-
     def fund_key_for_target(self, target: ChecksumAddress) -> bytes:
         """Key for patroning all txs targeting `target` contract."""
         ...
-
     def funds(self, arg0: bytes) -> tuple[int, int, int]:
         """fundKey → PatronFund"""
         ...
-
     def owner(self) -> ChecksumAddress: ...
     def patron_gas_overhead(self) -> tuple[int, int, int]:
         """Return gas limits reserved for patronage overhead."""
         ...
-
     def paused(self) -> bool: ...
-    def resolve_patron(
-        self, sender: ChecksumAddress, target: ChecksumAddress, nonce: int, input: bytes, fee: int
-    ) -> bytes:
+    def resolve_patron(self, sender: ChecksumAddress, target: ChecksumAddress, nonce: int, input: bytes, fee: int) -> bytes:
         """Determine which patron fund (if any) should cover this transaction's gas. Returns fundKey or bytes32(0) if no patron found. Priority: senderFn > approval > fn > target > referral > sender > onboarding"""
         ...
-
     def resolve_patron_gas_limit(self) -> int:
         """Gas overhead limits published for nodes to reserve gas for patronage checks"""
         ...
-
     def staking_address(self) -> ChecksumAddress:
         """DiesisStaking address — chargePatron burns via staking.burnTokens()"""
         ...
@@ -773,21 +760,17 @@ class DiesisPatronContract:
     def charge_patron(self, fund_key: bytes, actual_fee: int) -> dict[str, Any]:
         """Deduct `actualFee` from the patron fund identified by `fundKey` and burn it. Only callable by the Rust node (msg.sender == address(0))."""
         ...
-
     def deposit(self, fund_key: bytes) -> dict[str, Any]:
         """Deposit native tokens into a patron fund identified by `fundKey`."""
         ...
-
     def reclaim_funds(self, fund_key: bytes, amount: int) -> dict[str, Any]:
         """Reclaim a proportional share of a patron fund's remaining balance. Cannot be called from a patronized transaction (tx.gasprice == 0 → patroned)."""
         ...
-
     def renounce_ownership(self) -> dict[str, Any]: ...
     def set_paused(self, paused: bool) -> dict[str, Any]: ...
     def set_referral(self, referred: ChecksumAddress, referrer: ChecksumAddress) -> dict[str, Any]:
         """Link a referred address to the referrer's fund key. Patron deposits into `fundKeyForReferral(referrer, referred)` separately."""
         ...
-
     def transfer_ownership(self, new_owner: ChecksumAddress) -> dict[str, Any]: ...
     def update_gas_limits(self, resolve_gas: int, charge_gas: int) -> dict[str, Any]: ...
     def update_staking_address(self, staking: ChecksumAddress) -> dict[str, Any]: ...

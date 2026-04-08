@@ -615,6 +615,53 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "initialized",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "fee",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "recipient",
+        "type": "address"
+      }
+    ],
+    "name": "instantUnstakeForPosition",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "payout",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -2179,6 +2226,11 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
+    "name": "AlreadyInitialized",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "CooldownNotElapsed",
     "type": "error"
   },
@@ -2505,6 +2557,7 @@ class DiesisStakingContract:
         ...
     def config(self) -> ChecksumAddress: ...
     def get_approved(self, token_id: int) -> ChecksumAddress: ...
+    def initialized(self) -> bool: ...
     def is_approved_for_all(self, owner: ChecksumAddress, operator: ChecksumAddress) -> bool: ...
     def is_cheater(self, validator_id: int) -> bool: ...
     def latest_finalized_epoch(self) -> int: ...
@@ -2600,6 +2653,9 @@ class DiesisStakingContract:
         ...
     def initialize(self, sealed_epoch: int, total_supply: int, config_contract: ChecksumAddress, owner: ChecksumAddress) -> dict[str, Any]:
         """Initialize the staking contract at genesis."""
+        ...
+    def instant_unstake_for_position(self, token_id: int, amount: int, fee: int, recipient: ChecksumAddress) -> dict[str, Any]:
+        """Instantly unstake and credit the recipient, bypassing the cooldown period."""
         ...
     def mint_empty_position_for_split(self, validator_id: int) -> dict[str, Any]:
         """Create an empty staking position for atomic splits (controller version)."""

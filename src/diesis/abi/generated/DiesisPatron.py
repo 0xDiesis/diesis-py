@@ -52,6 +52,24 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "bytes32[]",
+        "name": "fundKeys",
+        "type": "bytes32[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "fees",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "chargePatronBatch",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "chargePatronGasLimit",
     "outputs": [
@@ -668,6 +686,11 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
+    "name": "LengthMismatch",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "NativeTransferFailed",
     "type": "error"
   },
@@ -759,6 +782,9 @@ class DiesisPatronContract:
     # Write functions
     def charge_patron(self, fund_key: bytes, actual_fee: int) -> dict[str, Any]:
         """Deduct `actualFee` from the patron fund identified by `fundKey` and burn it. Only callable by the Rust node (msg.sender == address(0))."""
+        ...
+    def charge_patron_batch(self, fund_keys: list[bytes], fees: list[int]) -> dict[str, Any]:
+        """Deduct multiple patron charges and burn the aggregate amount once."""
         ...
     def deposit(self, fund_key: bytes) -> dict[str, Any]:
         """Deposit native tokens into a patron fund identified by `fundKey`."""

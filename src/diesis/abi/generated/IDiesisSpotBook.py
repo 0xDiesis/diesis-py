@@ -17,11 +17,6 @@ IDIESISSPOTBOOK_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "internalType": "bytes32",
-        "name": "marketId",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "bytes32",
         "name": "orderId",
         "type": "bytes32"
       },
@@ -34,33 +29,26 @@ IDIESISSPOTBOOK_ABI: list[dict[str, Any]] = json.loads('''
         "internalType": "uint256",
         "name": "newAmount",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint8",
+        "name": "newFlags",
+        "type": "uint8"
       }
     ],
     "name": "amendOrder",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
+    "outputs": [
       {
         "internalType": "bytes32",
-        "name": "marketId",
+        "name": "newOrderId",
         "type": "bytes32"
       }
     ],
-    "name": "cancelAllOrders",
-    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "marketId",
-        "type": "bytes32"
-      },
       {
         "internalType": "bytes32",
         "name": "orderId",
@@ -76,31 +64,176 @@ IDIESISSPOTBOOK_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "internalType": "bytes32",
+        "name": "orderId",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint256",
+        "name": "fillPrice",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "fillQty",
+        "type": "uint256"
+      }
+    ],
+    "name": "executeSpotFill",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "filledQty",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "executionPrice",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getBestAsk",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "priceTicks",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amountLots",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getBestBid",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "priceTicks",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amountLots",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
         "name": "marketId",
         "type": "bytes32"
       },
       {
-        "internalType": "enum IDiesisSpotBook.Side",
+        "internalType": "uint8",
+        "name": "levels",
+        "type": "uint8"
+      }
+    ],
+    "name": "getOrderBookDepth",
+    "outputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "bidPrices",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "bidAmounts",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "askPrices",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "askAmounts",
+        "type": "uint256[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getUserOrders",
+    "outputs": [
+      {
+        "internalType": "bytes32[]",
+        "name": "orderIds",
+        "type": "bytes32[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint8",
         "name": "side",
         "type": "uint8"
       },
       {
         "internalType": "uint256",
-        "name": "price",
+        "name": "priceTicks",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "amount",
+        "name": "amountLots",
         "type": "uint256"
       },
       {
-        "internalType": "enum IDiesisSpotBook.OrderType",
-        "name": "orderType",
+        "internalType": "uint8",
+        "name": "flags",
         "type": "uint8"
       }
     ],
-    "name": "placeOrder",
+    "name": "submitLimitOrder",
     "outputs": [
       {
         "internalType": "bytes32",
@@ -119,28 +252,23 @@ IDIESISSPOTBOOK_ABI: list[dict[str, Any]] = json.loads('''
         "type": "bytes32"
       },
       {
-        "internalType": "enum IDiesisSpotBook.Side",
+        "internalType": "uint8",
         "name": "side",
         "type": "uint8"
       },
       {
         "internalType": "uint256",
-        "name": "price",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "expiryBlock",
+        "name": "amountLots",
         "type": "uint256"
       }
     ],
-    "name": "placeOrderGTD",
+    "name": "submitMarketOrder",
     "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "filledAmount",
+        "type": "uint256"
+      },
       {
         "internalType": "bytes32",
         "name": "orderId",
@@ -156,44 +284,13 @@ IDIESISSPOTBOOK_ABI: list[dict[str, Any]] = json.loads('''
       {
         "indexed": true,
         "internalType": "bytes32",
-        "name": "marketId",
-        "type": "bytes32"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "clearingPrice",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "totalVolume",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "numFills",
-        "type": "uint256"
-      }
-    ],
-    "name": "BatchAuctionCleared",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "marketId",
-        "type": "bytes32"
-      },
-      {
-        "indexed": true,
-        "internalType": "bytes32",
         "name": "orderId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "marketId",
         "type": "bytes32"
       },
       {
@@ -212,13 +309,13 @@ IDIESISSPOTBOOK_ABI: list[dict[str, Any]] = json.loads('''
       {
         "indexed": true,
         "internalType": "bytes32",
-        "name": "marketId",
+        "name": "orderId",
         "type": "bytes32"
       },
       {
         "indexed": true,
         "internalType": "bytes32",
-        "name": "orderId",
+        "name": "marketId",
         "type": "bytes32"
       },
       {
@@ -230,13 +327,13 @@ IDIESISSPOTBOOK_ABI: list[dict[str, Any]] = json.loads('''
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "fillPrice",
+        "name": "fillQty",
         "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "fillAmount",
+        "name": "fillPrice",
         "type": "uint256"
       },
       {
@@ -248,7 +345,7 @@ IDIESISSPOTBOOK_ABI: list[dict[str, Any]] = json.loads('''
       {
         "indexed": false,
         "internalType": "bool",
-        "name": "isMaker",
+        "name": "complete",
         "type": "bool"
       }
     ],
@@ -261,13 +358,13 @@ IDIESISSPOTBOOK_ABI: list[dict[str, Any]] = json.loads('''
       {
         "indexed": true,
         "internalType": "bytes32",
-        "name": "marketId",
+        "name": "orderId",
         "type": "bytes32"
       },
       {
         "indexed": true,
         "internalType": "bytes32",
-        "name": "orderId",
+        "name": "marketId",
         "type": "bytes32"
       },
       {
@@ -297,7 +394,7 @@ IDIESISSPOTBOOK_ABI: list[dict[str, Any]] = json.loads('''
       {
         "indexed": false,
         "internalType": "uint8",
-        "name": "orderType",
+        "name": "flags",
         "type": "uint8"
       }
     ],
@@ -316,9 +413,15 @@ class IDiesisSpotBookContract:
             address=address, abi=IDIESISSPOTBOOK_ABI,
         )
 
+    # View/pure functions
+    def get_best_ask(self, market_id: bytes) -> tuple[int, int]: ...
+    def get_best_bid(self, market_id: bytes) -> tuple[int, int]: ...
+    def get_order_book_depth(self, market_id: bytes, levels: int) -> tuple[list[int], list[int], list[int], list[int]]: ...
+    def get_user_orders(self, user: ChecksumAddress, market_id: bytes) -> list[bytes]: ...
+
     # Write functions
-    def amend_order(self, market_id: bytes, order_id: bytes, new_price: int, new_amount: int) -> dict[str, Any]: ...
-    def cancel_all_orders(self, market_id: bytes) -> dict[str, Any]: ...
-    def cancel_order(self, market_id: bytes, order_id: bytes) -> dict[str, Any]: ...
-    def place_order(self, market_id: bytes, side: int, price: int, amount: int, order_type: int) -> dict[str, Any]: ...
-    def place_order_gtd(self, market_id: bytes, side: int, price: int, amount: int, expiry_block: int) -> dict[str, Any]: ...
+    def amend_order(self, order_id: bytes, new_price: int, new_amount: int, new_flags: int) -> dict[str, Any]: ...
+    def cancel_order(self, order_id: bytes) -> dict[str, Any]: ...
+    def execute_spot_fill(self, order_id: bytes, fill_price: int, fill_qty: int) -> dict[str, Any]: ...
+    def submit_limit_order(self, market_id: bytes, side: int, price_ticks: int, amount_lots: int, flags: int) -> dict[str, Any]: ...
+    def submit_market_order(self, market_id: bytes, side: int, amount_lots: int) -> dict[str, Any]: ...

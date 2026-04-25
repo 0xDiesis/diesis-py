@@ -8,7 +8,6 @@ import pytest
 
 from diesis.staking.actions import PositionInfo, StakingActions, ValidatorInfo
 
-
 # ── Dataclass immutability ───────────────────────────────────────────────────
 
 
@@ -170,9 +169,7 @@ def test_get_validator_by_address() -> None:
     assert result == 3
     from web3 import Web3
 
-    mock_contract.functions.validatorByAddress.assert_called_once_with(
-        Web3.to_checksum_address(addr)
-    )
+    mock_contract.functions.validatorByAddress.assert_called_once_with(Web3.to_checksum_address(addr))
     mock_contract.functions.validatorByAddress.return_value.call.assert_called_once()
 
 
@@ -208,9 +205,7 @@ def test_stake() -> None:
 
     assert result == fake_tx
     mock_contract.functions.stake.assert_called_once_with(1)
-    mock_contract.functions.stake.return_value.transact.assert_called_once_with(
-        {"value": 500, "from": "0xSender"}
-    )
+    mock_contract.functions.stake.return_value.transact.assert_called_once_with({"value": 500, "from": "0xSender"})
 
 
 def test_stake_no_extra_params() -> None:
@@ -219,9 +214,7 @@ def test_stake_no_extra_params() -> None:
 
     actions.stake(validator_id=2, amount=100)
 
-    mock_contract.functions.stake.return_value.transact.assert_called_once_with(
-        {"value": 100}
-    )
+    mock_contract.functions.stake.return_value.transact.assert_called_once_with({"value": 100})
 
 
 def test_request_unstake() -> None:
@@ -282,9 +275,7 @@ def test_register_validator() -> None:
 
     assert result == fake_tx
     mock_contract.functions.registerValidator.assert_called_once_with(pubkey)
-    mock_contract.functions.registerValidator.return_value.transact.assert_called_once_with(
-        {"value": 1000}
-    )
+    mock_contract.functions.registerValidator.return_value.transact.assert_called_once_with({"value": 1000})
 
 
 def test_register_validator_with_tx_params() -> None:
@@ -302,9 +293,7 @@ def test_register_validator_with_tx_params() -> None:
 def test_set_validator_commission() -> None:
     actions, mock_contract = _make_actions()
     fake_tx = "0xaaaa"
-    mock_contract.functions.setValidatorCommission.return_value.transact.return_value = (
-        fake_tx
-    )
+    mock_contract.functions.setValidatorCommission.return_value.transact.return_value = fake_tx
 
     result = actions.set_validator_commission(validator_id=3, rate=500)
 

@@ -528,6 +528,11 @@ IDIESISBOOTSTRAPORACLE_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [],
     "name": "ZeroAddress",
     "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ZeroAmount",
+    "type": "error"
   }
 ]
 ''')

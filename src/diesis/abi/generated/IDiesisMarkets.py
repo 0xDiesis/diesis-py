@@ -16,47 +16,32 @@ IDIESISMARKETS_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "baseAsset",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "quoteToken",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "tickSize",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "lotSize",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "maxLeverage",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "maintenanceMarginBps",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "oracleSource",
-        "type": "address"
-      }
-    ],
-    "name": "createPerpMarket",
-    "outputs": [
-      {
         "internalType": "bytes32",
         "name": "marketId",
         "type": "bytes32"
+      },
+      {
+        "internalType": "uint256",
+        "name": "currentPrice",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "referencePrice",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "thresholdBps",
+        "type": "uint256"
+      }
+    ],
+    "name": "checkCircuitBreaker",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "tripped",
+        "type": "uint256"
       }
     ],
     "stateMutability": "nonpayable",
@@ -75,14 +60,14 @@ IDIESISMARKETS_ABI: list[dict[str, Any]] = json.loads('''
         "type": "address"
       },
       {
-        "internalType": "uint256",
+        "internalType": "uint64",
         "name": "tickSize",
-        "type": "uint256"
+        "type": "uint64"
       },
       {
-        "internalType": "uint256",
+        "internalType": "uint64",
         "name": "lotSize",
-        "type": "uint256"
+        "type": "uint64"
       },
       {
         "internalType": "uint256",
@@ -115,42 +100,22 @@ IDIESISMARKETS_ABI: list[dict[str, Any]] = json.loads('''
         "components": [
           {
             "internalType": "bytes32",
-            "name": "marketId",
+            "name": "slot0",
             "type": "bytes32"
           },
           {
-            "internalType": "address",
-            "name": "baseToken",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "quoteToken",
-            "type": "address"
-          },
-          {
-            "internalType": "uint8",
-            "name": "marketType",
-            "type": "uint8"
-          },
-          {
-            "internalType": "uint8",
-            "name": "status",
-            "type": "uint8"
+            "internalType": "bytes32",
+            "name": "slot1",
+            "type": "bytes32"
           },
           {
             "internalType": "uint256",
-            "name": "tickSize",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "lotSize",
+            "name": "maxOpenInterest",
             "type": "uint256"
           }
         ],
-        "internalType": "struct IDiesisMarkets.MarketInfo",
-        "name": "",
+        "internalType": "struct IDiesisMarkets.PackedMarket",
+        "name": "market",
         "type": "tuple"
       }
     ],
@@ -163,28 +128,16 @@ IDIESISMARKETS_ABI: list[dict[str, Any]] = json.loads('''
         "internalType": "bytes32",
         "name": "marketId",
         "type": "bytes32"
-      },
-      {
-        "internalType": "string",
-        "name": "reason",
-        "type": "string"
-      }
-    ],
-    "name": "pauseMarket",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "marketId",
-        "type": "bytes32"
       }
     ],
     "name": "resumeMarket",
-    "outputs": [],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "success",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -200,7 +153,7 @@ IDIESISMARKETS_ABI: list[dict[str, Any]] = json.loads('''
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "priceChange",
+        "name": "priceDeviation",
         "type": "uint256"
       },
       {
@@ -243,51 +196,15 @@ IDIESISMARKETS_ABI: list[dict[str, Any]] = json.loads('''
     ],
     "name": "MarketCreated",
     "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "marketId",
-        "type": "bytes32"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "reason",
-        "type": "string"
-      }
-    ],
-    "name": "MarketPaused",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "marketId",
-        "type": "bytes32"
-      }
-    ],
-    "name": "MarketResumed",
-    "type": "event"
   }
 ]
 ''')
 
 
-class IDiesisMarketsMarketInfo(TypedDict):
-    market_id: bytes
-    base_token: ChecksumAddress
-    quote_token: ChecksumAddress
-    market_type: int
-    status: int
-    tick_size: int
-    lot_size: int
+class IDiesisMarketsPackedMarket(TypedDict):
+    slot0: bytes
+    slot1: bytes
+    max_open_interest: int
 
 
 class IDiesisMarketsContract:
@@ -302,7 +219,6 @@ class IDiesisMarketsContract:
     def get_market(self, market_id: bytes) -> dict[str, Any]: ...
 
     # Write functions
-    def create_perp_market(self, base_asset: ChecksumAddress, quote_token: ChecksumAddress, tick_size: int, lot_size: int, max_leverage: int, maintenance_margin_bps: int, oracle_source: ChecksumAddress) -> dict[str, Any]: ...
+    def check_circuit_breaker(self, market_id: bytes, current_price: int, reference_price: int, threshold_bps: int) -> dict[str, Any]: ...
     def create_spot_market(self, base_token: ChecksumAddress, quote_token: ChecksumAddress, tick_size: int, lot_size: int, bond: int) -> dict[str, Any]: ...
-    def pause_market(self, market_id: bytes, reason: str) -> dict[str, Any]: ...
     def resume_market(self, market_id: bytes) -> dict[str, Any]: ...

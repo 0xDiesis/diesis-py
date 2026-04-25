@@ -17,6 +17,56 @@ IDIESISSETTLEMENT_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      }
+    ],
+    "name": "availableBalance",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "available",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint248",
+        "name": "wordPos",
+        "type": "uint248"
+      }
+    ],
+    "name": "cancelNonceWord",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "nonce",
+        "type": "uint256"
+      }
+    ],
+    "name": "cancelOrderNonce",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
         "name": "token",
         "type": "address"
       },
@@ -32,42 +82,40 @@ IDIESISSETTLEMENT_ABI: list[dict[str, Any]] = json.loads('''
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "depositDS",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "address",
-        "name": "trader",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "tradingKey",
         "type": "address"
       }
     ],
-    "name": "getAccount",
+    "name": "getTradingKeyAuth",
     "outputs": [
       {
         "components": [
           {
-            "internalType": "uint256",
-            "name": "available",
-            "type": "uint256"
+            "internalType": "bytes32",
+            "name": "header",
+            "type": "bytes32"
           },
           {
             "internalType": "uint256",
-            "name": "lockedInOrders",
+            "name": "maxOrderNotional",
             "type": "uint256"
           },
           {
-            "internalType": "uint256",
-            "name": "lockedInMargin",
-            "type": "uint256"
+            "internalType": "bytes32",
+            "name": "allowedMarketsMask",
+            "type": "bytes32"
           }
         ],
-        "internalType": "struct IDiesisSettlement.TradingAccount",
-        "name": "",
+        "internalType": "struct IDiesisSettlement.TradingKeyAuth",
+        "name": "auth",
         "type": "tuple"
       }
     ],
@@ -78,7 +126,77 @@ IDIESISSETTLEMENT_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "internalType": "address",
-        "name": "trader",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "nonce",
+        "type": "uint256"
+      }
+    ],
+    "name": "isNonceUsed",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "used",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "tradingKey",
+        "type": "address"
+      },
+      {
+        "internalType": "uint64",
+        "name": "validUntil",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint128",
+        "name": "maxOrderNotional",
+        "type": "uint128"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "allowedMarketsMask",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bool",
+        "name": "canWithdraw",
+        "type": "bool"
+      }
+    ],
+    "name": "registerTradingKey",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "tradingKey",
+        "type": "address"
+      }
+    ],
+    "name": "revokeTradingKey",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "user",
         "type": "address"
       },
       {
@@ -87,11 +205,11 @@ IDIESISSETTLEMENT_ABI: list[dict[str, Any]] = json.loads('''
         "type": "address"
       }
     ],
-    "name": "getTokenBalance",
+    "name": "totalBalance",
     "outputs": [
       {
         "internalType": "uint256",
-        "name": "",
+        "name": "total",
         "type": "uint256"
       }
     ],
@@ -145,31 +263,81 @@ IDIESISSETTLEMENT_ABI: list[dict[str, Any]] = json.loads('''
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "insuranceFund",
-        "type": "uint256"
+        "indexed": true,
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "treasury",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "validators",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "makerRebates",
+        "name": "nonce",
         "type": "uint256"
       }
     ],
-    "name": "FeeDistributed",
+    "name": "NonceCancelled",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "tradingKey",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint64",
+        "name": "validUntil",
+        "type": "uint64"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint128",
+        "name": "maxOrderNotional",
+        "type": "uint128"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "allowedMarketsMask",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "canWithdraw",
+        "type": "bool"
+      }
+    ],
+    "name": "TradingKeyRegistered",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "tradingKey",
+        "type": "address"
+      }
+    ],
+    "name": "TradingKeyRevoked",
     "type": "event"
   },
   {
@@ -201,10 +369,10 @@ IDIESISSETTLEMENT_ABI: list[dict[str, Any]] = json.loads('''
 ''')
 
 
-class IDiesisSettlementTradingAccount(TypedDict):
-    available: int
-    locked_in_orders: int
-    locked_in_margin: int
+class IDiesisSettlementTradingKeyAuth(TypedDict):
+    header: bytes
+    max_order_notional: int
+    allowed_markets_mask: bytes
 
 
 class IDiesisSettlementContract:
@@ -216,10 +384,19 @@ class IDiesisSettlementContract:
         )
 
     # View/pure functions
-    def get_account(self, trader: ChecksumAddress) -> dict[str, Any]: ...
-    def get_token_balance(self, trader: ChecksumAddress, token: ChecksumAddress) -> int: ...
+    def available_balance(self, user: ChecksumAddress, token: ChecksumAddress) -> int: ...
+    def get_trading_key_auth(self, owner: ChecksumAddress, trading_key: ChecksumAddress) -> dict[str, Any]: ...
+    def is_nonce_used(self, user: ChecksumAddress, nonce: int) -> bool: ...
+    def total_balance(self, user: ChecksumAddress, token: ChecksumAddress) -> int: ...
 
     # Write functions
-    def deposit(self, token: ChecksumAddress, amount: int) -> dict[str, Any]: ...
-    def deposit_ds(self) -> dict[str, Any]: ...
-    def withdraw(self, token: ChecksumAddress, amount: int) -> dict[str, Any]: ...
+    def cancel_nonce_word(self, word_pos: int) -> dict[str, Any]: ...
+    def cancel_order_nonce(self, nonce: int) -> dict[str, Any]: ...
+    def deposit(self, token: ChecksumAddress, amount: int) -> dict[str, Any]:
+        """Move supported precompile-native tokens into the exchange settlement ledger."""
+        ...
+    def register_trading_key(self, trading_key: ChecksumAddress, valid_until: int, max_order_notional: int, allowed_markets_mask: bytes, can_withdraw: bool) -> dict[str, Any]: ...
+    def revoke_trading_key(self, trading_key: ChecksumAddress) -> dict[str, Any]: ...
+    def withdraw(self, token: ChecksumAddress, amount: int) -> dict[str, Any]:
+        """Move unlocked settlement balance back to the caller's precompile-native token balance."""
+        ...

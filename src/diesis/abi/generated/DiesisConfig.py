@@ -1116,47 +1116,47 @@ class DiesisConfigContract:
     def withdrawal_period_time_lower(self) -> int: ...
     def withdrawal_period_time_upper(self) -> int: ...
     def average_uptime_epoch_window(self) -> int:
-        """Number of epochs in the rolling average uptime window [10–87,600]"""
+        """Number of epochs in the rolling average uptime window [10-87,600]"""
         ...
     def base_reward_per_second(self) -> int:
-        """Base staking reward per second in tokens [0–32 tokens/sec]"""
+        """Base staking reward per second in tokens [0-32 tokens/sec]"""
         ...
     def burnt_fee_share(self) -> int:
-        """Fraction of tx fees burned each epoch [0–100%]"""
+        """Fraction of tx fees burned each epoch [0-100%]"""
         ...
     def extra_rewards_burn_ratio(self) -> int:
-        """Fraction of extra reward allocations that are burned [0–100%]"""
+        """Fraction of extra reward allocations that are burned [0-100%]"""
         ...
     def issued_tokens_recipient(self) -> ChecksumAddress:
         """Address that receives newly issued (minted) tokens"""
         ...
     def max_delegated_ratio(self) -> int:
-        """Maximum total delegated stake as a multiple of self-stake [1–31x]"""
+        """Maximum total delegated stake as a multiple of self-stake [1-31x]"""
         ...
     def min_average_uptime(self) -> int:
-        """Minimum rolling-average uptime before OFFLINE_AVG_BIT deactivation [0–90%]"""
+        """Minimum rolling-average uptime before OFFLINE_AVG_BIT deactivation [0-90%]"""
         ...
     def min_self_stake(self) -> int:
-        """Minimum self-stake required to register a validator [100K–10M tokens]"""
+        """Minimum self-stake required to register a validator [100K-10M tokens]"""
         ...
     def offline_penalty_threshold_blocks_num(self) -> int:
-        """Number of missed blocks that triggers offline penalty [100–1M]"""
+        """Number of missed blocks that triggers offline penalty [100-1M]"""
         ...
     def offline_penalty_threshold_time(self) -> int:
-        """Seconds offline that triggers offline penalty [1–10 days]"""
+        """Seconds offline that triggers offline penalty [1-10 days]"""
         ...
     def owner(self) -> ChecksumAddress: ...
     def treasury_fee_share(self) -> int:
-        """Fraction of tx fees sent to treasury each epoch [0–100%]; burntFeeShare + treasuryFeeShare ≤ 100%"""
+        """Fraction of tx fees sent to treasury each epoch [0-100%]; burntFeeShare + treasuryFeeShare ≤ 100%"""
         ...
     def validator_commission(self) -> int:
-        """Validator commission on staking rewards as a fraction [0–50%]"""
+        """Validator commission on staking rewards as a fraction [0-50%]"""
         ...
     def withdrawal_period_epochs(self) -> int:
-        """Minimum epochs before an unstake request can be withdrawn [2–100]"""
+        """Minimum epochs before an unstake request can be withdrawn [2-100]"""
         ...
     def withdrawal_period_time(self) -> int:
-        """Minimum seconds before an unstake request can be withdrawn [1h–30d]"""
+        """Minimum seconds before an unstake request can be withdrawn [1h-30d]"""
         ...
 
     # Write functions

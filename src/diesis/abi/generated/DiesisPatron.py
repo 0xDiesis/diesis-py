@@ -117,7 +117,7 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
     "outputs": [
       {
         "internalType": "bytes32",
-        "name": "",
+        "name": "key",
         "type": "bytes32"
       }
     ],

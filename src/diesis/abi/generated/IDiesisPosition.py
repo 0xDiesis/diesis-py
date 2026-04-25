@@ -753,11 +753,6 @@ IDIESISPOSITION_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       },
       {
-        "internalType": "uint256",
-        "name": "withdrawAmount",
-        "type": "uint256"
-      },
-      {
         "internalType": "address payable",
         "name": "recipient",
         "type": "address"
@@ -1307,6 +1302,6 @@ class IDiesisPositionContract:
         """Clear the lock on a position (callable by authorized incentive contracts)."""
         ...
     def withdraw(self, token_id: int, wr_id: int) -> dict[str, Any]: ...
-    def withdraw_to(self, token_id: int, wr_id: int, withdraw_amount: int, recipient: ChecksumAddress) -> dict[str, Any]:
+    def withdraw_to(self, token_id: int, wr_id: int, recipient: ChecksumAddress) -> dict[str, Any]:
         """Complete a matured withdrawal and forward the native tokens directly to `recipient`."""
         ...

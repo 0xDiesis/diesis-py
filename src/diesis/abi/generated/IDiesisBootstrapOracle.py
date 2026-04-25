@@ -89,16 +89,6 @@ IDIESISBOOTSTRAPORACLE_ABI: list[dict[str, Any]] = json.loads('''
         "type": "address"
       },
       {
-        "internalType": "uint8",
-        "name": "saleTier",
-        "type": "uint8"
-      },
-      {
-        "internalType": "uint8",
-        "name": "lockTier",
-        "type": "uint8"
-      },
-      {
         "internalType": "uint40",
         "name": "rewardCutoffTimestamp",
         "type": "uint40"
@@ -496,6 +486,11 @@ IDIESISBOOTSTRAPORACLE_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
+    "name": "BatchTooLarge",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "DepositAlreadyConfirmed",
     "type": "error"
   },
@@ -574,8 +569,8 @@ class IDiesisBootstrapOracleContract:
     def attest_deposit(self, eth_tx_hash: bytes, deposit_id: int, user: ChecksumAddress, asset: ChecksumAddress, amount: int, deposit_timestamp: int, lock_until: int, sale_tier: int, lock_tier: int, referrer: ChecksumAddress) -> dict[str, Any]:
         """Attest a deposit event observed on L1."""
         ...
-    def attest_forfeit(self, eth_tx_hash: bytes, deposit_id: int, owner: ChecksumAddress, sale_tier: int, lock_tier: int, reward_cutoff_timestamp: int) -> dict[str, Any]:
-        """Attest a forfeit event observed on L1."""
+    def attest_forfeit(self, eth_tx_hash: bytes, deposit_id: int, owner: ChecksumAddress, reward_cutoff_timestamp: int) -> dict[str, Any]:
+        """Attest a forfeit event observed on L1. Tier values are read from         the stored deposit record on quorum, not supplied by the caller —         every confirmed deposit already pinned its saleTier and lockTier         in attestDeposit, and re-supplying them here would let validators         (or a misled validator implementation) compute the lump-sum         conversion against tiers that disagree with the deposit record."""
         ...
     def attest_transfer(self, eth_tx_hash: bytes, deposit_id: int, new_owner: ChecksumAddress, reward_cutoff_timestamp: int, transfer_order: int) -> dict[str, Any]:
         """Attest a transfer event observed on L1."""

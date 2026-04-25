@@ -180,9 +180,9 @@ IDIESISPOSITION_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       },
       {
-        "internalType": "uint32",
+        "internalType": "uint40",
         "name": "lockDuration",
-        "type": "uint32"
+        "type": "uint40"
       }
     ],
     "name": "lockPosition",
@@ -315,9 +315,9 @@ IDIESISPOSITION_ABI: list[dict[str, Any]] = json.loads('''
             "type": "uint256"
           },
           {
-            "internalType": "uint32",
+            "internalType": "uint40",
             "name": "lockedUntil",
-            "type": "uint32"
+            "type": "uint40"
           },
           {
             "internalType": "uint256[]",

@@ -2476,6 +2476,11 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
+    "name": "SamePosition",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "SelfStakeTooLow",
     "type": "error"
   },

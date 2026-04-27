@@ -1,4 +1,4 @@
-.PHONY: codegen lint test typecheck
+.PHONY: codegen lint lint-fix format format-check test typecheck quality quality-fix
 
 codegen:
 	abi-typegen generate \
@@ -9,6 +9,14 @@ codegen:
 
 lint:
 	ruff check src/ tests/
+
+lint-fix:
+	ruff check src/ tests/ --fix
+
+format:
+	ruff format src/ tests/
+
+format-check:
 	ruff format --check src/ tests/
 
 test:
@@ -16,3 +24,7 @@ test:
 
 typecheck:
 	mypy src/
+
+quality: lint format-check typecheck
+
+quality-fix: lint-fix format typecheck

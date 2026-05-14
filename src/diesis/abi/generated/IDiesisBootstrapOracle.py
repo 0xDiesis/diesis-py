@@ -496,6 +496,11 @@ IDIESISBOOTSTRAPORACLE_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
+    "name": "InvalidQuorumThreshold",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "NotActiveValidator",
     "type": "error"
   },

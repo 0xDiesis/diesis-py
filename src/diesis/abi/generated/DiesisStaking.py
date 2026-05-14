@@ -26,19 +26,6 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "CHEATER_MASK",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "DIESIS_POSITION",
     "outputs": [
       {
@@ -52,7 +39,7 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "DOUBLESIGN_BIT",
+    "name": "FAULT_EQUIVOCATION",
     "outputs": [
       {
         "internalType": "uint256",
@@ -65,7 +52,7 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "JAILED_BIT",
+    "name": "FAULT_GOVERNANCE",
     "outputs": [
       {
         "internalType": "uint256",
@@ -78,7 +65,7 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "OFFLINE_AVG_BIT",
+    "name": "FAULT_LIVENESS",
     "outputs": [
       {
         "internalType": "uint256",
@@ -91,7 +78,7 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "OFFLINE_BIT",
+    "name": "FAULT_PERFORMANCE",
     "outputs": [
       {
         "internalType": "uint256",
@@ -104,7 +91,7 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "OK_STATUS",
+    "name": "FAULT_SLASHABLE",
     "outputs": [
       {
         "internalType": "uint256",
@@ -117,7 +104,33 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "WITHDRAWN_BIT",
+    "name": "MAX_COMMISSION_STEP",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "VALIDATOR_ACTIVE",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "VALIDATOR_EXITING",
     "outputs": [
       {
         "internalType": "uint256",
@@ -262,6 +275,35 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "bondLots",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "validatorId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "entryEpoch",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "delegator",
         "type": "address"
@@ -321,25 +363,6 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
     "name": "burnTokens",
     "outputs": [],
     "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "cheaterRefundRatio",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -476,6 +499,40 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "exitTickets",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "epoch",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "components": [
           {
             "internalType": "uint256[]",
@@ -590,6 +647,19 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "increaseStakeForPosition",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
         "name": "sealedEpoch",
         "type": "uint256"
       },
@@ -693,7 +763,7 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       }
     ],
-    "name": "isCheater",
+    "name": "isSlashable",
     "outputs": [
       {
         "internalType": "bool",
@@ -897,35 +967,6 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
       {
         "internalType": "uint256",
         "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "positions",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "validatorId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "entryEpoch",
         "type": "uint256"
       }
     ],
@@ -1212,7 +1253,7 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       }
     ],
-    "name": "setSlashingRefund",
+    "name": "setSlashRefundRatio",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1272,6 +1313,25 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
     "name": "setValidatorCommission",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "slashRefundRatio",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -1530,40 +1590,6 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "unstakeRequests",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "epoch",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "address",
         "name": "",
         "type": "address"
@@ -1603,6 +1629,55 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "internalType": "uint256",
+        "name": "validatorId",
+        "type": "uint256"
+      }
+    ],
+    "name": "validatorLedger",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "flags",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "bonded",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "joinedEpoch",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "joinedAt",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "heldAt",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "heldEpoch",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
         "name": "",
         "type": "uint256"
       }
@@ -1626,60 +1701,11 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       }
     ],
-    "name": "validatorSelfStakePosition",
+    "name": "validatorSelfBondLot",
     "outputs": [
       {
         "internalType": "uint256",
         "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "validators",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "status",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "totalStaked",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "authority",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "registeredEpoch",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "registeredAt",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "suspendedAt",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "suspendedEpoch",
         "type": "uint256"
       }
     ],
@@ -1940,7 +1966,7 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       }
     ],
-    "name": "SlashingRefundUpdated",
+    "name": "SlashRefundRatioUpdated",
     "type": "event"
   },
   {
@@ -2359,11 +2385,6 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "FullySlashed",
-    "type": "error"
-  },
-  {
-    "inputs": [],
     "name": "InsufficientStake",
     "type": "error"
   },
@@ -2414,22 +2435,7 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "NotACheater",
-    "type": "error"
-  },
-  {
-    "inputs": [],
     "name": "NotPositionOwner",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "NothingAccrued",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "ObserverCallFailed",
     "type": "error"
   },
   {
@@ -2486,6 +2492,11 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
+    "name": "SlashableValidatorInstantExitDisabled",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "TreasuryUnconfigured",
     "type": "error"
   },
@@ -2516,7 +2527,7 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "ValidatorNotSuspended",
+    "name": "ValidatorNotSlashable",
     "type": "error"
   }
 ]
@@ -2542,29 +2553,35 @@ class DiesisStakingContract:
         )
 
     # View/pure functions
-    def cheater_mask(self) -> int: ...
     def diesis_position(self) -> ChecksumAddress: ...
-    def doublesign_bit(self) -> int: ...
-    def jailed_bit(self) -> int: ...
-    def offline_avg_bit(self) -> int: ...
-    def offline_bit(self) -> int: ...
-    def ok_status(self) -> int: ...
-    def withdrawn_bit(self) -> int: ...
+    def fault_equivocation(self) -> int: ...
+    def fault_governance(self) -> int: ...
+    def fault_liveness(self) -> int: ...
+    def fault_performance(self) -> int: ...
+    def fault_slashable(self) -> int: ...
+    def max_commission_step(self) -> int: ...
+    def validator_active(self) -> int: ...
+    def validator_exiting(self) -> int: ...
     def active_recovery(self, arg0: ChecksumAddress) -> ChecksumAddress: ...
     def aggregate_active_stake(self) -> int:
         """Returns the aggregate active stake across all validators."""
         ...
     def aggregate_stake(self) -> int: ...
     def balance_of(self, owner: ChecksumAddress) -> int: ...
-    def cheater_refund_ratio(self, arg0: int) -> int: ...
+    def bond_lots(self, arg0: int) -> tuple[int, int, int]:
+        """Staking position data, keyed by ERC-721 token ID"""
+        ...
     def circulating_supply(self) -> int:
         """Circulating supply = gross supply - tokens burned to address(0)."""
         ...
     def config(self) -> ChecksumAddress: ...
+    def exit_tickets(self, arg0: int, arg1: int) -> tuple[int, int, int]:
+        """Unstake requests keyed by (tokenId => requestID => request)"""
+        ...
     def get_approved(self, token_id: int) -> ChecksumAddress: ...
     def initialized(self) -> bool: ...
     def is_approved_for_all(self, owner: ChecksumAddress, operator: ChecksumAddress) -> bool: ...
-    def is_cheater(self, validator_id: int) -> bool: ...
+    def is_slashable(self, validator_id: int) -> bool: ...
     def latest_finalized_epoch(self) -> int: ...
     def name(self) -> str: ...
     def next_position_id(self) -> int: ...
@@ -2582,14 +2599,12 @@ class DiesisStakingContract:
         ...
     def pending_recovery(self, arg0: ChecksumAddress) -> ChecksumAddress: ...
     def pending_treasury_fees(self) -> int: ...
-    def positions(self, arg0: int) -> tuple[int, int, int]:
-        """Staking position data, keyed by ERC-721 token ID"""
-        ...
     def pubkey_to_validator(self, arg0: bytes) -> int: ...
     def recovery_authorizer(self) -> ChecksumAddress: ...
     def rewards_accrued_through(self, arg0: int) -> int:
         """Latest epoch through which rewards have been settled for each position"""
         ...
+    def slash_refund_ratio(self, arg0: int) -> int: ...
     def stake_observer(self) -> ChecksumAddress: ...
     def sub_score_weights(self, arg0: int) -> int:
         """Weights for participation sub-scores [slotFill, inclusion, leader] summing to 10000"""
@@ -2601,24 +2616,23 @@ class DiesisStakingContract:
     def unclaimed_rewards(self, token_id: int) -> int:
         """View pending rewards for a position."""
         ...
-    def unstake_requests(self, arg0: int, arg1: int) -> tuple[int, int, int]:
-        """Unstake requests keyed by (tokenId => requestID => request)"""
-        ...
     def validator_by_address(self, arg0: ChecksumAddress) -> int: ...
     def validator_commission_rate(self, arg0: int) -> int:
         """Per-validator commission override (0 means use global default from DiesisConfig)."""
         ...
+    def validator_ledger(self, validator_id: int) -> tuple[ChecksumAddress, int, int, int, int, int, int]: ...
     def validator_pubkeys(self, arg0: int) -> bytes: ...
-    def validator_self_stake_position(self, arg0: int) -> int:
+    def validator_self_bond_lot(self, arg0: int) -> int:
         """tokenId of the validator's own self-stake position"""
         ...
-    def validators(self, arg0: int) -> tuple[int, int, ChecksumAddress, int, int, int, int]: ...
 
     # Write functions
     def accrue_rewards(self, token_id: int) -> dict[str, Any]:
         """Settle accrued rewards without claiming them."""
         ...
-    def allocate_extra_reward(self, epoch: int, with_burn: bool) -> dict[str, Any]: ...
+    def allocate_extra_reward(self, epoch: int, with_burn: bool) -> dict[str, Any]:
+        """Fund additional rewards for the currently open epoch."""
+        ...
     def approve(self, to: ChecksumAddress, token_id: int) -> dict[str, Any]: ...
     def approve_key_recovery(self, old_address: ChecksumAddress, new_address: ChecksumAddress) -> dict[str, Any]: ...
     def bootstrap_delegation(self, delegator: ChecksumAddress, to_validator_id: int, stake_amount: int) -> dict[str, Any]:
@@ -2656,6 +2670,9 @@ class DiesisStakingContract:
     def harvest_rewards_for_position(self, token_id: int, recipient: ChecksumAddress) -> dict[str, Any]:
         """Harvest rewards and send to recipient."""
         ...
+    def increase_stake_for_position(self, token_id: int) -> dict[str, Any]:
+        """Add stake to an existing staking position controlled by DiesisPosition."""
+        ...
     def initialize(self, sealed_epoch: int, total_supply: int, config_contract: ChecksumAddress, owner: ChecksumAddress) -> dict[str, Any]:
         """Initialize the staking contract at genesis."""
         ...
@@ -2690,7 +2707,7 @@ class DiesisStakingContract:
         """Update the participation pool share of epoch rewards."""
         ...
     def set_recovery_authorizer(self, auth: ChecksumAddress) -> dict[str, Any]: ...
-    def set_slashing_refund(self, validator_id: int, refund_ratio: int) -> dict[str, Any]: ...
+    def set_slash_refund_ratio(self, validator_id: int, refund_ratio: int) -> dict[str, Any]: ...
     def set_stake_observer(self, observer: ChecksumAddress) -> dict[str, Any]: ...
     def set_sub_score_weights(self, weights: list[int]) -> dict[str, Any]:
         """Update the weights for participation sub-scores."""

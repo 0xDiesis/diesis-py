@@ -15,13 +15,13 @@ from ..addresses import DIESIS_STAKING
 
 @dataclass(frozen=True)
 class ValidatorInfo:
-    status: int
-    total_staked: int
-    authority: str
-    registered_epoch: int
-    registered_at: int
-    suspended_at: int
-    suspended_epoch: int
+    operator: str
+    flags: int
+    bonded: int
+    joined_epoch: int
+    joined_at: int
+    held_at: int
+    held_epoch: int
 
 
 @dataclass(frozen=True)
@@ -45,20 +45,20 @@ class StakingActions:
 
     def get_validator(self, validator_id: int) -> ValidatorInfo:
         """Get validator info by ID."""
-        result = self._contract.functions.validators(validator_id).call()
+        result = self._contract.functions.validatorLedger(validator_id).call()
         return ValidatorInfo(
-            status=result[0],
-            total_staked=result[1],
-            authority=result[2],
-            registered_epoch=result[3],
-            registered_at=result[4],
-            suspended_at=result[5],
-            suspended_epoch=result[6],
+            operator=result[0],
+            flags=result[1],
+            bonded=result[2],
+            joined_epoch=result[3],
+            joined_at=result[4],
+            held_at=result[5],
+            held_epoch=result[6],
         )
 
     def get_position(self, token_id: int) -> PositionInfo:
         """Get position info by token ID."""
-        result = self._contract.functions.positions(token_id).call()
+        result = self._contract.functions.bondLots(token_id).call()
         return PositionInfo(
             validator_id=result[0],
             amount=result[1],
@@ -86,7 +86,7 @@ class StakingActions:
         return cast(int, self._contract.functions.circulatingSupply().call())
 
     def get_validator_by_address(self, address: str) -> int:
-        """Look up validator ID by authority address."""
+        """Look up validator ID by operator address."""
         return cast(
             int,
             self._contract.functions.validatorByAddress(
@@ -94,9 +94,9 @@ class StakingActions:
             ).call(),
         )
 
-    def is_cheater(self, validator_id: int) -> bool:
-        """Check if a validator is a cheater (slashed)."""
-        return cast(bool, self._contract.functions.isCheater(validator_id).call())
+    def is_slashable(self, validator_id: int) -> bool:
+        """Check if a validator is a slashable."""
+        return cast(bool, self._contract.functions.isSlashable(validator_id).call())
 
     # ── Write actions ───────────────────────────────────────────────────────
 
@@ -136,7 +136,7 @@ class StakingActions:
         )
 
     def set_validator_commission(self, validator_id: int, rate: int, **tx_params: Any) -> Any:
-        """Set per-validator commission rate (validator authority only)."""
+        """Set per-validator commission rate (validator operator only)."""
         return self._contract.functions.setValidatorCommission(
             validator_id,
             rate,

@@ -1,4 +1,4 @@
-"""Patronage RPC actions wrapping diesis_getPatronFund."""
+"""Patronage RPC actions wrapping gas grant queries."""
 
 from __future__ import annotations
 
@@ -10,10 +10,12 @@ from web3.types import RPCEndpoint
 
 
 @dataclass(frozen=True)
-class PatronFund:
+class GasGrant:
+    grant_id: str
     balance: int
-    patron: str
-    fund_type: int
+    total_contributed: int
+    total_spent: int
+    paused: bool
 
 
 class PatronageActions:
@@ -26,5 +28,5 @@ class PatronageActions:
             raise RuntimeError(f"RPC error: {response['error']}")
         return response["result"]
 
-    def get_patron_fund(self, fund_key: str) -> Any:
-        return self._rpc("diesis_getPatronFund", [fund_key])
+    def get_grant(self, grant_id: str) -> Any:
+        return self._rpc("diesis_getGrant", [grant_id])

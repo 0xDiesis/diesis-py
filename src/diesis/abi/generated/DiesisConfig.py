@@ -1131,13 +1131,13 @@ class DiesisConfigContract:
         """Address that receives newly issued (minted) tokens"""
         ...
     def max_delegated_ratio(self) -> int:
-        """Maximum total delegated stake as a multiple of self-stake [1-31x]"""
+        """Maximum total delegated stake as a multiple of self-stake [1-24x]"""
         ...
     def min_average_uptime(self) -> int:
-        """Minimum rolling-average uptime before OFFLINE_AVG_BIT deactivation [0-90%]"""
+        """Minimum rolling-average uptime before PERFORMANCE_FAULT deactivation [0-90%]"""
         ...
     def min_self_stake(self) -> int:
-        """Minimum self-stake required to register a validator [100K-10M tokens]"""
+        """Minimum self-stake required to register a validator [125K-8.5M tokens]"""
         ...
     def offline_penalty_threshold_blocks_num(self) -> int:
         """Number of missed blocks that triggers offline penalty [100-1M]"""
@@ -1150,7 +1150,7 @@ class DiesisConfigContract:
         """Fraction of tx fees sent to treasury each epoch [0-100%]; burntFeeShare + treasuryFeeShare ≤ 100%"""
         ...
     def validator_commission(self) -> int:
-        """Validator commission on staking rewards as a fraction [0-50%]"""
+        """Validator commission on staking rewards as a fraction [0-20%]"""
         ...
     def withdrawal_period_epochs(self) -> int:
         """Minimum epochs before an unstake request can be withdrawn [2-100]"""

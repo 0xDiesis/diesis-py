@@ -89,6 +89,50 @@ IDIESISMARKETS_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [
       {
+        "internalType": "bytes11",
+        "name": "symbol",
+        "type": "bytes11"
+      },
+      {
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "initialSupply",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "dsBond",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "usdcFee",
+        "type": "uint256"
+      }
+    ],
+    "name": "deployTokenAndSpotBook",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "bytes32",
         "name": "marketId",
         "type": "bytes32"
@@ -221,4 +265,5 @@ class IDiesisMarketsContract:
     # Write functions
     def check_circuit_breaker(self, market_id: bytes, current_price: int, reference_price: int, threshold_bps: int) -> dict[str, Any]: ...
     def create_spot_market(self, base_token: ChecksumAddress, quote_token: ChecksumAddress, tick_size: int, lot_size: int, bond: int) -> dict[str, Any]: ...
+    def deploy_token_and_spot_book(self, symbol: bytes, name: str, initial_supply: int, ds_bond: int, usdc_fee: int) -> dict[str, Any]: ...
     def resume_market(self, market_id: bytes) -> dict[str, Any]: ...

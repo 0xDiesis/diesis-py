@@ -194,6 +194,24 @@ IDIESISPOSITION_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint40",
+        "name": "lockDuration",
+        "type": "uint40"
+      }
+    ],
+    "name": "lockPositionFor",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
         "name": "fromTokenId",
         "type": "uint256"
       },
@@ -1276,6 +1294,9 @@ class IDiesisPositionContract:
     def claim_rewards(self, token_id: int, recipient: ChecksumAddress) -> dict[str, Any]: ...
     def delegate(self, token_id: int) -> dict[str, Any]: ...
     def lock_position(self, token_id: int, lock_duration: int) -> dict[str, Any]: ...
+    def lock_position_for(self, token_id: int, lock_duration: int) -> dict[str, Any]:
+        """Lock a position on behalf of its owner."""
+        ...
     def merge_position(self, from_token_id: int, into_token_id: int) -> dict[str, Any]:
         """Atomically merge two positions on the same validator."""
         ...

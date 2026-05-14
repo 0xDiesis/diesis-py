@@ -36,8 +36,26 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
         "internalType": "bytes32",
-        "name": "fundKey",
+        "name": "grantId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "assignAccountGrant",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "grantId",
         "type": "bytes32"
       },
       {
@@ -46,7 +64,7 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       }
     ],
-    "name": "chargePatron",
+    "name": "chargeGrant",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -55,7 +73,7 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "internalType": "bytes32[]",
-        "name": "fundKeys",
+        "name": "grantIds",
         "type": "bytes32[]"
       },
       {
@@ -64,14 +82,14 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256[]"
       }
     ],
-    "name": "chargePatronBatch",
+    "name": "chargeGrantBatch",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [],
-    "name": "chargePatronGasLimit",
+    "name": "chargeGrantGasLimit",
     "outputs": [
       {
         "internalType": "uint256",
@@ -86,39 +104,33 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "internalType": "bytes32",
-        "name": "fundKey",
+        "name": "grantId",
         "type": "bytes32"
       }
     ],
-    "name": "deposit",
+    "name": "contribute",
     "outputs": [],
     "stateMutability": "payable",
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "sender",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "token",
-        "type": "address"
-      },
-      {
-        "internalType": "bytes",
-        "name": "input",
-        "type": "bytes"
-      }
-    ],
-    "name": "fundKeyForApproval",
+    "inputs": [],
+    "name": "grantGasOverhead",
     "outputs": [
       {
-        "internalType": "bytes32",
-        "name": "key",
-        "type": "bytes32"
+        "internalType": "uint256",
+        "name": "resolveGas",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "chargeGas",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "totalOverhead",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -128,16 +140,11 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "internalType": "address",
-        "name": "target",
+        "name": "account",
         "type": "address"
-      },
-      {
-        "internalType": "bytes",
-        "name": "input",
-        "type": "bytes"
       }
     ],
-    "name": "fundKeyForFunction",
+    "name": "grantIdForAccount",
     "outputs": [
       {
         "internalType": "bytes32",
@@ -151,12 +158,12 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "nonce",
-        "type": "uint256"
+        "internalType": "bytes32",
+        "name": "campaignId",
+        "type": "bytes32"
       }
     ],
-    "name": "fundKeyForOnboarding",
+    "name": "grantIdForCampaign",
     "outputs": [
       {
         "internalType": "bytes32",
@@ -180,7 +187,20 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
         "type": "address"
       }
     ],
-    "name": "fundKeyForReferral",
+    "name": "grantIdForReferral",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "result",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "grantIdForWelcome",
     "outputs": [
       {
         "internalType": "bytes32",
@@ -194,68 +214,37 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "sender",
-        "type": "address"
-      }
-    ],
-    "name": "fundKeyForSender",
-    "outputs": [
-      {
         "internalType": "bytes32",
-        "name": "result",
+        "name": "grantId",
         "type": "bytes32"
       }
     ],
-    "stateMutability": "pure",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "sender",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "target",
-        "type": "address"
-      },
-      {
-        "internalType": "bytes",
-        "name": "input",
-        "type": "bytes"
-      }
-    ],
-    "name": "fundKeyForSenderFunction",
+    "name": "grantInfo",
     "outputs": [
       {
-        "internalType": "bytes32",
-        "name": "result",
-        "type": "bytes32"
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "balance",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalContributed",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalSpent",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct IDiesisPatron.GrantInfo",
+        "name": "info",
+        "type": "tuple"
       }
     ],
-    "stateMutability": "pure",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "target",
-        "type": "address"
-      }
-    ],
-    "name": "fundKeyForTarget",
-    "outputs": [
-      {
-        "internalType": "bytes32",
-        "name": "result",
-        "type": "bytes32"
-      }
-    ],
-    "stateMutability": "pure",
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -266,7 +255,7 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
         "type": "bytes32"
       }
     ],
-    "name": "funds",
+    "name": "grants",
     "outputs": [
       {
         "internalType": "uint256",
@@ -289,12 +278,12 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "owner",
+    "name": "onboardingTxLimit",
     "outputs": [
       {
-        "internalType": "address",
+        "internalType": "uint256",
         "name": "",
-        "type": "address"
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -302,22 +291,12 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "patronGasOverhead",
+    "name": "owner",
     "outputs": [
       {
-        "internalType": "uint256",
-        "name": "resolveGas",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "chargeGas",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "totalOverhead",
-        "type": "uint256"
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -334,24 +313,6 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "fundKey",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "reclaimFunds",
-    "outputs": [],
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -389,7 +350,7 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       }
     ],
-    "name": "resolvePatron",
+    "name": "resolveGrant",
     "outputs": [
       {
         "internalType": "bytes32",
@@ -402,7 +363,7 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "resolvePatronGasLimit",
+    "name": "resolveGrantGasLimit",
     "outputs": [
       {
         "internalType": "uint256",
@@ -491,6 +452,19 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "limit",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateOnboardingTxLimit",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "staking_",
         "type": "address"
@@ -502,28 +476,40 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
     "type": "function"
   },
   {
-    "anonymous": false,
     "inputs": [
       {
-        "indexed": true,
         "internalType": "bytes32",
-        "name": "fundKey",
+        "name": "grantId",
         "type": "bytes32"
       },
       {
-        "indexed": true,
-        "internalType": "address",
-        "name": "contributor",
-        "type": "address"
-      },
-      {
-        "indexed": false,
         "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
       }
     ],
-    "name": "FundsDeposited",
+    "name": "withdrawContribution",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "grantId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "AccountGrantAssigned",
     "type": "event"
   },
   {
@@ -532,7 +518,26 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
       {
         "indexed": true,
         "internalType": "bytes32",
-        "name": "fundKey",
+        "name": "grantId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "fee",
+        "type": "uint256"
+      }
+    ],
+    "name": "GrantCharged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "grantId",
         "type": "bytes32"
       },
       {
@@ -548,7 +553,7 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       }
     ],
-    "name": "FundsReclaimed",
+    "name": "GrantContributed",
     "type": "event"
   },
   {
@@ -567,7 +572,45 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       }
     ],
-    "name": "GasLimitsUpdated",
+    "name": "GrantGasLimitsUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "grantId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "contributor",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "GrantWithdrawn",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "limit",
+        "type": "uint256"
+      }
+    ],
+    "name": "OnboardingTxLimitUpdated",
     "type": "event"
   },
   {
@@ -593,25 +636,6 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
     "anonymous": false,
     "inputs": [
       {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "fundKey",
-        "type": "bytes32"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "fee",
-        "type": "uint256"
-      }
-    ],
-    "name": "PatronCharged",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
         "indexed": false,
         "internalType": "bool",
         "name": "paused",
@@ -627,7 +651,7 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
       {
         "indexed": true,
         "internalType": "address",
-        "name": "patron",
+        "name": "referrer",
         "type": "address"
       },
       {
@@ -639,11 +663,11 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
       {
         "indexed": false,
         "internalType": "bytes32",
-        "name": "fundKey",
+        "name": "grantId",
         "type": "bytes32"
       }
     ],
-    "name": "ReferralSet",
+    "name": "ReferralGrantSet",
     "type": "event"
   },
   {
@@ -661,7 +685,7 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "CannotReclaimInPatronizedTx",
+    "name": "CannotWithdrawInSponsoredTx",
     "type": "error"
   },
   {
@@ -671,7 +695,7 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "InsufficientFundBalance",
+    "name": "InsufficientGrantBalance",
     "type": "error"
   },
   {
@@ -681,7 +705,7 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "InvalidFundKey",
+    "name": "InvalidGrantId",
     "type": "error"
   },
   {
@@ -696,7 +720,7 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "NoContribution",
+    "name": "NoGrantShare",
     "type": "error"
   },
   {
@@ -730,6 +754,12 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
 ''')
 
 
+class DiesisPatronGrantInfo(TypedDict):
+    balance: int
+    total_contributed: int
+    total_spent: int
+
+
 class DiesisPatronContract:
     """Typed wrapper for the DiesisPatron contract."""
 
@@ -739,64 +769,63 @@ class DiesisPatronContract:
         )
 
     # View/pure functions
-    def charge_patron_gas_limit(self) -> int: ...
-    def fund_key_for_approval(self, sender: ChecksumAddress, token: ChecksumAddress, input: bytes) -> bytes:
-        """Key for patroning ERC20 approve() calls with safety guards. Returns zero if: token is zero, input is wrong length, wrong selector, value == 0, current allowance != 0 (prevent double-approve attack), or sender holds no tokens."""
-        ...
-    def fund_key_for_function(self, target: ChecksumAddress, input: bytes) -> bytes:
-        """Key for patroning txs calling a specific function on a specific contract."""
-        ...
-    def fund_key_for_onboarding(self, nonce: int) -> bytes:
-        """Key for patroning first 5 txs from new accounts (nonce < 5)."""
-        ...
-    def fund_key_for_referral(self, referrer: ChecksumAddress, referred: ChecksumAddress) -> bytes:
-        """Key for referral patronage."""
-        ...
-    def fund_key_for_sender(self, sender: ChecksumAddress) -> bytes:
-        """Key for patroning all txs from `sender`."""
-        ...
-    def fund_key_for_sender_function(self, sender: ChecksumAddress, target: ChecksumAddress, input: bytes) -> bytes:
-        """Key for patroning txs from a specific sender calling a specific function."""
-        ...
-    def fund_key_for_target(self, target: ChecksumAddress) -> bytes:
-        """Key for patroning all txs targeting `target` contract."""
-        ...
-    def funds(self, arg0: bytes) -> tuple[int, int, int]:
-        """fundKey → PatronFund"""
-        ...
-    def owner(self) -> ChecksumAddress: ...
-    def patron_gas_overhead(self) -> tuple[int, int, int]:
+    def charge_grant_gas_limit(self) -> int: ...
+    def grant_gas_overhead(self) -> tuple[int, int, int]:
         """Return gas limits reserved for patronage overhead."""
         ...
-    def paused(self) -> bool: ...
-    def resolve_patron(self, sender: ChecksumAddress, target: ChecksumAddress, nonce: int, input: bytes, fee: int) -> bytes:
-        """Determine which patron fund (if any) should cover this transaction's gas. Returns fundKey or bytes32(0) if no patron found. Priority: senderFn > approval > fn > target > referral > sender > onboarding"""
+    def grant_id_for_account(self, account: ChecksumAddress) -> bytes:
+        """Account-specific jar for one onboarding account."""
         ...
-    def resolve_patron_gas_limit(self) -> int:
+    def grant_id_for_campaign(self, campaign_id: bytes) -> bytes:
+        """Campaign jar for partner or community onboarding programs."""
+        ...
+    def grant_id_for_referral(self, referrer: ChecksumAddress, referred: ChecksumAddress) -> bytes:
+        """Referral encore jar for one referrer/referred pair."""
+        ...
+    def grant_id_for_welcome(self) -> bytes:
+        """Shared welcome jar for the first few transactions from new accounts."""
+        ...
+    def grant_info(self, grant_id: bytes) -> dict[str, Any]: ...
+    def grants(self, arg0: bytes) -> tuple[int, int, int]:
+        """grantId → public grant accounting"""
+        ...
+    def onboarding_tx_limit(self) -> int:
+        """Number of account nonces that can use the shared welcome grant."""
+        ...
+    def owner(self) -> ChecksumAddress: ...
+    def paused(self) -> bool: ...
+    def resolve_grant(self, sender: ChecksumAddress, target: ChecksumAddress, nonce: int, input: bytes, fee: int) -> bytes:
+        """Determine which onboarding grant, if any, should cover this transaction's gas. Returns grantId or bytes32(0) if no patron found. Priority: account assignment > referral encore > welcome jar."""
+        ...
+    def resolve_grant_gas_limit(self) -> int:
         """Gas overhead limits published for nodes to reserve gas for patronage checks"""
         ...
     def staking_address(self) -> ChecksumAddress:
-        """DiesisStaking address — chargePatron burns via staking.burnTokens()"""
+        """DiesisStaking address — chargeGrant burns via staking.burnTokens()"""
         ...
 
     # Write functions
-    def charge_patron(self, fund_key: bytes, actual_fee: int) -> dict[str, Any]:
-        """Deduct `actualFee` from the patron fund identified by `fundKey` and burn it. Only callable by the Rust node (msg.sender == address(0))."""
+    def assign_account_grant(self, account: ChecksumAddress, grant_id: bytes) -> dict[str, Any]:
+        """Assign a funded grant jar to a specific account."""
         ...
-    def charge_patron_batch(self, fund_keys: list[bytes], fees: list[int]) -> dict[str, Any]:
-        """Deduct multiple patron charges and burn the aggregate amount once."""
+    def charge_grant(self, grant_id: bytes, actual_fee: int) -> dict[str, Any]:
+        """Deduct `actualFee` from the grant identified by `grantId` and burn it. Only callable by the Rust node (msg.sender == address(0))."""
         ...
-    def deposit(self, fund_key: bytes) -> dict[str, Any]:
-        """Deposit native tokens into a patron fund identified by `fundKey`."""
+    def charge_grant_batch(self, grant_ids: list[bytes], fees: list[int]) -> dict[str, Any]:
+        """Deduct multiple grant charges and burn the aggregate amount once."""
         ...
-    def reclaim_funds(self, fund_key: bytes, amount: int) -> dict[str, Any]:
-        """Reclaim a proportional share of a patron fund's remaining balance. Cannot be called from a patronized transaction (tx.gasprice == 0 → patroned)."""
+    def contribute(self, grant_id: bytes) -> dict[str, Any]:
+        """Deposit native tokens into a grant identified by `grantId`."""
         ...
     def renounce_ownership(self) -> dict[str, Any]: ...
     def set_paused(self, paused: bool) -> dict[str, Any]: ...
     def set_referral(self, referred: ChecksumAddress, referrer: ChecksumAddress) -> dict[str, Any]:
-        """Link a referred address to the referrer's fund key. Patron deposits into `fundKeyForReferral(referrer, referred)` separately."""
+        """Link a referred address to the referrer's grant key. Contributor funds into `grantIdForReferral(referrer, referred)` separately."""
         ...
     def transfer_ownership(self, new_owner: ChecksumAddress) -> dict[str, Any]: ...
     def update_gas_limits(self, resolve_gas: int, charge_gas: int) -> dict[str, Any]: ...
+    def update_onboarding_tx_limit(self, limit: int) -> dict[str, Any]: ...
     def update_staking_address(self, staking: ChecksumAddress) -> dict[str, Any]: ...
+    def withdraw_contribution(self, grant_id: bytes, amount: int) -> dict[str, Any]:
+        """Reclaim a proportional share of a grant's remaining balance. Cannot be called from a sponsored transaction (tx.gasprice == 0 → sponsored)."""
+        ...

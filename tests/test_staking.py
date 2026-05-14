@@ -13,16 +13,16 @@ from diesis.staking.actions import PositionInfo, StakingActions, ValidatorInfo
 
 def test_validator_info_frozen() -> None:
     vi = ValidatorInfo(
-        status=1,
-        total_staked=1000,
-        authority="0xabc",
-        registered_epoch=1,
-        registered_at=100,
-        suspended_at=0,
-        suspended_epoch=0,
+        operator="0xabc",
+        flags=1,
+        bonded=1000,
+        joined_epoch=1,
+        joined_at=100,
+        held_at=0,
+        held_epoch=0,
     )
     with pytest.raises(AttributeError):
-        vi.status = 2  # type: ignore[misc]
+        vi.flags = 2  # type: ignore[misc]
 
 
 def test_position_info_frozen() -> None:
@@ -66,10 +66,10 @@ def test_init_creates_contract_at_staking_address() -> None:
 
 def test_get_validator() -> None:
     actions, mock_contract = _make_actions()
-    mock_contract.functions.validators.return_value.call.return_value = (
+    mock_contract.functions.validatorLedger.return_value.call.return_value = (
+        "0xabc",
         1,
         1000,
-        "0xabc",
         2,
         100,
         0,
@@ -79,20 +79,20 @@ def test_get_validator() -> None:
     result = actions.get_validator(42)
 
     assert isinstance(result, ValidatorInfo)
-    assert result.status == 1
-    assert result.total_staked == 1000
-    assert result.authority == "0xabc"
-    assert result.registered_epoch == 2
-    assert result.registered_at == 100
-    assert result.suspended_at == 0
-    assert result.suspended_epoch == 0
-    mock_contract.functions.validators.assert_called_once_with(42)
-    mock_contract.functions.validators.return_value.call.assert_called_once()
+    assert result.operator == "0xabc"
+    assert result.flags == 1
+    assert result.bonded == 1000
+    assert result.joined_epoch == 2
+    assert result.joined_at == 100
+    assert result.held_at == 0
+    assert result.held_epoch == 0
+    mock_contract.functions.validatorLedger.assert_called_once_with(42)
+    mock_contract.functions.validatorLedger.return_value.call.assert_called_once()
 
 
 def test_get_position() -> None:
     actions, mock_contract = _make_actions()
-    mock_contract.functions.positions.return_value.call.return_value = (7, 2000, 5)
+    mock_contract.functions.bondLots.return_value.call.return_value = (7, 2000, 5)
 
     result = actions.get_position(99)
 
@@ -100,8 +100,8 @@ def test_get_position() -> None:
     assert result.validator_id == 7
     assert result.amount == 2000
     assert result.entry_epoch == 5
-    mock_contract.functions.positions.assert_called_once_with(99)
-    mock_contract.functions.positions.return_value.call.assert_called_once()
+    mock_contract.functions.bondLots.assert_called_once_with(99)
+    mock_contract.functions.bondLots.return_value.call.assert_called_once()
 
 
 def test_get_unclaimed_rewards() -> None:
@@ -173,22 +173,22 @@ def test_get_validator_by_address() -> None:
     mock_contract.functions.validatorByAddress.return_value.call.assert_called_once()
 
 
-def test_is_cheater_true() -> None:
+def test_is_slashable_true() -> None:
     actions, mock_contract = _make_actions()
-    mock_contract.functions.isCheater.return_value.call.return_value = True
+    mock_contract.functions.isSlashable.return_value.call.return_value = True
 
-    result = actions.is_cheater(10)
+    result = actions.is_slashable(10)
 
     assert result is True
-    mock_contract.functions.isCheater.assert_called_once_with(10)
-    mock_contract.functions.isCheater.return_value.call.assert_called_once()
+    mock_contract.functions.isSlashable.assert_called_once_with(10)
+    mock_contract.functions.isSlashable.return_value.call.assert_called_once()
 
 
-def test_is_cheater_false() -> None:
+def test_is_slashable_false() -> None:
     actions, mock_contract = _make_actions()
-    mock_contract.functions.isCheater.return_value.call.return_value = False
+    mock_contract.functions.isSlashable.return_value.call.return_value = False
 
-    result = actions.is_cheater(11)
+    result = actions.is_slashable(11)
 
     assert result is False
 

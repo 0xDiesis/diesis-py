@@ -74,3 +74,55 @@ def test_exchange_actions_estimate_fill() -> None:
     actions.estimate_fill("0x" + "ab" * 32, Side.BUY, 1000)
     call_args = mock_w3.provider.make_request.call_args
     assert call_args[0][0] == "exchange_estimateFill"
+
+
+# ── Cycle A2.1: operator-deployed perp markets RPC bindings ──────────────────
+
+
+def test_exchange_actions_deploy_perp() -> None:
+    mock_w3 = MagicMock()
+    mock_w3.provider.make_request.return_value = {"result": {"marketId": "0x" + "00" * 32}}
+    actions = ExchangeActions(mock_w3)
+    actions.deploy_perp(
+        {
+            "slotId": "0x" + "11" * 32,
+            "sourceList": {"sources": []},
+            "metadata": {"maxLeverage": 10, "backstopTopupBps": 500, "marginTiers": []},
+            "sigs": [],
+        }
+    )
+    call_args = mock_w3.provider.make_request.call_args
+    assert call_args[0][0] == "exchange_deployPerp"
+
+
+def test_exchange_actions_get_market_deployment_state() -> None:
+    mock_w3 = MagicMock()
+    mock_w3.provider.make_request.return_value = {"result": {"tag": "live"}}
+    actions = ExchangeActions(mock_w3)
+    actions.get_market_deployment_state("0x" + "ab" * 32)
+    call_args = mock_w3.provider.make_request.call_args
+    assert call_args[0][0] == "exchange_getMarketDeploymentState"
+
+
+def test_exchange_actions_get_operator_balance() -> None:
+    mock_w3 = MagicMock()
+    mock_w3.provider.make_request.return_value = {"result": "0x0"}
+    actions = ExchangeActions(mock_w3)
+    actions.get_operator_balance("0x" + "00" * 20)
+    call_args = mock_w3.provider.make_request.call_args
+    assert call_args[0][0] == "exchange_getOperatorBalance"
+
+
+def test_exchange_actions_propose_metadata_update() -> None:
+    mock_w3 = MagicMock()
+    mock_w3.provider.make_request.return_value = {"result": {"unlockBlock": "0x0"}}
+    actions = ExchangeActions(mock_w3)
+    actions.propose_metadata_update(
+        {
+            "marketId": "0x" + "ab" * 32,
+            "newMetadata": {"maxLeverage": 5, "backstopTopupBps": 500, "marginTiers": []},
+            "sigs": [],
+        }
+    )
+    call_args = mock_w3.provider.make_request.call_args
+    assert call_args[0][0] == "exchange_proposeMetadataUpdate"

@@ -47,3 +47,25 @@ class ExchangeActions:
             "exchange_estimateFill",
             [{"marketId": market_id, "side": side, "amount": hex(amount)}],
         )
+
+    # ── Cycle A2.1: operator-deployed perp markets ───────────────────────────
+
+    def deploy_perp(self, params: dict[str, Any]) -> Any:
+        """Submit an `IDiesisPerpDeploy.activate` call.
+
+        ``params`` mirrors the TS SDK shape:
+        ``{slotId, sourceList, metadata, sigs}``.
+        """
+        return self._rpc("exchange_deployPerp", [params])
+
+    def get_market_deployment_state(self, market_id: str) -> Any:
+        """Read the deployment state for ``market_id`` (Cycle A2.1)."""
+        return self._rpc("exchange_getMarketDeploymentState", [market_id])
+
+    def get_operator_balance(self, operator: str) -> Any:
+        """Read the operator-fee-router balance for ``operator``."""
+        return self._rpc("exchange_getOperatorBalance", [operator])
+
+    def propose_metadata_update(self, params: dict[str, Any]) -> Any:
+        """Propose a market-metadata update (24h timelock)."""
+        return self._rpc("exchange_proposeMetadataUpdate", [params])

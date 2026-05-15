@@ -91,6 +91,19 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
+    "name": "_MARK_PROBATION_MASK",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "_MARK_PROTOCOL_BREACH",
     "outputs": [
       {
@@ -552,9 +565,14 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint128"
       },
       {
-        "internalType": "uint64",
+        "internalType": "uint48",
+        "name": "validatorId",
+        "type": "uint48"
+      },
+      {
+        "internalType": "uint40",
         "name": "checkpoint",
-        "type": "uint64"
+        "type": "uint40"
       },
       {
         "internalType": "uint40",
@@ -2584,6 +2602,7 @@ class DiesisStakingContract:
     def mark_evidence_mask(self) -> int: ...
     def mark_inactive_mask(self) -> int: ...
     def mark_operator_review(self) -> int: ...
+    def mark_probation_mask(self) -> int: ...
     def mark_protocol_breach(self) -> int: ...
     def mark_score_drift(self) -> int: ...
     def mark_slash_review(self) -> int: ...
@@ -2602,7 +2621,7 @@ class DiesisStakingContract:
         ...
     def config(self) -> ChecksumAddress: ...
     def consensus_key_by_node(self, arg0: int) -> bytes: ...
-    def exit_tickets(self, arg0: int, arg1: int) -> tuple[int, int, int]:
+    def exit_tickets(self, arg0: int, arg1: int) -> tuple[int, int, int, int]:
         """Unstake requests keyed by (tokenId => requestID => request)"""
         ...
     def get_approved(self, token_id: int) -> ChecksumAddress: ...

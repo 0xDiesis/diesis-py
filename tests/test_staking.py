@@ -16,17 +16,17 @@ def test_validator_info_frozen() -> None:
         operator="0xabc",
         flags=1,
         bonded=1000,
-        joined_epoch=1,
+        joined_checkpoint=1,
         joined_at=100,
         held_at=0,
-        held_epoch=0,
+        held_checkpoint=0,
     )
     with pytest.raises(AttributeError):
         vi.flags = 2  # type: ignore[misc]
 
 
 def test_position_info_frozen() -> None:
-    pi = PositionInfo(validator_id=3, amount=500, entry_epoch=10)
+    pi = PositionInfo(validator_id=3, amount=500, entry_checkpoint=10)
     with pytest.raises(AttributeError):
         pi.amount = 999  # type: ignore[misc]
 
@@ -66,7 +66,7 @@ def test_init_creates_contract_at_staking_address() -> None:
 
 def test_get_validator() -> None:
     actions, mock_contract = _make_actions()
-    mock_contract.functions.validatorLedger.return_value.call.return_value = (
+    mock_contract.functions.nodeLedger.return_value.call.return_value = (
         "0xabc",
         1,
         1000,
@@ -82,26 +82,26 @@ def test_get_validator() -> None:
     assert result.operator == "0xabc"
     assert result.flags == 1
     assert result.bonded == 1000
-    assert result.joined_epoch == 2
+    assert result.joined_checkpoint == 2
     assert result.joined_at == 100
     assert result.held_at == 0
-    assert result.held_epoch == 0
-    mock_contract.functions.validatorLedger.assert_called_once_with(42)
-    mock_contract.functions.validatorLedger.return_value.call.assert_called_once()
+    assert result.held_checkpoint == 0
+    mock_contract.functions.nodeLedger.assert_called_once_with(42)
+    mock_contract.functions.nodeLedger.return_value.call.assert_called_once()
 
 
 def test_get_position() -> None:
     actions, mock_contract = _make_actions()
-    mock_contract.functions.bondLots.return_value.call.return_value = (7, 2000, 5)
+    mock_contract.functions.stakeLots.return_value.call.return_value = (7, 2000, 5)
 
     result = actions.get_position(99)
 
     assert isinstance(result, PositionInfo)
     assert result.validator_id == 7
     assert result.amount == 2000
-    assert result.entry_epoch == 5
-    mock_contract.functions.bondLots.assert_called_once_with(99)
-    mock_contract.functions.bondLots.return_value.call.assert_called_once()
+    assert result.entry_checkpoint == 5
+    mock_contract.functions.stakeLots.assert_called_once_with(99)
+    mock_contract.functions.stakeLots.return_value.call.assert_called_once()
 
 
 def test_get_unclaimed_rewards() -> None:
@@ -137,15 +137,15 @@ def test_get_aggregate_stake() -> None:
     mock_contract.functions.aggregateStake.return_value.call.assert_called_once()
 
 
-def test_get_latest_finalized_epoch() -> None:
+def test_get_latest_finalized_checkpoint() -> None:
     actions, mock_contract = _make_actions()
-    mock_contract.functions.latestFinalizedEpoch.return_value.call.return_value = 42
+    mock_contract.functions.latestFinalizedCheckpoint.return_value.call.return_value = 42
 
-    result = actions.get_latest_finalized_epoch()
+    result = actions.get_latest_finalized_checkpoint()
 
     assert result == 42
-    mock_contract.functions.latestFinalizedEpoch.assert_called_once_with()
-    mock_contract.functions.latestFinalizedEpoch.return_value.call.assert_called_once()
+    mock_contract.functions.latestFinalizedCheckpoint.assert_called_once_with()
+    mock_contract.functions.latestFinalizedCheckpoint.return_value.call.assert_called_once()
 
 
 def test_get_circulating_supply() -> None:
@@ -161,7 +161,7 @@ def test_get_circulating_supply() -> None:
 
 def test_get_validator_by_address() -> None:
     actions, mock_contract = _make_actions()
-    mock_contract.functions.validatorByAddress.return_value.call.return_value = 3
+    mock_contract.functions.nodeIdByOperator.return_value.call.return_value = 3
 
     addr = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"
     result = actions.get_validator_by_address(addr)
@@ -169,8 +169,8 @@ def test_get_validator_by_address() -> None:
     assert result == 3
     from web3 import Web3
 
-    mock_contract.functions.validatorByAddress.assert_called_once_with(Web3.to_checksum_address(addr))
-    mock_contract.functions.validatorByAddress.return_value.call.assert_called_once()
+    mock_contract.functions.nodeIdByOperator.assert_called_once_with(Web3.to_checksum_address(addr))
+    mock_contract.functions.nodeIdByOperator.return_value.call.assert_called_once()
 
 
 def test_is_slashable_true() -> None:

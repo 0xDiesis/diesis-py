@@ -65,7 +65,7 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "DEFAULT_AVG_UPTIME_EPOCH_WINDOW",
+    "name": "DEFAULT_AVG_UPTIME_CHECKPOINT_WINDOW",
     "outputs": [
       {
         "internalType": "uint32",
@@ -208,7 +208,7 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "DEFAULT_WITHDRAWAL_PERIOD_EPOCHS",
+    "name": "DEFAULT_WITHDRAWAL_PERIOD_CHECKPOINTS",
     "outputs": [
       {
         "internalType": "uint256",
@@ -390,7 +390,7 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "WITHDRAWAL_PERIOD_EPOCHS_LOWER",
+    "name": "WITHDRAWAL_PERIOD_CHECKPOINTS_LOWER",
     "outputs": [
       {
         "internalType": "uint256",
@@ -403,7 +403,7 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "WITHDRAWAL_PERIOD_EPOCHS_UPPER",
+    "name": "WITHDRAWAL_PERIOD_CHECKPOINTS_UPPER",
     "outputs": [
       {
         "internalType": "uint256",
@@ -442,7 +442,7 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "averageUptimeEpochWindow",
+    "name": "averageUptimeCheckpointWindow",
     "outputs": [
       {
         "internalType": "uint32",
@@ -624,7 +624,7 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint32"
       }
     ],
-    "name": "updateAverageUptimeEpochWindow",
+    "name": "updateAverageUptimeCheckpointWindow",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -780,7 +780,7 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       }
     ],
-    "name": "updateWithdrawalPeriodEpochs",
+    "name": "updateWithdrawalPeriodCheckpoints",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -813,7 +813,7 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "withdrawalPeriodEpochs",
+    "name": "withdrawalPeriodCheckpoints",
     "outputs": [
       {
         "internalType": "uint256",
@@ -847,7 +847,7 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint32"
       }
     ],
-    "name": "AverageUptimeEpochWindowUpdated",
+    "name": "AverageUptimeCheckpointWindowUpdated",
     "type": "event"
   },
   {
@@ -1022,7 +1022,7 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       }
     ],
-    "name": "WithdrawalPeriodEpochsUpdated",
+    "name": "WithdrawalPeriodCheckpointsUpdated",
     "type": "event"
   },
   {
@@ -1086,7 +1086,7 @@ class DiesisConfigContract:
     def avg_uptime_window_lower(self) -> int: ...
     def avg_uptime_window_upper(self) -> int: ...
     def base_reward_per_second_upper(self) -> int: ...
-    def default_avg_uptime_epoch_window(self) -> int: ...
+    def default_avg_uptime_checkpoint_window(self) -> int: ...
     def default_base_reward_per_second(self) -> int: ...
     def default_burnt_fee_share(self) -> int: ...
     def default_extra_rewards_burn_ratio(self) -> int: ...
@@ -1097,7 +1097,7 @@ class DiesisConfigContract:
     def default_offline_penalty_time(self) -> int: ...
     def default_treasury_fee_share(self) -> int: ...
     def default_validator_commission(self) -> int: ...
-    def default_withdrawal_period_epochs(self) -> int: ...
+    def default_withdrawal_period_checkpoints(self) -> int: ...
     def default_withdrawal_period_time(self) -> int: ...
     def extra_rewards_burn_ratio_upper(self) -> int: ...
     def fee_share_upper(self) -> int: ...
@@ -1111,18 +1111,18 @@ class DiesisConfigContract:
     def offline_penalty_time_lower(self) -> int: ...
     def offline_penalty_time_upper(self) -> int: ...
     def validator_commission_upper(self) -> int: ...
-    def withdrawal_period_epochs_lower(self) -> int: ...
-    def withdrawal_period_epochs_upper(self) -> int: ...
+    def withdrawal_period_checkpoints_lower(self) -> int: ...
+    def withdrawal_period_checkpoints_upper(self) -> int: ...
     def withdrawal_period_time_lower(self) -> int: ...
     def withdrawal_period_time_upper(self) -> int: ...
-    def average_uptime_epoch_window(self) -> int:
-        """Number of epochs in the rolling average uptime window [10-87,600]"""
+    def average_uptime_checkpoint_window(self) -> int:
+        """Number of checkpoints in the rolling average uptime window [10-87,600]"""
         ...
     def base_reward_per_second(self) -> int:
         """Base staking reward per second in tokens [0-32 tokens/sec]"""
         ...
     def burnt_fee_share(self) -> int:
-        """Fraction of tx fees burned each epoch [0-100%]"""
+        """Fraction of tx fees burned each checkpoint [0-100%]"""
         ...
     def extra_rewards_burn_ratio(self) -> int:
         """Fraction of extra reward allocations that are burned [0-100%]"""
@@ -1147,13 +1147,13 @@ class DiesisConfigContract:
         ...
     def owner(self) -> ChecksumAddress: ...
     def treasury_fee_share(self) -> int:
-        """Fraction of tx fees sent to treasury each epoch [0-100%]; burntFeeShare + treasuryFeeShare ≤ 100%"""
+        """Fraction of tx fees sent to treasury each checkpoint [0-100%]; burntFeeShare + treasuryFeeShare ≤ 100%"""
         ...
     def validator_commission(self) -> int:
         """Validator commission on staking rewards as a fraction [0-20%]"""
         ...
-    def withdrawal_period_epochs(self) -> int:
-        """Minimum epochs before an unstake request can be withdrawn [2-100]"""
+    def withdrawal_period_checkpoints(self) -> int:
+        """Minimum checkpoints before an unstake request can be withdrawn [2-100]"""
         ...
     def withdrawal_period_time(self) -> int:
         """Minimum seconds before an unstake request can be withdrawn [1h-30d]"""
@@ -1162,7 +1162,7 @@ class DiesisConfigContract:
     # Write functions
     def renounce_ownership(self) -> dict[str, Any]: ...
     def transfer_ownership(self, new_owner: ChecksumAddress) -> dict[str, Any]: ...
-    def update_average_uptime_epoch_window(self, v: int) -> dict[str, Any]: ...
+    def update_average_uptime_checkpoint_window(self, v: int) -> dict[str, Any]: ...
     def update_base_reward_per_second(self, v: int) -> dict[str, Any]: ...
     def update_burnt_fee_share(self, v: int) -> dict[str, Any]: ...
     def update_extra_rewards_burn_ratio(self, v: int) -> dict[str, Any]: ...
@@ -1174,5 +1174,5 @@ class DiesisConfigContract:
     def update_offline_penalty_threshold_time(self, v: int) -> dict[str, Any]: ...
     def update_treasury_fee_share(self, v: int) -> dict[str, Any]: ...
     def update_validator_commission(self, v: int) -> dict[str, Any]: ...
-    def update_withdrawal_period_epochs(self, v: int) -> dict[str, Any]: ...
+    def update_withdrawal_period_checkpoints(self, v: int) -> dict[str, Any]: ...
     def update_withdrawal_period_time(self, v: int) -> dict[str, Any]: ...

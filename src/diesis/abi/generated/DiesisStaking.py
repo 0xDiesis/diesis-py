@@ -39,12 +39,12 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "FAULT_EQUIVOCATION",
+    "name": "_MARK_CONFLICTING_VOTE",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "uint16",
         "name": "",
-        "type": "uint256"
+        "type": "uint16"
       }
     ],
     "stateMutability": "view",
@@ -52,12 +52,12 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "FAULT_GOVERNANCE",
+    "name": "_MARK_COUNCIL_HOLD",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "uint16",
         "name": "",
-        "type": "uint256"
+        "type": "uint16"
       }
     ],
     "stateMutability": "view",
@@ -65,12 +65,12 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "FAULT_LIVENESS",
+    "name": "_MARK_EXIT_REQUESTED",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "uint16",
         "name": "",
-        "type": "uint256"
+        "type": "uint16"
       }
     ],
     "stateMutability": "view",
@@ -78,12 +78,12 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "FAULT_PERFORMANCE",
+    "name": "_MARK_MISSED_DUTY",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "uint16",
         "name": "",
-        "type": "uint256"
+        "type": "uint16"
       }
     ],
     "stateMutability": "view",
@@ -91,12 +91,12 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "FAULT_SLASHABLE",
+    "name": "_MARK_NONE",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "uint16",
         "name": "",
-        "type": "uint256"
+        "type": "uint16"
       }
     ],
     "stateMutability": "view",
@@ -104,12 +104,12 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "MAX_COMMISSION_STEP",
+    "name": "_MARK_SLASH_REVIEW",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "uint16",
         "name": "",
-        "type": "uint256"
+        "type": "uint16"
       }
     ],
     "stateMutability": "view",
@@ -117,25 +117,12 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "VALIDATOR_ACTIVE",
+    "name": "_MARK_WEAK_PERFORMANCE",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "uint16",
         "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "VALIDATOR_EXITING",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
+        "type": "uint16"
       }
     ],
     "stateMutability": "view",
@@ -203,7 +190,7 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "epoch",
+        "name": "checkpoint",
         "type": "uint256"
       },
       {
@@ -215,6 +202,25 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
     "name": "allocateExtraReward",
     "outputs": [],
     "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "anchorLotByNode",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -266,35 +272,6 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
       {
         "internalType": "uint256",
         "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "bondLots",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "validatorId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "entryEpoch",
         "type": "uint256"
       }
     ],
@@ -486,6 +463,25 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "consensusKeyByNode",
+    "outputs": [
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "newAddress",
         "type": "address"
@@ -512,19 +508,19 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
     "name": "exitTickets",
     "outputs": [
       {
-        "internalType": "uint256",
-        "name": "epoch",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
+        "internalType": "uint128",
         "name": "amount",
-        "type": "uint256"
+        "type": "uint128"
+      },
+      {
+        "internalType": "uint64",
+        "name": "checkpoint",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint40",
+        "name": "timestamp",
+        "type": "uint40"
       }
     ],
     "stateMutability": "view",
@@ -570,12 +566,12 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
             "type": "uint256[]"
           }
         ],
-        "internalType": "struct IDiesisTypes.EpochMetrics",
+        "internalType": "struct IDiesisTypes.CheckpointMetrics",
         "name": "metrics",
         "type": "tuple"
       }
     ],
-    "name": "finalizeEpoch",
+    "name": "finalizeCheckpoint",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -660,7 +656,7 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "sealedEpoch",
+        "name": "finalizedCheckpoint",
         "type": "uint256"
       },
       {
@@ -776,7 +772,7 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "latestFinalizedEpoch",
+    "name": "latestFinalizedCheckpoint",
     "outputs": [
       {
         "internalType": "uint256",
@@ -859,6 +855,93 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "name": "nodeByConsensusKey",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "nodeIdByOperator",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "validatorId",
+        "type": "uint256"
+      }
+    ],
+    "name": "nodeLedger",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "flags",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "bonded",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "joinedCheckpoint",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "joinedAt",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "heldAt",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "heldCheckpoint",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "owner",
     "outputs": [
@@ -911,7 +994,7 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       }
     ],
-    "name": "pendingCommissionEpoch",
+    "name": "pendingCommissionCheckpoint",
     "outputs": [
       {
         "internalType": "uint256",
@@ -976,27 +1059,8 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [
       {
-        "internalType": "bytes",
-        "name": "",
-        "type": "bytes"
-      }
-    ],
-    "name": "pubkeyToValidator",
-    "outputs": [
-      {
         "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "epoch",
+        "name": "checkpoint",
         "type": "uint256"
       },
       {
@@ -1005,7 +1069,7 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       }
     ],
-    "name": "recordEpochFees",
+    "name": "recordCheckpointFees",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1373,6 +1437,35 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "stakeLots",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "validatorId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "stakeAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "entryCheckpoint",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "stakeObserver",
     "outputs": [
@@ -1590,118 +1683,12 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "validatorByAddress",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
       }
     ],
     "name": "validatorCommissionRate",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "validatorId",
-        "type": "uint256"
-      }
-    ],
-    "name": "validatorLedger",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "operator",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "flags",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "bonded",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "joinedEpoch",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "joinedAt",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "heldAt",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "heldEpoch",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "validatorPubkeys",
-    "outputs": [
-      {
-        "internalType": "bytes",
-        "name": "",
-        "type": "bytes"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "validatorSelfBondLot",
     "outputs": [
       {
         "internalType": "uint256",
@@ -1781,7 +1768,7 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
       {
         "indexed": true,
         "internalType": "uint256",
-        "name": "epochId",
+        "name": "checkpointId",
         "type": "uint256"
       },
       {
@@ -1869,7 +1856,7 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
       {
         "indexed": true,
         "internalType": "uint256",
-        "name": "epoch",
+        "name": "checkpoint",
         "type": "uint256"
       },
       {
@@ -2162,7 +2149,7 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "effectiveEpoch",
+        "name": "effectiveCheckpoint",
         "type": "uint256"
       }
     ],
@@ -2187,7 +2174,7 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "atEpoch",
+        "name": "atCheckpoint",
         "type": "uint256"
       },
       {
@@ -2231,7 +2218,7 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "atEpoch",
+        "name": "atCheckpoint",
         "type": "uint256"
       },
       {
@@ -2253,6 +2240,11 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [],
     "name": "AlreadyInitialized",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CheckpointOutOfRange",
     "type": "error"
   },
   {
@@ -2376,11 +2368,6 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
       }
     ],
     "name": "ERC721NonexistentToken",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "EpochOutOfRange",
     "type": "error"
   },
   {
@@ -2534,7 +2521,7 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
 ''')
 
 
-class DiesisStakingEpochMetrics(TypedDict):
+class DiesisStakingCheckpointMetrics(TypedDict):
     offline_durations: list[int]
     missed_blocks: list[int]
     uptime_durations: list[int]
@@ -2554,27 +2541,25 @@ class DiesisStakingContract:
 
     # View/pure functions
     def diesis_position(self) -> ChecksumAddress: ...
-    def fault_equivocation(self) -> int: ...
-    def fault_governance(self) -> int: ...
-    def fault_liveness(self) -> int: ...
-    def fault_performance(self) -> int: ...
-    def fault_slashable(self) -> int: ...
-    def max_commission_step(self) -> int: ...
-    def validator_active(self) -> int: ...
-    def validator_exiting(self) -> int: ...
+    def mark_conflicting_vote(self) -> int: ...
+    def mark_council_hold(self) -> int: ...
+    def mark_exit_requested(self) -> int: ...
+    def mark_missed_duty(self) -> int: ...
+    def mark_none(self) -> int: ...
+    def mark_slash_review(self) -> int: ...
+    def mark_weak_performance(self) -> int: ...
     def active_recovery(self, arg0: ChecksumAddress) -> ChecksumAddress: ...
     def aggregate_active_stake(self) -> int:
         """Returns the aggregate active stake across all validators."""
         ...
     def aggregate_stake(self) -> int: ...
+    def anchor_lot_by_node(self, arg0: int) -> int: ...
     def balance_of(self, owner: ChecksumAddress) -> int: ...
-    def bond_lots(self, arg0: int) -> tuple[int, int, int]:
-        """Staking position data, keyed by ERC-721 token ID"""
-        ...
     def circulating_supply(self) -> int:
         """Circulating supply = gross supply - tokens burned to address(0)."""
         ...
     def config(self) -> ChecksumAddress: ...
+    def consensus_key_by_node(self, arg0: int) -> bytes: ...
     def exit_tickets(self, arg0: int, arg1: int) -> tuple[int, int, int]:
         """Unstake requests keyed by (tokenId => requestID => request)"""
         ...
@@ -2582,29 +2567,34 @@ class DiesisStakingContract:
     def initialized(self) -> bool: ...
     def is_approved_for_all(self, owner: ChecksumAddress, operator: ChecksumAddress) -> bool: ...
     def is_slashable(self, validator_id: int) -> bool: ...
-    def latest_finalized_epoch(self) -> int: ...
+    def latest_finalized_checkpoint(self) -> int: ...
     def name(self) -> str: ...
     def next_position_id(self) -> int: ...
     def next_validator_id(self) -> int: ...
+    def node_by_consensus_key(self, arg0: bytes) -> int: ...
+    def node_id_by_operator(self, arg0: ChecksumAddress) -> int: ...
+    def node_ledger(self, validator_id: int) -> tuple[ChecksumAddress, int, int, int, int, int, int]: ...
     def owner(self) -> ChecksumAddress: ...
     def owner_of(self, token_id: int) -> ChecksumAddress: ...
     def participation_pool_bps(self) -> int:
-        """Fraction of epoch reward budget allocated to participation pool (default 3000 = 30%)"""
+        """Fraction of checkpoint reward budget allocated to participation pool (default 3000 = 30%)"""
         ...
-    def pending_commission_epoch(self, arg0: int) -> int:
-        """Epoch at which the pending commission change takes effect."""
+    def pending_commission_checkpoint(self, arg0: int) -> int:
+        """Checkpoint at which the pending commission change takes effect."""
         ...
     def pending_commission_rate(self, arg0: int) -> int:
         """Pending commission change: validatorId → new rate."""
         ...
     def pending_recovery(self, arg0: ChecksumAddress) -> ChecksumAddress: ...
     def pending_treasury_fees(self) -> int: ...
-    def pubkey_to_validator(self, arg0: bytes) -> int: ...
     def recovery_authorizer(self) -> ChecksumAddress: ...
     def rewards_accrued_through(self, arg0: int) -> int:
-        """Latest epoch through which rewards have been settled for each position"""
+        """Latest checkpoint through which rewards have been settled for each position"""
         ...
     def slash_refund_ratio(self, arg0: int) -> int: ...
+    def stake_lots(self, token_id: int) -> tuple[int, int, int]:
+        """Returns (validatorId, amount, entryCheckpoint) for a stake lot."""
+        ...
     def stake_observer(self) -> ChecksumAddress: ...
     def sub_score_weights(self, arg0: int) -> int:
         """Weights for participation sub-scores [slotFill, inclusion, leader] summing to 10000"""
@@ -2616,22 +2606,16 @@ class DiesisStakingContract:
     def unclaimed_rewards(self, token_id: int) -> int:
         """View pending rewards for a position."""
         ...
-    def validator_by_address(self, arg0: ChecksumAddress) -> int: ...
     def validator_commission_rate(self, arg0: int) -> int:
         """Per-validator commission override (0 means use global default from DiesisConfig)."""
-        ...
-    def validator_ledger(self, validator_id: int) -> tuple[ChecksumAddress, int, int, int, int, int, int]: ...
-    def validator_pubkeys(self, arg0: int) -> bytes: ...
-    def validator_self_bond_lot(self, arg0: int) -> int:
-        """tokenId of the validator's own self-stake position"""
         ...
 
     # Write functions
     def accrue_rewards(self, token_id: int) -> dict[str, Any]:
         """Settle accrued rewards without claiming them."""
         ...
-    def allocate_extra_reward(self, epoch: int, with_burn: bool) -> dict[str, Any]:
-        """Fund additional rewards for the currently open epoch."""
+    def allocate_extra_reward(self, checkpoint: int, with_burn: bool) -> dict[str, Any]:
+        """Fund additional rewards for the currently open checkpoint."""
         ...
     def approve(self, to: ChecksumAddress, token_id: int) -> dict[str, Any]: ...
     def approve_key_recovery(self, old_address: ChecksumAddress, new_address: ChecksumAddress) -> dict[str, Any]: ...
@@ -2645,7 +2629,7 @@ class DiesisStakingContract:
         """Burn tokens by accepting msg.value (node credits address(0) separately)."""
         ...
     def commit_validator_set(self, next_validator_ids: list[int]) -> dict[str, Any]:
-        """Record the active validator set and their stakes for the new epoch."""
+        """Record the active validator set and their stakes for the new checkpoint."""
         ...
     def complete_unstake(self, token_id: int, request_id: int) -> dict[str, Any]:
         """Complete an unstake request and withdraw tokens (subject to cooldown + slash). Caller must own the position NFT."""
@@ -2660,8 +2644,8 @@ class DiesisStakingContract:
         """Compound rewards back into the position."""
         ...
     def execute_key_recovery(self, new_address: ChecksumAddress) -> dict[str, Any]: ...
-    def finalize_epoch(self, metrics: dict[str, Any]) -> dict[str, Any]:
-        """Seal the current epoch with validator performance metrics. Called by the Rust node as a system transaction (msg.sender == address(0))."""
+    def finalize_checkpoint(self, metrics: dict[str, Any]) -> dict[str, Any]:
+        """Finalize the current checkpoint with validator performance metrics. Called by the Rust node as a system transaction (msg.sender == address(0))."""
         ...
     def flush_treasury_fees(self) -> dict[str, Any]: ...
     def harvest_rewards(self, token_id: int) -> dict[str, Any]:
@@ -2673,7 +2657,7 @@ class DiesisStakingContract:
     def increase_stake_for_position(self, token_id: int) -> dict[str, Any]:
         """Add stake to an existing staking position controlled by DiesisPosition."""
         ...
-    def initialize(self, sealed_epoch: int, total_supply: int, config_contract: ChecksumAddress, owner: ChecksumAddress) -> dict[str, Any]:
+    def initialize(self, finalized_checkpoint: int, total_supply: int, config_contract: ChecksumAddress, owner: ChecksumAddress) -> dict[str, Any]:
         """Initialize the staking contract at genesis."""
         ...
     def instant_unstake_for_position(self, token_id: int, amount: int, fee: int, recipient: ChecksumAddress) -> dict[str, Any]:
@@ -2685,8 +2669,8 @@ class DiesisStakingContract:
     def mint_tokens(self, amount: int) -> dict[str, Any]:
         """Mint (issue) new tokens to issuedTokensRecipient."""
         ...
-    def record_epoch_fees(self, epoch: int, fee: int) -> dict[str, Any]:
-        """Record fees collected in an epoch (called by node during block processing)."""
+    def record_checkpoint_fees(self, checkpoint: int, fee: int) -> dict[str, Any]:
+        """Record fees collected in a checkpoint (called by node during block processing)."""
         ...
     def register_validator(self, pubkey: bytes) -> dict[str, Any]:
         """Register a new validator with a public key."""
@@ -2704,7 +2688,7 @@ class DiesisStakingContract:
     def set_approval_for_all(self, operator: ChecksumAddress, approved: bool) -> dict[str, Any]: ...
     def set_config_contract(self, config_contract: ChecksumAddress) -> dict[str, Any]: ...
     def set_participation_pool_bps(self, bps: int) -> dict[str, Any]:
-        """Update the participation pool share of epoch rewards."""
+        """Update the participation pool share of checkpoint rewards."""
         ...
     def set_recovery_authorizer(self, auth: ChecksumAddress) -> dict[str, Any]: ...
     def set_slash_refund_ratio(self, validator_id: int, refund_ratio: int) -> dict[str, Any]: ...

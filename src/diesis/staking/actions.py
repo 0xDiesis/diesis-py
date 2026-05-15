@@ -18,17 +18,17 @@ class ValidatorInfo:
     operator: str
     flags: int
     bonded: int
-    joined_epoch: int
+    joined_checkpoint: int
     joined_at: int
     held_at: int
-    held_epoch: int
+    held_checkpoint: int
 
 
 @dataclass(frozen=True)
 class PositionInfo:
     validator_id: int
     amount: int
-    entry_epoch: int
+    entry_checkpoint: int
 
 
 class StakingActions:
@@ -45,24 +45,24 @@ class StakingActions:
 
     def get_validator(self, validator_id: int) -> ValidatorInfo:
         """Get validator info by ID."""
-        result = self._contract.functions.validatorLedger(validator_id).call()
+        result = self._contract.functions.nodeLedger(validator_id).call()
         return ValidatorInfo(
             operator=result[0],
             flags=result[1],
             bonded=result[2],
-            joined_epoch=result[3],
+            joined_checkpoint=result[3],
             joined_at=result[4],
             held_at=result[5],
-            held_epoch=result[6],
+            held_checkpoint=result[6],
         )
 
     def get_position(self, token_id: int) -> PositionInfo:
         """Get position info by token ID."""
-        result = self._contract.functions.bondLots(token_id).call()
+        result = self._contract.functions.stakeLots(token_id).call()
         return PositionInfo(
             validator_id=result[0],
             amount=result[1],
-            entry_epoch=result[2],
+            entry_checkpoint=result[2],
         )
 
     def get_unclaimed_rewards(self, token_id: int) -> int:
@@ -77,9 +77,9 @@ class StakingActions:
         """Get aggregate total stake."""
         return cast(int, self._contract.functions.aggregateStake().call())
 
-    def get_latest_finalized_epoch(self) -> int:
-        """Get the latest finalized epoch."""
-        return cast(int, self._contract.functions.latestFinalizedEpoch().call())
+    def get_latest_finalized_checkpoint(self) -> int:
+        """Get the latest finalized checkpoint."""
+        return cast(int, self._contract.functions.latestFinalizedCheckpoint().call())
 
     def get_circulating_supply(self) -> int:
         """Get circulating supply."""
@@ -89,7 +89,7 @@ class StakingActions:
         """Look up validator ID by operator address."""
         return cast(
             int,
-            self._contract.functions.validatorByAddress(
+            self._contract.functions.nodeIdByOperator(
                 Web3.to_checksum_address(address),
             ).call(),
         )

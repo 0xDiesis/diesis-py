@@ -13,6 +13,7 @@ from .exchange.actions import ExchangeActions
 from .intents.signing import sign_order_intent, sign_trading_key_authorization
 from .intents.types import OrderIntent, SignedOrderIntent, TradingKeyAuthorization
 from .patronage.actions import PatronageActions
+from .privacy.actions import PrivacyActions
 from .staking.actions import StakingActions
 
 
@@ -39,6 +40,7 @@ class DiesisClient:
         self.exchange = ExchangeActions(self._w3)
         self.bundles = BundleActions(self._w3)
         self.patronage = PatronageActions(self._w3)
+        self.privacy = PrivacyActions(self._w3)
         self.staking = StakingActions(self._w3)
 
     @property

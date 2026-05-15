@@ -1,6 +1,8 @@
 from unittest.mock import MagicMock
 
-from diesis.exchange.actions import ExchangeActions
+import pytest
+
+from diesis.exchange.actions import ExchangeActions, erc20_symbol
 from diesis.exchange.types import (
     OrderType,
     PriceLevel,
@@ -10,14 +12,14 @@ from diesis.exchange.utils import market_id
 
 
 def test_side_enum() -> None:
-    assert Side.BUY == 0
-    assert Side.SELL == 1
+    assert int(Side.BUY) == 0
+    assert int(Side.SELL) == 1
 
 
 def test_order_type_enum() -> None:
-    assert OrderType.LIMIT_GTC == 0
-    assert OrderType.MARKET == 5
-    assert OrderType.STOP_MARKET == 7
+    assert int(OrderType.LIMIT_GTC) == 0
+    assert int(OrderType.MARKET) == 5
+    assert int(OrderType.STOP_MARKET) == 7
 
 
 def test_market_id_deterministic() -> None:
@@ -40,11 +42,8 @@ def test_market_id_different_for_spot_vs_perp() -> None:
 def test_price_level_frozen() -> None:
     pl = PriceLevel(price=100, amount=50, orders=3)
     assert pl.price == 100
-    try:
-        pl.price = 200
-        raise AssertionError("Should be frozen")
-    except AttributeError:
-        pass
+    with pytest.raises(AttributeError):
+        pl.price = 200  # type: ignore[misc]
 
 
 def test_exchange_actions_get_order_book() -> None:
@@ -126,3 +125,50 @@ def test_exchange_actions_propose_metadata_update() -> None:
     )
     call_args = mock_w3.provider.make_request.call_args
     assert call_args[0][0] == "exchange_proposeMetadataUpdate"
+
+
+# ── A2.1.1: ERC-20 factory precompile EVM dispatch ──────────────────────────
+
+
+def test_erc20_symbol_normalizes_to_bytes11() -> None:
+    assert erc20_symbol("DIE") == b"DIE" + b"\x00" * 8
+    assert erc20_symbol(b"DIESIS") == b"DIESIS" + b"\x00" * 5
+
+
+def test_erc20_symbol_rejects_invalid_input() -> None:
+    with pytest.raises(ValueError):
+        erc20_symbol("D")
+    with pytest.raises(ValueError):
+        erc20_symbol("DIESIS-TOKEN")
+
+
+def test_exchange_actions_predict_erc20_address() -> None:
+    mock_w3 = MagicMock()
+    mock_contract = MagicMock()
+    mock_contract.functions.predictAddress.return_value.call.return_value = "0x" + "12" * 20
+    mock_w3.eth.contract.return_value = mock_contract
+    actions = ExchangeActions(mock_w3)
+
+    result = actions.predict_erc20_address("0x" + "34" * 20, "DIE")
+
+    assert result == "0x" + "12" * 20
+    mock_contract.functions.predictAddress.assert_called_once()
+
+
+def test_exchange_actions_deploy_erc20() -> None:
+    mock_w3 = MagicMock()
+    mock_contract = MagicMock()
+    mock_contract.functions.deploy.return_value.transact.return_value = b"\xab" * 32
+    mock_w3.eth.contract.return_value = mock_contract
+    actions = ExchangeActions(mock_w3)
+
+    result = actions.deploy_erc20(
+        symbol="DIE",
+        name="Diesis",
+        initial_supply=1,
+        deployer="0x" + "34" * 20,
+        from_="0x" + "56" * 20,
+    )
+
+    assert result == b"\xab" * 32
+    mock_contract.functions.deploy.assert_called_once()

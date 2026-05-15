@@ -2,15 +2,89 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, cast
 
 from web3 import Web3
-from web3.types import RPCEndpoint
+from web3.contract import Contract
+from web3.types import RPCEndpoint, TxParams
+
+from ..addresses import DIESIS_ERC20_FACTORY
+
+ERC20_FACTORY_ABI: list[dict[str, Any]] = [
+    {
+        "type": "function",
+        "name": "deploy",
+        "stateMutability": "nonpayable",
+        "inputs": [
+            {
+                "name": "params",
+                "type": "tuple",
+                "components": [
+                    {"name": "symbol", "type": "bytes11"},
+                    {"name": "name", "type": "string"},
+                    {"name": "initialSupply", "type": "uint256"},
+                    {"name": "deployer", "type": "address"},
+                ],
+            }
+        ],
+        "outputs": [{"name": "tokenAddress", "type": "address"}],
+    },
+    {
+        "type": "function",
+        "name": "predictAddress",
+        "stateMutability": "view",
+        "inputs": [
+            {"name": "deployer", "type": "address"},
+            {"name": "symbol", "type": "bytes11"},
+        ],
+        "outputs": [{"name": "", "type": "address"}],
+    },
+    {
+        "type": "function",
+        "name": "templateBytecodeHash",
+        "stateMutability": "view",
+        "inputs": [],
+        "outputs": [{"name": "", "type": "bytes32"}],
+    },
+    {
+        "type": "function",
+        "name": "proposeTemplateUpdate",
+        "stateMutability": "nonpayable",
+        "inputs": [{"name": "newHash", "type": "bytes32"}],
+        "outputs": [],
+    },
+    {
+        "type": "function",
+        "name": "executeTemplateUpdate",
+        "stateMutability": "nonpayable",
+        "inputs": [],
+        "outputs": [],
+    },
+]
+
+
+def erc20_symbol(symbol: str | bytes) -> bytes:
+    """Return the factory's bytes11 symbol encoding."""
+    raw = symbol.encode("ascii") if isinstance(symbol, str) else symbol
+    if len(raw) < 2 or len(raw) > 11 or not raw.isalnum() or any(byte > 0x7F for byte in raw):
+        raise ValueError("ERC-20 factory symbol must be 2-11 ASCII alphanumeric characters")
+    return raw.ljust(11, b"\x00")
+
+
+def _tx_params(params: dict[str, Any]) -> TxParams:
+    if "from_" in params:
+        params = {**params, "from": params["from_"]}
+        del params["from_"]
+    return cast(TxParams, params)
 
 
 class ExchangeActions:
     def __init__(self, w3: Web3) -> None:
         self._w3 = w3
+        self._erc20_factory: Contract = w3.eth.contract(
+            address=Web3.to_checksum_address(DIESIS_ERC20_FACTORY),
+            abi=ERC20_FACTORY_ABI,
+        )
 
     def _rpc(self, method: str, params: list[Any]) -> Any:
         response = self._w3.provider.make_request(RPCEndpoint(method), params)
@@ -69,3 +143,44 @@ class ExchangeActions:
     def propose_metadata_update(self, params: dict[str, Any]) -> Any:
         """Propose a market-metadata update (24h timelock)."""
         return self._rpc("exchange_proposeMetadataUpdate", [params])
+
+    # ── A2.1.1: ERC-20 factory precompile EVM dispatch ──────────────────────
+
+    def predict_erc20_address(self, deployer: str, symbol: str | bytes) -> str:
+        """Predict the deterministic factory token address for ``deployer`` and ``symbol``."""
+        return str(
+            self._erc20_factory.functions.predictAddress(
+                Web3.to_checksum_address(deployer),
+                erc20_symbol(symbol),
+            ).call()
+        )
+
+    def get_erc20_template_bytecode_hash(self) -> Any:
+        """Read the currently pinned ERC-20 template runtime bytecode hash."""
+        return self._erc20_factory.functions.templateBytecodeHash().call()
+
+    def deploy_erc20(
+        self,
+        *,
+        symbol: str | bytes,
+        name: str,
+        initial_supply: int,
+        deployer: str,
+        **tx_params: Any,
+    ) -> Any:
+        """Dispatch ``IDiesisErc20Factory.deploy`` as an EVM transaction."""
+        params = (
+            erc20_symbol(symbol),
+            name,
+            initial_supply,
+            Web3.to_checksum_address(deployer),
+        )
+        return self._erc20_factory.functions.deploy(params).transact(_tx_params(tx_params))
+
+    def propose_erc20_template_update(self, new_hash: bytes | str, **tx_params: Any) -> Any:
+        """Propose a new ERC-20 template bytecode hash through the factory precompile."""
+        return self._erc20_factory.functions.proposeTemplateUpdate(new_hash).transact(_tx_params(tx_params))
+
+    def execute_erc20_template_update(self, **tx_params: Any) -> Any:
+        """Execute the pending ERC-20 template update after its timelock."""
+        return self._erc20_factory.functions.executeTemplateUpdate().transact(_tx_params(tx_params))

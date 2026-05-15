@@ -32,6 +32,8 @@ def test_address_count() -> None:
         "DIESIS_PERPS_BOOK",
         "DIESIS_MARGIN",
         "DIESIS_SETTLEMENT",
+        "DIESIS_ERC20_FACTORY",
+        "DIESIS_PERP_DEPLOY",
         "VRF",
         "STEALTH_REGISTRY",
         "STEALTH_ANNOUNCER",

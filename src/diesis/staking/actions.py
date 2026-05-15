@@ -129,15 +129,15 @@ class StakingActions:
         """Compound (restake) rewards for a position."""
         return self._contract.functions.compoundRewards(token_id).transact(cast(TxParams, tx_params))
 
-    def register_validator(self, pubkey: bytes, self_stake: int, **tx_params: Any) -> Any:
-        """Register a new validator with a public key and self-stake."""
+    def register_validator(self, pubkey: bytes, operator_bond: int, **tx_params: Any) -> Any:
+        """Register a new validator with a public key and operator bond."""
         return self._contract.functions.registerValidator(pubkey).transact(
-            cast(TxParams, {"value": self_stake, **tx_params}),
+            cast(TxParams, {"value": operator_bond, **tx_params}),
         )
 
-    def set_validator_commission(self, validator_id: int, rate: int, **tx_params: Any) -> Any:
-        """Set per-validator commission rate (validator operator only)."""
-        return self._contract.functions.setValidatorCommission(
+    def set_operator_take_rate(self, validator_id: int, rate: int, **tx_params: Any) -> Any:
+        """Schedule a per-validator operator reward cut."""
+        return self._contract.functions.setOperatorTakeRate(
             validator_id,
             rate,
         ).transact(cast(TxParams, tx_params))

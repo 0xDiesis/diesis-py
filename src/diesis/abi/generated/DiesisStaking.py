@@ -981,6 +981,25 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "operatorTakeRateByNode",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "owner",
     "outputs": [
@@ -1033,7 +1052,7 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       }
     ],
-    "name": "pendingCommissionCheckpoint",
+    "name": "pendingOperatorTakeCheckpoint",
     "outputs": [
       {
         "internalType": "uint256",
@@ -1052,7 +1071,7 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       }
     ],
-    "name": "pendingCommissionRate",
+    "name": "pendingOperatorTakeRate",
     "outputs": [
       {
         "internalType": "uint256",
@@ -1321,6 +1340,24 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "internalType": "uint256",
+        "name": "validatorId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "rate",
+        "type": "uint256"
+      }
+    ],
+    "name": "setOperatorTakeRate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
         "name": "bps",
         "type": "uint256"
       }
@@ -1396,24 +1433,6 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
       }
     ],
     "name": "setTreasury",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "validatorId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "rate",
-        "type": "uint256"
-      }
-    ],
-    "name": "setValidatorCommission",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1723,25 +1742,6 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "validatorCommissionRate",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
         "name": "validatorId",
         "type": "uint256"
       }
@@ -1868,6 +1868,50 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
       }
     ],
     "name": "ObserverCallbackFailed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "validatorId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newRate",
+        "type": "uint256"
+      }
+    ],
+    "name": "OperatorTakeRateActivated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "validatorId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newRate",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "effectiveCheckpoint",
+        "type": "uint256"
+      }
+    ],
+    "name": "OperatorTakeRateScheduled",
     "type": "event"
   },
   {
@@ -2161,50 +2205,6 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       },
       {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "newRate",
-        "type": "uint256"
-      }
-    ],
-    "name": "ValidatorCommissionApplied",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "validatorId",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "newRate",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "effectiveCheckpoint",
-        "type": "uint256"
-      }
-    ],
-    "name": "ValidatorCommissionScheduled",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "validatorId",
-        "type": "uint256"
-      },
-      {
         "indexed": true,
         "internalType": "address",
         "name": "authority",
@@ -2465,6 +2465,11 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
     "type": "error"
   },
   {
+    "inputs": [],
+    "name": "OperatorBondTooLow",
+    "type": "error"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -2509,11 +2514,6 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [],
     "name": "SamePosition",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "SelfStakeTooLow",
     "type": "error"
   },
   {
@@ -2616,16 +2616,19 @@ class DiesisStakingContract:
     def node_by_consensus_key(self, arg0: bytes) -> int: ...
     def node_id_by_operator(self, arg0: ChecksumAddress) -> int: ...
     def node_ledger(self, validator_id: int) -> tuple[ChecksumAddress, int, int, int, int, int, int]: ...
+    def operator_take_rate_by_node(self, arg0: int) -> int:
+        """Per-validator operator cut override (0 means use global default from DiesisConfig)."""
+        ...
     def owner(self) -> ChecksumAddress: ...
     def owner_of(self, token_id: int) -> ChecksumAddress: ...
     def participation_pool_bps(self) -> int:
         """Fraction of checkpoint reward budget allocated to participation pool (default 3000 = 30%)"""
         ...
-    def pending_commission_checkpoint(self, arg0: int) -> int:
-        """Checkpoint at which the pending commission change takes effect."""
+    def pending_operator_take_checkpoint(self, arg0: int) -> int:
+        """Checkpoint at which the pending operator cut change takes effect."""
         ...
-    def pending_commission_rate(self, arg0: int) -> int:
-        """Pending commission change: validatorId → new rate."""
+    def pending_operator_take_rate(self, arg0: int) -> int:
+        """Pending operator cut change: validatorId → new rate."""
         ...
     def pending_recovery(self, arg0: ChecksumAddress) -> ChecksumAddress: ...
     def pending_treasury_fees(self) -> int: ...
@@ -2647,9 +2650,6 @@ class DiesisStakingContract:
     def treasury(self) -> ChecksumAddress: ...
     def unclaimed_rewards(self, token_id: int) -> int:
         """View pending rewards for a position."""
-        ...
-    def validator_commission_rate(self, arg0: int) -> int:
-        """Per-validator commission override (0 means use global default from DiesisConfig)."""
         ...
 
     # Write functions
@@ -2709,7 +2709,7 @@ class DiesisStakingContract:
         """Create an empty staking position for atomic splits (controller version)."""
         ...
     def mint_tokens(self, amount: int) -> dict[str, Any]:
-        """Mint (issue) new tokens to issuedTokensRecipient."""
+        """Mint (issue) new tokens to mintReceiver."""
         ...
     def record_checkpoint_fees(self, checkpoint: int, fee: int) -> dict[str, Any]:
         """Record fees collected in a checkpoint (called by node during block processing)."""
@@ -2729,6 +2729,9 @@ class DiesisStakingContract:
     def safe_transfer_from_address_address_uint256_bytes(self, _from: ChecksumAddress, to: ChecksumAddress, token_id: int, data: bytes) -> dict[str, Any]: ...
     def set_approval_for_all(self, operator: ChecksumAddress, approved: bool) -> dict[str, Any]: ...
     def set_config_contract(self, config_contract: ChecksumAddress) -> dict[str, Any]: ...
+    def set_operator_take_rate(self, validator_id: int, rate: int) -> dict[str, Any]:
+        """Schedule an operator reward cut change for a validator."""
+        ...
     def set_participation_pool_bps(self, bps: int) -> dict[str, Any]:
         """Update the participation pool share of checkpoint rewards."""
         ...
@@ -2739,9 +2742,6 @@ class DiesisStakingContract:
         """Update the weights for participation sub-scores."""
         ...
     def set_treasury(self, treasury: ChecksumAddress) -> dict[str, Any]: ...
-    def set_validator_commission(self, validator_id: int, rate: int) -> dict[str, Any]:
-        """Schedule a commission rate change for a validator."""
-        ...
     def stake(self, to_validator_id: int) -> dict[str, Any]:
         """Delegate native tokens to a validator."""
         ...
@@ -2749,7 +2749,7 @@ class DiesisStakingContract:
         """Create a new staking position controlled by DiesisPosition."""
         ...
     def suspend_validator(self, validator_id: int, reason: int) -> dict[str, Any]:
-        """Suspend (deactivate) a validator with a given reason bitmask."""
+        """Suspend (deactivate) a validator with a governance-approved evidence mark."""
         ...
     def swap_delegate(self, from_token_id: int, to_token_id: int, swap_amount: int) -> dict[str, Any]:
         """Atomically re-delegate stake from one position to another on the same validator."""

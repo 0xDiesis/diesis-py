@@ -26,33 +26,7 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "AVG_UPTIME_WINDOW_LOWER",
-    "outputs": [
-      {
-        "internalType": "uint32",
-        "name": "",
-        "type": "uint32"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "AVG_UPTIME_WINDOW_UPPER",
-    "outputs": [
-      {
-        "internalType": "uint32",
-        "name": "",
-        "type": "uint32"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "BASE_REWARD_PER_SECOND_UPPER",
+    "name": "CUT_RATE_UPPER",
     "outputs": [
       {
         "internalType": "uint256",
@@ -65,20 +39,7 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "DEFAULT_AVG_UPTIME_CHECKPOINT_WINDOW",
-    "outputs": [
-      {
-        "internalType": "uint32",
-        "name": "",
-        "type": "uint32"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "DEFAULT_BASE_REWARD_PER_SECOND",
+    "name": "DEFAULT_DELEGATION_FANOUT_LIMIT",
     "outputs": [
       {
         "internalType": "uint256",
@@ -91,7 +52,7 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "DEFAULT_BURNT_FEE_SHARE",
+    "name": "DEFAULT_EXIT_DELAY_CHECKPOINTS",
     "outputs": [
       {
         "internalType": "uint256",
@@ -104,7 +65,7 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "DEFAULT_EXTRA_REWARDS_BURN_RATIO",
+    "name": "DEFAULT_EXIT_DELAY_SECONDS",
     "outputs": [
       {
         "internalType": "uint256",
@@ -117,7 +78,7 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "DEFAULT_MAX_DELEGATED_RATIO",
+    "name": "DEFAULT_LIVENESS_DOWNTIME_LIMIT",
     "outputs": [
       {
         "internalType": "uint256",
@@ -130,7 +91,46 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "DEFAULT_MIN_AVERAGE_UPTIME",
+    "name": "DEFAULT_LIVENESS_MISSED_BLOCK_LIMIT",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "DEFAULT_NETWORK_BURN_CUT",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "DEFAULT_OPERATOR_TAKE_RATE",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "DEFAULT_RELIABILITY_FLOOR",
     "outputs": [
       {
         "internalType": "uint64",
@@ -143,306 +143,7 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "DEFAULT_MIN_SELF_STAKE",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "DEFAULT_OFFLINE_PENALTY_BLOCKS",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "DEFAULT_OFFLINE_PENALTY_TIME",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "DEFAULT_TREASURY_FEE_SHARE",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "DEFAULT_VALIDATOR_COMMISSION",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "DEFAULT_WITHDRAWAL_PERIOD_CHECKPOINTS",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "DEFAULT_WITHDRAWAL_PERIOD_TIME",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "EXTRA_REWARDS_BURN_RATIO_UPPER",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "FEE_SHARE_UPPER",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "MAX_DELEGATED_RATIO_LOWER",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "MAX_DELEGATED_RATIO_UPPER",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "MIN_AVG_UPTIME_UPPER",
-    "outputs": [
-      {
-        "internalType": "uint64",
-        "name": "",
-        "type": "uint64"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "MIN_SELF_STAKE_LOWER",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "MIN_SELF_STAKE_UPPER",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "OFFLINE_PENALTY_BLOCKS_LOWER",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "OFFLINE_PENALTY_BLOCKS_UPPER",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "OFFLINE_PENALTY_TIME_LOWER",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "OFFLINE_PENALTY_TIME_UPPER",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "VALIDATOR_COMMISSION_UPPER",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "WITHDRAWAL_PERIOD_CHECKPOINTS_LOWER",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "WITHDRAWAL_PERIOD_CHECKPOINTS_UPPER",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "WITHDRAWAL_PERIOD_TIME_LOWER",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "WITHDRAWAL_PERIOD_TIME_UPPER",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "averageUptimeCheckpointWindow",
+    "name": "DEFAULT_RELIABILITY_SAMPLE_CHECKPOINTS",
     "outputs": [
       {
         "internalType": "uint32",
@@ -455,7 +156,7 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "baseRewardPerSecond",
+    "name": "DEFAULT_REWARD_STREAM_PER_SECOND",
     "outputs": [
       {
         "internalType": "uint256",
@@ -468,7 +169,7 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "burntFeeShare",
+    "name": "DEFAULT_SURPLUS_REWARD_BURN_CUT",
     "outputs": [
       {
         "internalType": "uint256",
@@ -481,7 +182,7 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "extraRewardsBurnRatio",
+    "name": "DEFAULT_TREASURY_CUT",
     "outputs": [
       {
         "internalType": "uint256",
@@ -494,7 +195,319 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "issuedTokensRecipient",
+    "name": "DEFAULT_VALIDATOR_BOND_FLOOR",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "DELEGATION_FANOUT_LIMIT_LOWER",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "DELEGATION_FANOUT_LIMIT_UPPER",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "EXIT_DELAY_CHECKPOINTS_LOWER",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "EXIT_DELAY_CHECKPOINTS_UPPER",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "EXIT_DELAY_SECONDS_LOWER",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "EXIT_DELAY_SECONDS_UPPER",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "LIVENESS_DOWNTIME_LIMIT_LOWER",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "LIVENESS_DOWNTIME_LIMIT_UPPER",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "LIVENESS_MISSED_BLOCK_LIMIT_LOWER",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "LIVENESS_MISSED_BLOCK_LIMIT_UPPER",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "OPERATOR_TAKE_RATE_UPPER",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "RELIABILITY_FLOOR_UPPER",
+    "outputs": [
+      {
+        "internalType": "uint64",
+        "name": "",
+        "type": "uint64"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "RELIABILITY_SAMPLE_LOWER",
+    "outputs": [
+      {
+        "internalType": "uint32",
+        "name": "",
+        "type": "uint32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "RELIABILITY_SAMPLE_UPPER",
+    "outputs": [
+      {
+        "internalType": "uint32",
+        "name": "",
+        "type": "uint32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "REWARD_STREAM_PER_SECOND_UPPER",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "SURPLUS_REWARD_BURN_CUT_UPPER",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "VALIDATOR_BOND_FLOOR_LOWER",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "VALIDATOR_BOND_FLOOR_UPPER",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "delegationFanoutLimit",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "exitDelayCheckpoints",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "exitDelaySeconds",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "livenessDowntimeLimit",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "livenessMissedBlockLimit",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "mintReceiver",
     "outputs": [
       {
         "internalType": "address",
@@ -507,7 +520,7 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "maxDelegatedRatio",
+    "name": "networkBurnCut",
     "outputs": [
       {
         "internalType": "uint256",
@@ -520,46 +533,7 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "minAverageUptime",
-    "outputs": [
-      {
-        "internalType": "uint64",
-        "name": "",
-        "type": "uint64"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "minSelfStake",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "offlinePenaltyThresholdBlocksNum",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "offlinePenaltyThresholdTime",
+    "name": "operatorTakeRate",
     "outputs": [
       {
         "internalType": "uint256",
@@ -585,9 +559,243 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
+    "name": "reliabilityFloor",
+    "outputs": [
+      {
+        "internalType": "uint64",
+        "name": "",
+        "type": "uint64"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "reliabilitySampleCheckpoints",
+    "outputs": [
+      {
+        "internalType": "uint32",
+        "name": "",
+        "type": "uint32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "renounceOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "rewardStreamPerSecond",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "v",
+        "type": "uint256"
+      }
+    ],
+    "name": "setDelegationFanoutLimit",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "v",
+        "type": "uint256"
+      }
+    ],
+    "name": "setExitDelayCheckpoints",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "v",
+        "type": "uint256"
+      }
+    ],
+    "name": "setExitDelaySeconds",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "v",
+        "type": "uint256"
+      }
+    ],
+    "name": "setLivenessDowntimeLimit",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "v",
+        "type": "uint256"
+      }
+    ],
+    "name": "setLivenessMissedBlockLimit",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "v",
+        "type": "address"
+      }
+    ],
+    "name": "setMintReceiver",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "v",
+        "type": "uint256"
+      }
+    ],
+    "name": "setNetworkBurnCut",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "v",
+        "type": "uint256"
+      }
+    ],
+    "name": "setOperatorTakeRate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint64",
+        "name": "v",
+        "type": "uint64"
+      }
+    ],
+    "name": "setReliabilityFloor",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint32",
+        "name": "v",
+        "type": "uint32"
+      }
+    ],
+    "name": "setReliabilitySampleCheckpoints",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "v",
+        "type": "uint256"
+      }
+    ],
+    "name": "setRewardStreamPerSecond",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "v",
+        "type": "uint256"
+      }
+    ],
+    "name": "setSurplusRewardBurnCut",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "v",
+        "type": "uint256"
+      }
+    ],
+    "name": "setTreasuryCut",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "v",
+        "type": "uint256"
+      }
+    ],
+    "name": "setValidatorBondFloor",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "surplusRewardBurnCut",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -605,202 +813,7 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "treasuryFeeShare",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint32",
-        "name": "v",
-        "type": "uint32"
-      }
-    ],
-    "name": "updateAverageUptimeCheckpointWindow",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "v",
-        "type": "uint256"
-      }
-    ],
-    "name": "updateBaseRewardPerSecond",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "v",
-        "type": "uint256"
-      }
-    ],
-    "name": "updateBurntFeeShare",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "v",
-        "type": "uint256"
-      }
-    ],
-    "name": "updateExtraRewardsBurnRatio",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "v",
-        "type": "address"
-      }
-    ],
-    "name": "updateIssuedTokensRecipient",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "v",
-        "type": "uint256"
-      }
-    ],
-    "name": "updateMaxDelegatedRatio",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint64",
-        "name": "v",
-        "type": "uint64"
-      }
-    ],
-    "name": "updateMinAverageUptime",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "v",
-        "type": "uint256"
-      }
-    ],
-    "name": "updateMinSelfStake",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "v",
-        "type": "uint256"
-      }
-    ],
-    "name": "updateOfflinePenaltyThresholdBlocksNum",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "v",
-        "type": "uint256"
-      }
-    ],
-    "name": "updateOfflinePenaltyThresholdTime",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "v",
-        "type": "uint256"
-      }
-    ],
-    "name": "updateTreasuryFeeShare",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "v",
-        "type": "uint256"
-      }
-    ],
-    "name": "updateValidatorCommission",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "v",
-        "type": "uint256"
-      }
-    ],
-    "name": "updateWithdrawalPeriodCheckpoints",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "v",
-        "type": "uint256"
-      }
-    ],
-    "name": "updateWithdrawalPeriodTime",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "validatorCommission",
+    "name": "treasuryCut",
     "outputs": [
       {
         "internalType": "uint256",
@@ -813,20 +826,7 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "withdrawalPeriodCheckpoints",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "withdrawalPeriodTime",
+    "name": "validatorBondFloor",
     "outputs": [
       {
         "internalType": "uint256",
@@ -842,12 +842,12 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "indexed": false,
-        "internalType": "uint32",
+        "internalType": "uint256",
         "name": "value",
-        "type": "uint32"
+        "type": "uint256"
       }
     ],
-    "name": "AverageUptimeCheckpointWindowUpdated",
+    "name": "DelegationFanoutLimitUpdated",
     "type": "event"
   },
   {
@@ -860,7 +860,7 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       }
     ],
-    "name": "BaseRewardPerSecondUpdated",
+    "name": "ExitDelayCheckpointsUpdated",
     "type": "event"
   },
   {
@@ -873,7 +873,7 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       }
     ],
-    "name": "BurntFeeShareUpdated",
+    "name": "ExitDelaySecondsUpdated",
     "type": "event"
   },
   {
@@ -886,7 +886,20 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       }
     ],
-    "name": "ExtraRewardsBurnRatioUpdated",
+    "name": "LivenessDowntimeLimitUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      }
+    ],
+    "name": "LivenessMissedBlockLimitUpdated",
     "type": "event"
   },
   {
@@ -899,7 +912,7 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
         "type": "address"
       }
     ],
-    "name": "IssuedTokensRecipientUpdated",
+    "name": "MintReceiverUpdated",
     "type": "event"
   },
   {
@@ -912,20 +925,7 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       }
     ],
-    "name": "MaxDelegatedRatioUpdated",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint64",
-        "name": "value",
-        "type": "uint64"
-      }
-    ],
-    "name": "MinAverageUptimeUpdated",
+    "name": "NetworkBurnCutUpdated",
     "type": "event"
   },
   {
@@ -938,33 +938,7 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       }
     ],
-    "name": "MinSelfStakeUpdated",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "value",
-        "type": "uint256"
-      }
-    ],
-    "name": "OfflinePenaltyThresholdBlocksNumUpdated",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "value",
-        "type": "uint256"
-      }
-    ],
-    "name": "OfflinePenaltyThresholdTimeUpdated",
+    "name": "OperatorTakeRateUpdated",
     "type": "event"
   },
   {
@@ -991,12 +965,25 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "indexed": false,
-        "internalType": "uint256",
+        "internalType": "uint64",
         "name": "value",
-        "type": "uint256"
+        "type": "uint64"
       }
     ],
-    "name": "TreasuryFeeShareUpdated",
+    "name": "ReliabilityFloorUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint32",
+        "name": "value",
+        "type": "uint32"
+      }
+    ],
+    "name": "ReliabilitySampleCheckpointsUpdated",
     "type": "event"
   },
   {
@@ -1009,7 +996,7 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       }
     ],
-    "name": "ValidatorCommissionUpdated",
+    "name": "RewardStreamPerSecondUpdated",
     "type": "event"
   },
   {
@@ -1022,7 +1009,7 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       }
     ],
-    "name": "WithdrawalPeriodCheckpointsUpdated",
+    "name": "SurplusRewardBurnCutUpdated",
     "type": "event"
   },
   {
@@ -1035,7 +1022,20 @@ DIESISCONFIG_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       }
     ],
-    "name": "WithdrawalPeriodTimeUpdated",
+    "name": "TreasuryCutUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      }
+    ],
+    "name": "ValidatorBondFloorUpdated",
     "type": "event"
   },
   {
@@ -1083,96 +1083,96 @@ class DiesisConfigContract:
         )
 
     # View/pure functions
-    def avg_uptime_window_lower(self) -> int: ...
-    def avg_uptime_window_upper(self) -> int: ...
-    def base_reward_per_second_upper(self) -> int: ...
-    def default_avg_uptime_checkpoint_window(self) -> int: ...
-    def default_base_reward_per_second(self) -> int: ...
-    def default_burnt_fee_share(self) -> int: ...
-    def default_extra_rewards_burn_ratio(self) -> int: ...
-    def default_max_delegated_ratio(self) -> int: ...
-    def default_min_average_uptime(self) -> int: ...
-    def default_min_self_stake(self) -> int: ...
-    def default_offline_penalty_blocks(self) -> int: ...
-    def default_offline_penalty_time(self) -> int: ...
-    def default_treasury_fee_share(self) -> int: ...
-    def default_validator_commission(self) -> int: ...
-    def default_withdrawal_period_checkpoints(self) -> int: ...
-    def default_withdrawal_period_time(self) -> int: ...
-    def extra_rewards_burn_ratio_upper(self) -> int: ...
-    def fee_share_upper(self) -> int: ...
-    def max_delegated_ratio_lower(self) -> int: ...
-    def max_delegated_ratio_upper(self) -> int: ...
-    def min_avg_uptime_upper(self) -> int: ...
-    def min_self_stake_lower(self) -> int: ...
-    def min_self_stake_upper(self) -> int: ...
-    def offline_penalty_blocks_lower(self) -> int: ...
-    def offline_penalty_blocks_upper(self) -> int: ...
-    def offline_penalty_time_lower(self) -> int: ...
-    def offline_penalty_time_upper(self) -> int: ...
-    def validator_commission_upper(self) -> int: ...
-    def withdrawal_period_checkpoints_lower(self) -> int: ...
-    def withdrawal_period_checkpoints_upper(self) -> int: ...
-    def withdrawal_period_time_lower(self) -> int: ...
-    def withdrawal_period_time_upper(self) -> int: ...
-    def average_uptime_checkpoint_window(self) -> int:
-        """Number of checkpoints in the rolling average uptime window [10-87,600]"""
+    def cut_rate_upper(self) -> int: ...
+    def default_delegation_fanout_limit(self) -> int: ...
+    def default_exit_delay_checkpoints(self) -> int: ...
+    def default_exit_delay_seconds(self) -> int: ...
+    def default_liveness_downtime_limit(self) -> int: ...
+    def default_liveness_missed_block_limit(self) -> int: ...
+    def default_network_burn_cut(self) -> int: ...
+    def default_operator_take_rate(self) -> int: ...
+    def default_reliability_floor(self) -> int: ...
+    def default_reliability_sample_checkpoints(self) -> int: ...
+    def default_reward_stream_per_second(self) -> int: ...
+    def default_surplus_reward_burn_cut(self) -> int: ...
+    def default_treasury_cut(self) -> int: ...
+    def default_validator_bond_floor(self) -> int: ...
+    def delegation_fanout_limit_lower(self) -> int: ...
+    def delegation_fanout_limit_upper(self) -> int: ...
+    def exit_delay_checkpoints_lower(self) -> int: ...
+    def exit_delay_checkpoints_upper(self) -> int: ...
+    def exit_delay_seconds_lower(self) -> int: ...
+    def exit_delay_seconds_upper(self) -> int: ...
+    def liveness_downtime_limit_lower(self) -> int: ...
+    def liveness_downtime_limit_upper(self) -> int: ...
+    def liveness_missed_block_limit_lower(self) -> int: ...
+    def liveness_missed_block_limit_upper(self) -> int: ...
+    def operator_take_rate_upper(self) -> int: ...
+    def reliability_floor_upper(self) -> int: ...
+    def reliability_sample_lower(self) -> int: ...
+    def reliability_sample_upper(self) -> int: ...
+    def reward_stream_per_second_upper(self) -> int: ...
+    def surplus_reward_burn_cut_upper(self) -> int: ...
+    def validator_bond_floor_lower(self) -> int: ...
+    def validator_bond_floor_upper(self) -> int: ...
+    def delegation_fanout_limit(self) -> int:
+        """Maximum delegated stake as a multiple of the operator bond [1-24x]"""
         ...
-    def base_reward_per_second(self) -> int:
-        """Base staking reward per second in tokens [0-32 tokens/sec]"""
-        ...
-    def burnt_fee_share(self) -> int:
-        """Fraction of tx fees burned each checkpoint [0-100%]"""
-        ...
-    def extra_rewards_burn_ratio(self) -> int:
-        """Fraction of extra reward allocations that are burned [0-100%]"""
-        ...
-    def issued_tokens_recipient(self) -> ChecksumAddress:
-        """Address that receives newly issued (minted) tokens"""
-        ...
-    def max_delegated_ratio(self) -> int:
-        """Maximum total delegated stake as a multiple of self-stake [1-24x]"""
-        ...
-    def min_average_uptime(self) -> int:
-        """Minimum rolling-average uptime before PERFORMANCE_FAULT deactivation [0-90%]"""
-        ...
-    def min_self_stake(self) -> int:
-        """Minimum self-stake required to register a validator [125K-8.5M tokens]"""
-        ...
-    def offline_penalty_threshold_blocks_num(self) -> int:
-        """Number of missed blocks that triggers offline penalty [100-1M]"""
-        ...
-    def offline_penalty_threshold_time(self) -> int:
-        """Seconds offline that triggers offline penalty [1-10 days]"""
-        ...
-    def owner(self) -> ChecksumAddress: ...
-    def treasury_fee_share(self) -> int:
-        """Fraction of tx fees sent to treasury each checkpoint [0-100%]; burntFeeShare + treasuryFeeShare ≤ 100%"""
-        ...
-    def validator_commission(self) -> int:
-        """Validator commission on staking rewards as a fraction [0-20%]"""
-        ...
-    def withdrawal_period_checkpoints(self) -> int:
+    def exit_delay_checkpoints(self) -> int:
         """Minimum checkpoints before an unstake request can be withdrawn [2-100]"""
         ...
-    def withdrawal_period_time(self) -> int:
+    def exit_delay_seconds(self) -> int:
         """Minimum seconds before an unstake request can be withdrawn [1h-30d]"""
+        ...
+    def liveness_downtime_limit(self) -> int:
+        """Seconds offline that triggers offline penalty [1-10 days]"""
+        ...
+    def liveness_missed_block_limit(self) -> int:
+        """Number of missed blocks that triggers offline penalty [100-1M]"""
+        ...
+    def mint_receiver(self) -> ChecksumAddress:
+        """Address that receives newly issued (minted) tokens"""
+        ...
+    def network_burn_cut(self) -> int:
+        """Fraction of tx fees burned each checkpoint [0-100%]"""
+        ...
+    def operator_take_rate(self) -> int:
+        """Default operator reward cut as a fraction [0-20%]"""
+        ...
+    def owner(self) -> ChecksumAddress: ...
+    def reliability_floor(self) -> int:
+        """Minimum rolling-average uptime before PERFORMANCE_FAULT deactivation [0-90%]"""
+        ...
+    def reliability_sample_checkpoints(self) -> int:
+        """Number of checkpoints in the rolling average uptime window [10-87,600]"""
+        ...
+    def reward_stream_per_second(self) -> int:
+        """Base staking reward per second in tokens [0-32 tokens/sec]"""
+        ...
+    def surplus_reward_burn_cut(self) -> int:
+        """Fraction of extra reward allocations that are burned [0-100%]"""
+        ...
+    def treasury_cut(self) -> int:
+        """Fraction of tx fees sent to treasury each checkpoint [0-100%]; networkBurnCut + treasuryCut ≤ 100%"""
+        ...
+    def validator_bond_floor(self) -> int:
+        """Minimum operator bond required to register a validator [125K-8.5M tokens]"""
         ...
 
     # Write functions
     def renounce_ownership(self) -> dict[str, Any]: ...
+    def set_delegation_fanout_limit(self, v: int) -> dict[str, Any]: ...
+    def set_exit_delay_checkpoints(self, v: int) -> dict[str, Any]: ...
+    def set_exit_delay_seconds(self, v: int) -> dict[str, Any]: ...
+    def set_liveness_downtime_limit(self, v: int) -> dict[str, Any]: ...
+    def set_liveness_missed_block_limit(self, v: int) -> dict[str, Any]: ...
+    def set_mint_receiver(self, v: ChecksumAddress) -> dict[str, Any]: ...
+    def set_network_burn_cut(self, v: int) -> dict[str, Any]: ...
+    def set_operator_take_rate(self, v: int) -> dict[str, Any]: ...
+    def set_reliability_floor(self, v: int) -> dict[str, Any]: ...
+    def set_reliability_sample_checkpoints(self, v: int) -> dict[str, Any]: ...
+    def set_reward_stream_per_second(self, v: int) -> dict[str, Any]: ...
+    def set_surplus_reward_burn_cut(self, v: int) -> dict[str, Any]: ...
+    def set_treasury_cut(self, v: int) -> dict[str, Any]: ...
+    def set_validator_bond_floor(self, v: int) -> dict[str, Any]: ...
     def transfer_ownership(self, new_owner: ChecksumAddress) -> dict[str, Any]: ...
-    def update_average_uptime_checkpoint_window(self, v: int) -> dict[str, Any]: ...
-    def update_base_reward_per_second(self, v: int) -> dict[str, Any]: ...
-    def update_burnt_fee_share(self, v: int) -> dict[str, Any]: ...
-    def update_extra_rewards_burn_ratio(self, v: int) -> dict[str, Any]: ...
-    def update_issued_tokens_recipient(self, v: ChecksumAddress) -> dict[str, Any]: ...
-    def update_max_delegated_ratio(self, v: int) -> dict[str, Any]: ...
-    def update_min_average_uptime(self, v: int) -> dict[str, Any]: ...
-    def update_min_self_stake(self, v: int) -> dict[str, Any]: ...
-    def update_offline_penalty_threshold_blocks_num(self, v: int) -> dict[str, Any]: ...
-    def update_offline_penalty_threshold_time(self, v: int) -> dict[str, Any]: ...
-    def update_treasury_fee_share(self, v: int) -> dict[str, Any]: ...
-    def update_validator_commission(self, v: int) -> dict[str, Any]: ...
-    def update_withdrawal_period_checkpoints(self, v: int) -> dict[str, Any]: ...
-    def update_withdrawal_period_time(self, v: int) -> dict[str, Any]: ...

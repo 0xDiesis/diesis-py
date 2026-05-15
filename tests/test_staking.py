@@ -271,7 +271,7 @@ def test_register_validator() -> None:
     mock_contract.functions.registerValidator.return_value.transact.return_value = fake_tx
 
     pubkey = b"\x02" * 33
-    result = actions.register_validator(pubkey=pubkey, self_stake=1000)
+    result = actions.register_validator(pubkey=pubkey, operator_bond=1000)
 
     assert result == fake_tx
     mock_contract.functions.registerValidator.assert_called_once_with(pubkey)
@@ -283,23 +283,23 @@ def test_register_validator_with_tx_params() -> None:
     mock_contract.functions.registerValidator.return_value.transact.return_value = "0x5"
 
     pubkey = b"\x03" * 33
-    actions.register_validator(pubkey=pubkey, self_stake=500, **{"from": "0xOwner"})
+    actions.register_validator(pubkey=pubkey, operator_bond=500, **{"from": "0xOwner"})
 
     mock_contract.functions.registerValidator.return_value.transact.assert_called_once_with(
         {"value": 500, "from": "0xOwner"}
     )
 
 
-def test_set_validator_commission() -> None:
+def test_set_operator_take_rate() -> None:
     actions, mock_contract = _make_actions()
     fake_tx = "0xaaaa"
-    mock_contract.functions.setValidatorCommission.return_value.transact.return_value = fake_tx
+    mock_contract.functions.setOperatorTakeRate.return_value.transact.return_value = fake_tx
 
-    result = actions.set_validator_commission(validator_id=3, rate=500)
+    result = actions.set_operator_take_rate(validator_id=3, rate=500)
 
     assert result == fake_tx
-    mock_contract.functions.setValidatorCommission.assert_called_once_with(3, 500)
-    mock_contract.functions.setValidatorCommission.return_value.transact.assert_called_once()
+    mock_contract.functions.setOperatorTakeRate.assert_called_once_with(3, 500)
+    mock_contract.functions.setOperatorTakeRate.return_value.transact.assert_called_once()
 
 
 def test_withdraw_validator() -> None:

@@ -110,9 +110,7 @@ def _bundle_status_result(value: Any) -> BundleStatusResult:
     members = data.get("members")
     if not isinstance(plan_hash, str) or not isinstance(bundle_hash, str):
         raise RuntimeError(f"Unexpected bundle status result identity: {value!r}")
-    if not isinstance(transaction_hashes, list) or not all(
-        isinstance(item, str) for item in transaction_hashes
-    ):
+    if not isinstance(transaction_hashes, list) or not all(isinstance(item, str) for item in transaction_hashes):
         raise RuntimeError(f"Unexpected bundle transaction hashes: {transaction_hashes!r}")
     if not isinstance(members, list):
         raise RuntimeError(f"Unexpected bundle members: {members!r}")

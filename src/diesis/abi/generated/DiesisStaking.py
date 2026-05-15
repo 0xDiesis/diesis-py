@@ -39,7 +39,7 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "_MARK_CONFLICTING_VOTE",
+    "name": "_MARK_EQUIVOCATION",
     "outputs": [
       {
         "internalType": "uint16",
@@ -52,7 +52,7 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "_MARK_COUNCIL_HOLD",
+    "name": "_MARK_EVIDENCE_MASK",
     "outputs": [
       {
         "internalType": "uint16",
@@ -65,7 +65,7 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "_MARK_EXIT_REQUESTED",
+    "name": "_MARK_INACTIVE_MASK",
     "outputs": [
       {
         "internalType": "uint16",
@@ -78,7 +78,7 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "_MARK_MISSED_DUTY",
+    "name": "_MARK_OPERATOR_REVIEW",
     "outputs": [
       {
         "internalType": "uint16",
@@ -91,7 +91,20 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "_MARK_NONE",
+    "name": "_MARK_PROTOCOL_BREACH",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "_MARK_SCORE_DRIFT",
     "outputs": [
       {
         "internalType": "uint16",
@@ -117,7 +130,33 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "_MARK_WEAK_PERFORMANCE",
+    "name": "_MARK_UPTIME_DRIFT",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "_NODE_ACTIVE",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "_NODE_EXITING",
     "outputs": [
       {
         "internalType": "uint16",
@@ -452,7 +491,7 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
     "name": "config",
     "outputs": [
       {
-        "internalType": "contract DiesisConfig",
+        "internalType": "contract IDiesisConfig",
         "name": "",
         "type": "address"
       }
@@ -909,7 +948,7 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
       },
       {
         "internalType": "uint256",
-        "name": "flags",
+        "name": "marks",
         "type": "uint256"
       },
       {
@@ -2199,7 +2238,7 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "newStatus",
+        "name": "newMarks",
         "type": "uint256"
       }
     ],
@@ -2541,13 +2580,16 @@ class DiesisStakingContract:
 
     # View/pure functions
     def diesis_position(self) -> ChecksumAddress: ...
-    def mark_conflicting_vote(self) -> int: ...
-    def mark_council_hold(self) -> int: ...
-    def mark_exit_requested(self) -> int: ...
-    def mark_missed_duty(self) -> int: ...
-    def mark_none(self) -> int: ...
+    def mark_equivocation(self) -> int: ...
+    def mark_evidence_mask(self) -> int: ...
+    def mark_inactive_mask(self) -> int: ...
+    def mark_operator_review(self) -> int: ...
+    def mark_protocol_breach(self) -> int: ...
+    def mark_score_drift(self) -> int: ...
     def mark_slash_review(self) -> int: ...
-    def mark_weak_performance(self) -> int: ...
+    def mark_uptime_drift(self) -> int: ...
+    def node_active(self) -> int: ...
+    def node_exiting(self) -> int: ...
     def active_recovery(self, arg0: ChecksumAddress) -> ChecksumAddress: ...
     def aggregate_active_stake(self) -> int:
         """Returns the aggregate active stake across all validators."""

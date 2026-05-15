@@ -16,7 +16,7 @@ from ..addresses import DIESIS_STAKING
 @dataclass(frozen=True)
 class ValidatorInfo:
     operator: str
-    flags: int
+    marks: int
     bonded: int
     joined_checkpoint: int
     joined_at: int
@@ -48,7 +48,7 @@ class StakingActions:
         result = self._contract.functions.nodeLedger(validator_id).call()
         return ValidatorInfo(
             operator=result[0],
-            flags=result[1],
+            marks=result[1],
             bonded=result[2],
             joined_checkpoint=result[3],
             joined_at=result[4],

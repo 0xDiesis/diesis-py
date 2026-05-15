@@ -801,7 +801,7 @@ class DiesisPatronContract:
         """Gas overhead limits published for nodes to reserve gas for patronage checks"""
         ...
     def staking_address(self) -> ChecksumAddress:
-        """DiesisStaking address — chargeGrant burns via staking.burnTokens()"""
+        """DiesisStaking address — chargeGrant burns via IDiesisStaking.burnTokens()"""
         ...
 
     # Write functions

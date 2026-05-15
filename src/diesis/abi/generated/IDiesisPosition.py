@@ -916,6 +916,37 @@ IDIESISPOSITION_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       },
       {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "withdrawAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "fee",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "receiver",
+        "type": "address"
+      }
+    ],
+    "name": "InstantWithdrawExecuted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
         "indexed": true,
         "internalType": "address",
         "name": "recipient",
@@ -1155,6 +1186,25 @@ IDIESISPOSITION_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "indexed": true,
+        "internalType": "uint32",
+        "name": "validatorId_",
+        "type": "uint32"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "feeBps",
+        "type": "uint256"
+      }
+    ],
+    "name": "ValidatorExitFeeSet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
         "internalType": "uint256",
         "name": "tokenId",
         "type": "uint256"
@@ -1186,6 +1236,11 @@ IDIESISPOSITION_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
+    "name": "ExitFeeTooHigh",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "HasOutstandingDebt",
     "type": "error"
   },
@@ -1207,6 +1262,11 @@ IDIESISPOSITION_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [],
     "name": "NotAuthorized",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotLockManager",
     "type": "error"
   },
   {
@@ -1242,6 +1302,11 @@ IDIESISPOSITION_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [],
     "name": "ValidatorMismatch",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ZeroAddress",
     "type": "error"
   }
 ]

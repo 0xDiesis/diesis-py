@@ -14,7 +14,7 @@ from diesis.staking.actions import PositionInfo, StakingActions, ValidatorInfo
 def test_validator_info_frozen() -> None:
     vi = ValidatorInfo(
         operator="0xabc",
-        flags=1,
+        marks=1,
         bonded=1000,
         joined_checkpoint=1,
         joined_at=100,
@@ -22,7 +22,7 @@ def test_validator_info_frozen() -> None:
         held_checkpoint=0,
     )
     with pytest.raises(AttributeError):
-        vi.flags = 2  # type: ignore[misc]
+        vi.marks = 2  # type: ignore[misc]
 
 
 def test_position_info_frozen() -> None:
@@ -80,7 +80,7 @@ def test_get_validator() -> None:
 
     assert isinstance(result, ValidatorInfo)
     assert result.operator == "0xabc"
-    assert result.flags == 1
+    assert result.marks == 1
     assert result.bonded == 1000
     assert result.joined_checkpoint == 2
     assert result.joined_at == 100

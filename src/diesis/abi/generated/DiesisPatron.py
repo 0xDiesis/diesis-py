@@ -524,6 +524,25 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
       {
         "indexed": false,
         "internalType": "uint256",
+        "name": "uncovered",
+        "type": "uint256"
+      }
+    ],
+    "name": "GrantChargeShortfall",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "grantId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
         "name": "fee",
         "type": "uint256"
       }

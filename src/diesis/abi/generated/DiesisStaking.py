@@ -2687,7 +2687,7 @@ class DiesisStakingContract:
         """Bootstrap a validator at genesis (driver only)."""
         ...
     def burn_tokens(self) -> dict[str, Any]:
-        """Burn tokens by accepting msg.value (node credits address(0) separately)."""
+        """Burn tokens by accepting msg.value and removing it from gross supply."""
         ...
     def commit_validator_set(self, next_validator_ids: list[int]) -> dict[str, Any]:
         """Record the active validator set and their stakes for the new checkpoint."""

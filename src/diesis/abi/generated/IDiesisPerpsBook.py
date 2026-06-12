@@ -22,6 +22,24 @@ IDIESISPERPSBOOK_ABI: list[dict[str, Any]] = json.loads('''
       },
       {
         "internalType": "int256",
+        "name": "marginDelta",
+        "type": "int256"
+      }
+    ],
+    "name": "adjustIsolatedMargin",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "int256",
         "name": "fundingRateBps",
         "type": "int256"
       }
@@ -316,6 +334,37 @@ IDIESISPERPSBOOK_ABI: list[dict[str, Any]] = json.loads('''
         "type": "bytes32"
       },
       {
+        "indexed": true,
+        "internalType": "address",
+        "name": "trader",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "int256",
+        "name": "marginDelta",
+        "type": "int256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newIsolatedMargin",
+        "type": "uint256"
+      }
+    ],
+    "name": "IsolatedMarginAdjusted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      },
+      {
         "indexed": false,
         "internalType": "uint256",
         "name": "price",
@@ -478,6 +527,9 @@ class IDiesisPerpsBookContract:
     def get_position(self, user: ChecksumAddress, market_id: bytes) -> dict[str, Any]: ...
 
     # Write functions
+    def adjust_isolated_margin(self, market_id: bytes, margin_delta: int) -> dict[str, Any]:
+        """Add or remove isolated margin on the caller's position in `marketId`."""
+        ...
     def apply_funding(self, market_id: bytes, funding_rate_bps: int) -> dict[str, Any]: ...
     def close_position(self, market_id: bytes) -> dict[str, Any]: ...
     def execute_perp_fill(self, order_id: bytes, fill_price: int, fill_qty: int) -> dict[str, Any]: ...

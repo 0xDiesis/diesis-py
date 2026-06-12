@@ -1,5 +1,5 @@
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling>=1.30"]
 build-backend = "hatchling.build"
 
 [project]
@@ -11,18 +11,18 @@ license = "MIT"
 requires-python = ">=3.10"
 keywords = ["diesis", "evm", "blockchain", "defi", "sdk", "web3"]
 dependencies = [
-    "web3>=7.0,<8",
-    "eth-account>=0.13",
-    "eth-typing>=5.0",
-    "eth-abi>=5.0",
+    "web3>=7.16,<8",
+    "eth-account>=0.13.7",
+    "eth-typing>=6.0",
+    "eth-abi>=5.2",
 ]
 
 [project.optional-dependencies]
 dev = [
-    "pytest>=8.0",
-    "pytest-asyncio>=0.24",
-    "mypy>=1.13",
-    "ruff>=0.8",
+    "pytest>=9.0",
+    "pytest-asyncio>=1.4",
+    "mypy>=2.1",
+    "ruff>=0.15",
 ]
 
 [tool.ruff]

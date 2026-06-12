@@ -113,6 +113,30 @@ IDIESISPERPSBOOK_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getIsolatedMargin",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "isolatedMargin",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "bytes32",
         "name": "marketId",
         "type": "bytes32"
@@ -523,6 +547,9 @@ class IDiesisPerpsBookContract:
 
     # View/pure functions
     def get_funding_rate(self, market_id: bytes) -> int: ...
+    def get_isolated_margin(self, user: ChecksumAddress, market_id: bytes) -> int:
+        """Read the quote collateral dedicated to a user's isolated-margin position."""
+        ...
     def get_mark_price(self, market_id: bytes) -> int: ...
     def get_position(self, user: ChecksumAddress, market_id: bytes) -> dict[str, Any]: ...
 

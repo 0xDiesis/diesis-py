@@ -4,6 +4,7 @@ from diesis.bundles.actions import BundleActions
 from diesis.chains import diesis, diesis_testnet
 from diesis.client import DiesisClient
 from diesis.exchange.actions import ExchangeActions
+from diesis.intents.types import OrderFlags, OrderIntent, SignedOrderIntent
 from diesis.patronage.actions import PatronageActions
 
 
@@ -62,6 +63,41 @@ def test_client_get_transaction_status() -> None:
         client = DiesisClient("https://rpc.diesis.xyz")
         client.get_transaction_status("0xabc")
         assert mock_w3.provider.make_request.call_args[0][0] == "diesis_getTransactionStatus"
+
+
+def test_client_submit_intent_uses_v2_payload_shape() -> None:
+    with patch("diesis.client.Web3") as MockWeb3:
+        mock_w3 = MockWeb3.return_value
+        mock_w3.provider.make_request.return_value = {"result": "0xhash"}
+        client = DiesisClient("https://rpc.diesis.xyz")
+        intent = SignedOrderIntent(
+            intent=OrderIntent(
+                trader="0x0000000000000000000000000000000000000001",
+                market_id="0x" + "ab" * 32,
+                side=0,
+                order_type=0,
+                price=100,
+                amount=50,
+                nonce=1,
+                trigger_price=0,
+                expiry=9999,
+                flags=int(OrderFlags.REDUCE_ONLY),
+            ),
+            signature="0x" + "11" * 65,
+            signer="0x0000000000000000000000000000000000000001",
+        )
+
+        client.submit_intent(intent)
+
+        method, params = mock_w3.provider.make_request.call_args[0]
+        assert method == "diesis_submitIntent"
+        payload = params[0]["intent"]
+        assert payload["trader"] == intent.intent.trader
+        assert payload["triggerPrice"] == "0x0"
+        assert payload["flags"] == int(OrderFlags.REDUCE_ONLY)
+        assert payload["conductorFeeBps"] == 0
+        assert payload["maxConductorFee"] == "0x0"
+        assert "reduceOnly" not in payload
 
 
 def test_client_requires_rpc_url_or_w3() -> None:

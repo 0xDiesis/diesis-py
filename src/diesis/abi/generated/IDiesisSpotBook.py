@@ -98,6 +98,69 @@ IDIESISSPOTBOOK_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "internalType": "bytes32",
+        "name": "makerOrderId",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "takerOrderId",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint256",
+        "name": "fillPrice",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "fillQty",
+        "type": "uint256"
+      }
+    ],
+    "name": "executeSpotTrade",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "filledQty",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "executionPrice",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "finalizeOpeningAuction",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "clearingPrice",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "totalVolume",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
         "name": "marketId",
         "type": "bytes32"
       }
@@ -136,6 +199,50 @@ IDIESISSPOTBOOK_ABI: list[dict[str, Any]] = json.loads('''
       {
         "internalType": "uint256",
         "name": "amountLots",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getOpeningAuction",
+    "outputs": [
+      {
+        "internalType": "uint64",
+        "name": "startBlock",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint64",
+        "name": "endBlock",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint256",
+        "name": "referencePrice",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "finalized",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint256",
+        "name": "clearingPrice",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "totalVolume",
         "type": "uint256"
       }
     ],
@@ -213,6 +320,34 @@ IDIESISSPOTBOOK_ABI: list[dict[str, Any]] = json.loads('''
         "type": "bytes32"
       },
       {
+        "internalType": "uint64",
+        "name": "startBlock",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint64",
+        "name": "endBlock",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint256",
+        "name": "referencePrice",
+        "type": "uint256"
+      }
+    ],
+    "name": "startOpeningAuction",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      },
+      {
         "internalType": "uint8",
         "name": "side",
         "type": "uint8"
@@ -277,6 +412,69 @@ IDIESISSPOTBOOK_ABI: list[dict[str, Any]] = json.loads('''
     ],
     "stateMutability": "nonpayable",
     "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes",
+        "name": "signedCancelAllJson",
+        "type": "bytes"
+      }
+    ],
+    "name": "submitSignedCancelAllSpotIntent",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "cancelled",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes",
+        "name": "signedIntentJson",
+        "type": "bytes"
+      }
+    ],
+    "name": "submitSignedSpotIntent",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "clearingPrice",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "totalVolume",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "residualOrders",
+        "type": "uint256"
+      }
+    ],
+    "name": "BatchAuctionCleared",
+    "type": "event"
   },
   {
     "anonymous": false,
@@ -414,8 +612,15 @@ class IDiesisSpotBookContract:
         )
 
     # View/pure functions
-    def get_best_ask(self, market_id: bytes) -> tuple[int, int]: ...
-    def get_best_bid(self, market_id: bytes) -> tuple[int, int]: ...
+    def get_best_ask(self, market_id: bytes) -> tuple[int, int]:
+        """Return the best ask stored in the on-chain BBO cache."""
+        ...
+    def get_best_bid(self, market_id: bytes) -> tuple[int, int]:
+        """Return the best bid stored in the on-chain BBO cache."""
+        ...
+    def get_opening_auction(self, market_id: bytes) -> tuple[int, int, int, bool, int, int]:
+        """Return stored opening-auction state for a market."""
+        ...
     def get_order_book_depth(self, market_id: bytes, levels: int) -> tuple[list[int], list[int], list[int], list[int]]:
         """Return on-chain book depth."""
         ...
@@ -424,8 +629,33 @@ class IDiesisSpotBookContract:
         ...
 
     # Write functions
-    def amend_order(self, order_id: bytes, new_price: int, new_amount: int, new_flags: int) -> dict[str, Any]: ...
-    def cancel_order(self, order_id: bytes) -> dict[str, Any]: ...
-    def execute_spot_fill(self, order_id: bytes, fill_price: int, fill_qty: int) -> dict[str, Any]: ...
-    def submit_limit_order(self, market_id: bytes, side: int, price_ticks: int, amount_lots: int, flags: int) -> dict[str, Any]: ...
-    def submit_market_order(self, market_id: bytes, side: int, amount_lots: int) -> dict[str, Any]: ...
+    def amend_order(self, order_id: bytes, new_price: int, new_amount: int, new_flags: int) -> dict[str, Any]:
+        """Amend an active order owned by the caller."""
+        ...
+    def cancel_order(self, order_id: bytes) -> dict[str, Any]:
+        """Cancel an active order owned by the caller."""
+        ...
+    def execute_spot_fill(self, order_id: bytes, fill_price: int, fill_qty: int) -> dict[str, Any]:
+        """Execute a one-sided legacy spot fill."""
+        ...
+    def execute_spot_trade(self, maker_order_id: bytes, taker_order_id: bytes, fill_price: int, fill_qty: int) -> dict[str, Any]:
+        """Atomically settle a matched maker/taker spot trade."""
+        ...
+    def finalize_opening_auction(self, market_id: bytes) -> dict[str, Any]:
+        """Finalize an ended opening auction and return the market to active trading."""
+        ...
+    def start_opening_auction(self, market_id: bytes, start_block: int, end_block: int, reference_price: int) -> dict[str, Any]:
+        """Start an opening auction for an active empty market."""
+        ...
+    def submit_limit_order(self, market_id: bytes, side: int, price_ticks: int, amount_lots: int, flags: int) -> dict[str, Any]:
+        """Place a limit order in an active spot market."""
+        ...
+    def submit_market_order(self, market_id: bytes, side: int, amount_lots: int) -> dict[str, Any]:
+        """Submit a market order intent against the active continuous book."""
+        ...
+    def submit_signed_cancel_all_spot_intent(self, signed_cancel_all_json: bytes) -> dict[str, Any]:
+        """Submit a signed request to cancel all active orders in one market."""
+        ...
+    def submit_signed_spot_intent(self, signed_intent_json: bytes) -> dict[str, Any]:
+        """Submit a signed order or cancel intent."""
+        ...

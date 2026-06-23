@@ -1246,6 +1246,11 @@ IDIESISPOSITION_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
+    "name": "HasPendingWithdrawal",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "InsufficientCollateral",
     "type": "error"
   },

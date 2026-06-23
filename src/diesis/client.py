@@ -102,14 +102,19 @@ class DiesisClient:
             [
                 {
                     "intent": {
+                        "trader": intent.intent.trader,
                         "marketId": intent.intent.market_id,
                         "side": intent.intent.side,
+                        "orderType": intent.intent.order_type,
                         "price": hex(intent.intent.price),
                         "amount": hex(intent.intent.amount),
-                        "orderType": intent.intent.order_type,
-                        "nonce": hex(intent.intent.nonce),
+                        "triggerPrice": hex(intent.intent.trigger_price),
                         "expiry": hex(intent.intent.expiry),
-                        "reduceOnly": intent.intent.reduce_only,
+                        "nonce": hex(intent.intent.nonce),
+                        "flags": intent.intent.flags,
+                        "conductor": intent.intent.conductor,
+                        "conductorFeeBps": intent.intent.conductor_fee_bps,
+                        "maxConductorFee": hex(intent.intent.max_conductor_fee),
                     },
                     "signature": intent.signature,
                     "signer": intent.signer,

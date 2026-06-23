@@ -31,13 +31,24 @@ def test_address_count() -> None:
         "DIESIS_POSITION",
         "WRAPPED_DS",
         "LIQUID_STAKED_DS",
+        "DIESIS_TEST_USD",
         "DIESIS_MARKETS",
         "DIESIS_SPOT_BOOK",
         "DIESIS_PERPS_BOOK",
         "DIESIS_MARGIN",
         "DIESIS_SETTLEMENT",
+        "DIESIS_CONDUCTORS",
+        "DIESIS_ISSUANCE_AUCTION",
+        "DIESIS_BUYBACK_BURN",
+        "DIESIS_OPERATOR_BOND",
         "DIESIS_ERC20_FACTORY",
         "DIESIS_PERP_DEPLOY",
+        "DIESIS_NAME_REGISTRY",
+        "DIESIS_BASE_REGISTRAR",
+        "DIESIS_PUBLIC_RESOLVER",
+        "DIESIS_REVERSE_REGISTRAR",
+        "DIESIS_NAME_VERIFIER",
+        "DIESIS_NAME_POLICY",
         "VRF",
         "STEALTH_REGISTRY",
         "STEALTH_ANNOUNCER",
@@ -46,8 +57,18 @@ def test_address_count() -> None:
         "GROTH16_VERIFIER",
         "SECP256R1",
         "POSEIDON",
+        "ML_DSA",
         "MULTICALL3",
         "PERMIT2",
     }
     actual = {n for n in dir(addresses) if not n.startswith("_")}
     assert expected == actual
+
+
+def test_name_service_addresses_match_reserved_contract_slots() -> None:
+    assert addresses.DIESIS_NAME_REGISTRY == "0xd1E5150000000000000000000000000000000050"
+    assert addresses.DIESIS_BASE_REGISTRAR == "0xd1e5150000000000000000000000000000000051"
+    assert addresses.DIESIS_PUBLIC_RESOLVER == "0xD1E5150000000000000000000000000000000052"
+    assert addresses.DIESIS_REVERSE_REGISTRAR == "0xd1E5150000000000000000000000000000000053"
+    assert addresses.DIESIS_NAME_VERIFIER == "0xd1e5150000000000000000000000000000000054"
+    assert addresses.DIESIS_NAME_POLICY == "0xD1E5150000000000000000000000000000000055"

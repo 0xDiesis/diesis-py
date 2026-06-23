@@ -12,14 +12,10 @@ class Side(IntEnum):
 
 
 class OrderType(IntEnum):
-    LIMIT_GTC = 0
-    LIMIT_GTD = 1
-    LIMIT_IOC = 2
-    LIMIT_FOK = 3
-    LIMIT_POST_ONLY = 4
-    MARKET = 5
-    STOP_LIMIT = 6
-    STOP_MARKET = 7
+    LIMIT = 0
+    MARKET = 1
+    STOP_LIMIT = 2
+    STOP_MARKET = 3
 
 
 class MarginType(IntEnum):

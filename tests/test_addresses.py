@@ -5,6 +5,10 @@ def test_staking_address_is_checksummed() -> None:
     assert addresses.DIESIS_STAKING == "0xd1e5150000000000000000000000000000000001"
 
 
+def test_multicall3_address_matches_canonical_deployment() -> None:
+    assert addresses.MULTICALL3 == "0xcA11bde05977b3631167028862bE2a173976CA11"
+
+
 def test_all_addresses_are_checksummed() -> None:
     from web3 import Web3
 

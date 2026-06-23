@@ -17,9 +17,10 @@ def test_side_enum() -> None:
 
 
 def test_order_type_enum() -> None:
-    assert int(OrderType.LIMIT_GTC) == 0
-    assert int(OrderType.MARKET) == 5
-    assert int(OrderType.STOP_MARKET) == 7
+    assert int(OrderType.LIMIT) == 0
+    assert int(OrderType.MARKET) == 1
+    assert int(OrderType.STOP_LIMIT) == 2
+    assert int(OrderType.STOP_MARKET) == 3
 
 
 def test_market_id_deterministic() -> None:

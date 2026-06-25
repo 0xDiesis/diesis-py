@@ -38,6 +38,7 @@ def test_address_count() -> None:
         "DIESIS_MARGIN",
         "DIESIS_SETTLEMENT",
         "DIESIS_CONDUCTORS",
+        "DIESIS_CORE_VAULT",
         "DIESIS_ISSUANCE_AUCTION",
         "DIESIS_BUYBACK_BURN",
         "DIESIS_OPERATOR_BOND",
@@ -72,3 +73,7 @@ def test_name_service_addresses_match_reserved_contract_slots() -> None:
     assert addresses.DIESIS_REVERSE_REGISTRAR == "0xd1E5150000000000000000000000000000000053"
     assert addresses.DIESIS_NAME_VERIFIER == "0xd1e5150000000000000000000000000000000054"
     assert addresses.DIESIS_NAME_POLICY == "0xD1E5150000000000000000000000000000000055"
+
+
+def test_core_vault_address_matches_solidity_precompile_slot() -> None:
+    assert addresses.DIESIS_CORE_VAULT == "0x00D1E5150000000000000000000000000000C04e"

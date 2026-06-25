@@ -7,7 +7,7 @@ codegen:
 		--artifacts ../diesis/contracts/out \
 		--out src/diesis/abi/generated \
 		--target python \
-		--contracts IDiesisSettlement,IDiesisSpotBook,IDiesisPerpsBook,IDiesisMargin,IDiesisMarkets,IDiesisStateWriter,IDiesisConductors,IDiesisIssuanceAuction,IDiesisBuybackBurn,IDiesisOperatorBond,IDiesisErc20Factory,IDiesisPerpDeploy,DiesisStaking,DiesisPatron,DiesisConfig,IDiesisBootstrapOracle,BootstrapConfig,IDiesisPosition,ILiquidStakedDS,IWrappedDS,DiesisShieldedPool,DiesisPrivacyPools \
+		--contracts IDiesisSettlement,IDiesisSpotBook,IDiesisPerpsBook,IDiesisMargin,IDiesisMarkets,IDiesisStateWriter,IDiesisConductors,IDiesisCoreVault,IDiesisIssuanceAuction,IDiesisBuybackBurn,IDiesisOperatorBond,IDiesisErc20Factory,IDiesisPerpDeploy,DiesisStaking,DiesisPatron,DiesisConfig,DiesisCoreVault,IDiesisBootstrapOracle,BootstrapConfig,IDiesisPosition,ILiquidStakedDS,IWrappedDS,DiesisShieldedPool,DiesisPrivacyPools,IDiesisNameRegistry,IDiesisBaseRegistrar,IDiesisPublicResolver,IDiesisReverseRegistrar,IDiesisNameVerifier,IDiesisNamePolicy,DiesisNameRegistry,DiesisBaseRegistrar,DiesisPublicResolver,DiesisReverseRegistrar,DiesisNameVerifier,DiesisNamePolicy \
 		--clean
 	$(PYTHON) scripts/generate_abi_exports.py
 

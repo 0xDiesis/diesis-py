@@ -3,6 +3,7 @@
 from .BootstrapConfig import *  # noqa: F401, F403
 from .DiesisBaseRegistrar import *  # noqa: F401, F403
 from .DiesisConfig import *  # noqa: F401, F403
+from .DiesisCoreVault import *  # noqa: F401, F403
 from .DiesisNamePolicy import *  # noqa: F401, F403
 from .DiesisNameRegistry import *  # noqa: F401, F403
 from .DiesisNameVerifier import *  # noqa: F401, F403
@@ -16,6 +17,7 @@ from .IDiesisBaseRegistrar import *  # noqa: F401, F403
 from .IDiesisBootstrapOracle import *  # noqa: F401, F403
 from .IDiesisBuybackBurn import *  # noqa: F401, F403
 from .IDiesisConductors import *  # noqa: F401, F403
+from .IDiesisCoreVault import *  # noqa: F401, F403
 from .IDiesisErc20Factory import *  # noqa: F401, F403
 from .IDiesisIssuanceAuction import *  # noqa: F401, F403
 from .IDiesisMargin import *  # noqa: F401, F403

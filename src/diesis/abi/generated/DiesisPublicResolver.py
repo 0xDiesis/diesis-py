@@ -4,1175 +4,1282 @@
 from __future__ import annotations
 
 import json
-from typing import Any
+from typing import Any, TypedDict
+
+from eth_typing import ChecksumAddress
+from web3 import Web3
+from web3.contract import Contract
 
 
 DIESISPUBLICRESOLVER_ABI: list[dict[str, Any]] = json.loads('''
 [
   {
-    "type": "constructor",
     "inputs": [
       {
+        "internalType": "contract IDiesisNameRegistry",
         "name": "registry_",
-        "type": "address",
-        "internalType": "contract IDiesisNameRegistry"
+        "type": "address"
       },
       {
+        "internalType": "address",
         "name": "owner_",
-        "type": "address",
-        "internalType": "address"
+        "type": "address"
       }
     ],
-    "stateMutability": "nonpayable"
+    "stateMutability": "nonpayable",
+    "type": "constructor"
   },
   {
-    "type": "function",
+    "inputs": [],
     "name": "DIESIS_EVM_COIN_TYPE",
-    "inputs": [],
     "outputs": [
       {
+        "internalType": "uint256",
         "name": "",
-        "type": "uint256",
-        "internalType": "uint256"
+        "type": "uint256"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [],
     "name": "MAX_AGENT_RECORD_BYTES",
-    "inputs": [],
     "outputs": [
       {
+        "internalType": "uint256",
         "name": "",
-        "type": "uint256",
-        "internalType": "uint256"
+        "type": "uint256"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [],
     "name": "MAX_CONTENTHASH_BYTES",
-    "inputs": [],
     "outputs": [
       {
+        "internalType": "uint256",
         "name": "",
-        "type": "uint256",
-        "internalType": "uint256"
+        "type": "uint256"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [],
     "name": "MAX_MULTICOIN_ADDR_BYTES",
-    "inputs": [],
     "outputs": [
       {
+        "internalType": "uint256",
         "name": "",
-        "type": "uint256",
-        "internalType": "uint256"
+        "type": "uint256"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [],
     "name": "MAX_RESOLVER_CALLS",
-    "inputs": [],
     "outputs": [
       {
+        "internalType": "uint256",
         "name": "",
-        "type": "uint256",
-        "internalType": "uint256"
+        "type": "uint256"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [],
     "name": "MAX_ROUTE_TARGET_BYTES",
-    "inputs": [],
     "outputs": [
       {
+        "internalType": "uint256",
         "name": "",
-        "type": "uint256",
-        "internalType": "uint256"
+        "type": "uint256"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [],
     "name": "MAX_TEXT_KEY_BYTES",
-    "inputs": [],
     "outputs": [
       {
+        "internalType": "uint256",
         "name": "",
-        "type": "uint256",
-        "internalType": "uint256"
+        "type": "uint256"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [],
     "name": "MAX_TEXT_VALUE_BYTES",
-    "inputs": [],
     "outputs": [
       {
+        "internalType": "uint256",
         "name": "",
-        "type": "uint256",
-        "internalType": "uint256"
+        "type": "uint256"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [],
     "name": "ROUTE_KIND_PAYMENT",
-    "inputs": [],
     "outputs": [
       {
+        "internalType": "uint8",
         "name": "",
-        "type": "uint8",
-        "internalType": "uint8"
+        "type": "uint8"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "type": "function",
-    "name": "addr",
     "inputs": [
       {
+        "internalType": "bytes32",
         "name": "node",
-        "type": "bytes32",
-        "internalType": "bytes32"
+        "type": "bytes32"
       }
     ],
+    "name": "addr",
     "outputs": [
       {
+        "internalType": "address",
         "name": "",
-        "type": "address",
-        "internalType": "address"
+        "type": "address"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "type": "function",
-    "name": "addr",
     "inputs": [
       {
+        "internalType": "bytes32",
         "name": "node",
-        "type": "bytes32",
-        "internalType": "bytes32"
+        "type": "bytes32"
       },
       {
+        "internalType": "uint256",
         "name": "coinType",
-        "type": "uint256",
-        "internalType": "uint256"
+        "type": "uint256"
       }
     ],
+    "name": "addr",
     "outputs": [
       {
+        "internalType": "bytes",
         "name": "",
-        "type": "bytes",
-        "internalType": "bytes"
+        "type": "bytes"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "agentId",
+        "type": "bytes32"
+      }
+    ],
     "name": "agentRecord",
-    "inputs": [
-      {
-        "name": "node",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "agentId",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      }
-    ],
     "outputs": [
       {
-        "name": "",
-        "type": "tuple",
-        "internalType": "struct IDiesisPublicResolver.AgentRecord",
         "components": [
           {
+            "internalType": "bytes32",
             "name": "agentId",
-            "type": "bytes32",
-            "internalType": "bytes32"
+            "type": "bytes32"
           },
           {
+            "internalType": "string",
             "name": "endpoint",
-            "type": "string",
-            "internalType": "string"
+            "type": "string"
           },
           {
+            "internalType": "bytes",
             "name": "publicKey",
-            "type": "bytes",
-            "internalType": "bytes"
+            "type": "bytes"
           },
           {
+            "internalType": "bytes32",
             "name": "capabilitiesHash",
-            "type": "bytes32",
-            "internalType": "bytes32"
+            "type": "bytes32"
           },
           {
+            "internalType": "bytes32",
             "name": "policyHash",
-            "type": "bytes32",
-            "internalType": "bytes32"
+            "type": "bytes32"
           },
           {
+            "internalType": "uint64",
             "name": "validFrom",
-            "type": "uint64",
-            "internalType": "uint64"
+            "type": "uint64"
           },
           {
+            "internalType": "uint64",
             "name": "validUntil",
-            "type": "uint64",
-            "internalType": "uint64"
+            "type": "uint64"
           },
           {
+            "internalType": "bool",
             "name": "enabled",
-            "type": "bool",
-            "internalType": "bool"
+            "type": "bool"
           }
-        ]
+        ],
+        "internalType": "struct IDiesisPublicResolver.AgentRecord",
+        "name": "",
+        "type": "tuple"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
+      }
+    ],
     "name": "contenthash",
-    "inputs": [
-      {
-        "name": "node",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      }
-    ],
     "outputs": [
       {
+        "internalType": "bytes",
         "name": "",
-        "type": "bytes",
-        "internalType": "bytes"
+        "type": "bytes"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      }
+    ],
     "name": "contractRecord",
-    "inputs": [
-      {
-        "name": "node",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "role",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      }
-    ],
     "outputs": [
       {
+        "internalType": "address",
         "name": "",
-        "type": "address",
-        "internalType": "address"
+        "type": "address"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [],
     "name": "owner",
-    "inputs": [],
     "outputs": [
       {
+        "internalType": "address",
         "name": "",
-        "type": "address",
-        "internalType": "address"
+        "type": "address"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "routeId",
+        "type": "bytes32"
+      }
+    ],
     "name": "paymentRoute",
-    "inputs": [
-      {
-        "name": "node",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "routeId",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      }
-    ],
     "outputs": [
       {
-        "name": "",
-        "type": "tuple",
-        "internalType": "struct IDiesisPublicResolver.PaymentRoute",
         "components": [
           {
+            "internalType": "uint256",
             "name": "chainId",
-            "type": "uint256",
-            "internalType": "uint256"
+            "type": "uint256"
           },
           {
+            "internalType": "address",
             "name": "token",
-            "type": "address",
-            "internalType": "address"
+            "type": "address"
           },
           {
+            "internalType": "address",
             "name": "recipient",
-            "type": "address",
-            "internalType": "address"
+            "type": "address"
           },
           {
+            "internalType": "uint16",
             "name": "priority",
-            "type": "uint16",
-            "internalType": "uint16"
+            "type": "uint16"
           },
           {
+            "internalType": "uint16",
             "name": "feeBpsLimit",
-            "type": "uint16",
-            "internalType": "uint16"
+            "type": "uint16"
           },
           {
+            "internalType": "bytes32",
             "name": "memoPolicy",
-            "type": "bytes32",
-            "internalType": "bytes32"
+            "type": "bytes32"
           },
           {
+            "internalType": "bool",
             "name": "enabled",
-            "type": "bool",
-            "internalType": "bool"
+            "type": "bool"
           }
-        ]
+        ],
+        "internalType": "struct IDiesisPublicResolver.PaymentRoute",
+        "name": "",
+        "type": "tuple"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [],
     "name": "registry",
-    "inputs": [],
     "outputs": [
       {
+        "internalType": "contract IDiesisNameRegistry",
         "name": "",
-        "type": "address",
-        "internalType": "contract IDiesisNameRegistry"
+        "type": "address"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [],
     "name": "renounceOwnership",
-    "inputs": [],
     "outputs": [],
-    "stateMutability": "nonpayable"
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "routeId",
+        "type": "bytes32"
+      }
+    ],
     "name": "routeRecord",
-    "inputs": [
-      {
-        "name": "node",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "routeId",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      }
-    ],
     "outputs": [
       {
-        "name": "",
-        "type": "tuple",
-        "internalType": "struct IDiesisPublicResolver.RouteRecord",
         "components": [
           {
+            "internalType": "bytes32",
             "name": "routeId",
-            "type": "bytes32",
-            "internalType": "bytes32"
+            "type": "bytes32"
           },
           {
+            "internalType": "uint8",
             "name": "routeKind",
-            "type": "uint8",
-            "internalType": "uint8"
+            "type": "uint8"
           },
           {
+            "internalType": "bytes",
             "name": "target",
-            "type": "bytes",
-            "internalType": "bytes"
+            "type": "bytes"
           },
           {
+            "internalType": "address",
             "name": "contractTarget",
-            "type": "address",
-            "internalType": "address"
+            "type": "address"
           },
           {
+            "internalType": "bytes32",
             "name": "policyHash",
-            "type": "bytes32",
-            "internalType": "bytes32"
+            "type": "bytes32"
           },
           {
+            "internalType": "bool",
             "name": "wildcard",
-            "type": "bool",
-            "internalType": "bool"
+            "type": "bool"
           },
           {
+            "internalType": "bool",
             "name": "enabled",
-            "type": "bool",
-            "internalType": "bool"
+            "type": "bool"
           }
-        ]
+        ],
+        "internalType": "struct IDiesisPublicResolver.RouteRecord",
+        "name": "",
+        "type": "tuple"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "type": "function",
-    "name": "setAddr",
     "inputs": [
       {
+        "internalType": "bytes32",
         "name": "node",
-        "type": "bytes32",
-        "internalType": "bytes32"
+        "type": "bytes32"
       },
       {
+        "internalType": "uint256",
         "name": "coinType",
-        "type": "uint256",
-        "internalType": "uint256"
+        "type": "uint256"
       },
       {
+        "internalType": "bytes",
         "name": "value",
-        "type": "bytes",
-        "internalType": "bytes"
+        "type": "bytes"
       }
     ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
     "name": "setAddr",
-    "inputs": [
-      {
-        "name": "node",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "value",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
     "outputs": [],
-    "stateMutability": "nonpayable"
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    "type": "function",
-    "name": "setAgentRecord",
     "inputs": [
       {
+        "internalType": "bytes32",
         "name": "node",
-        "type": "bytes32",
-        "internalType": "bytes32"
+        "type": "bytes32"
       },
       {
+        "internalType": "address",
+        "name": "value",
+        "type": "address"
+      }
+    ],
+    "name": "setAddr",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
         "name": "agentId",
-        "type": "bytes32",
-        "internalType": "bytes32"
+        "type": "bytes32"
       },
       {
-        "name": "record",
-        "type": "tuple",
-        "internalType": "struct IDiesisPublicResolver.AgentRecord",
         "components": [
           {
+            "internalType": "bytes32",
             "name": "agentId",
-            "type": "bytes32",
-            "internalType": "bytes32"
+            "type": "bytes32"
           },
           {
+            "internalType": "string",
             "name": "endpoint",
-            "type": "string",
-            "internalType": "string"
+            "type": "string"
           },
           {
+            "internalType": "bytes",
             "name": "publicKey",
-            "type": "bytes",
-            "internalType": "bytes"
+            "type": "bytes"
           },
           {
+            "internalType": "bytes32",
             "name": "capabilitiesHash",
-            "type": "bytes32",
-            "internalType": "bytes32"
+            "type": "bytes32"
           },
           {
+            "internalType": "bytes32",
             "name": "policyHash",
-            "type": "bytes32",
-            "internalType": "bytes32"
+            "type": "bytes32"
           },
           {
+            "internalType": "uint64",
             "name": "validFrom",
-            "type": "uint64",
-            "internalType": "uint64"
+            "type": "uint64"
           },
           {
+            "internalType": "uint64",
             "name": "validUntil",
-            "type": "uint64",
-            "internalType": "uint64"
+            "type": "uint64"
           },
           {
+            "internalType": "bool",
             "name": "enabled",
-            "type": "bool",
-            "internalType": "bool"
+            "type": "bool"
           }
-        ]
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "setContenthash",
-    "inputs": [
-      {
-        "name": "node",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "value",
-        "type": "bytes",
-        "internalType": "bytes"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "setContractRecord",
-    "inputs": [
-      {
-        "name": "node",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "role",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "target",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "setPaymentRoute",
-    "inputs": [
-      {
-        "name": "node",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "routeId",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "route",
-        "type": "tuple",
-        "internalType": "struct IDiesisPublicResolver.PaymentRoute",
-        "components": [
-          {
-            "name": "chainId",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "token",
-            "type": "address",
-            "internalType": "address"
-          },
-          {
-            "name": "recipient",
-            "type": "address",
-            "internalType": "address"
-          },
-          {
-            "name": "priority",
-            "type": "uint16",
-            "internalType": "uint16"
-          },
-          {
-            "name": "feeBpsLimit",
-            "type": "uint16",
-            "internalType": "uint16"
-          },
-          {
-            "name": "memoPolicy",
-            "type": "bytes32",
-            "internalType": "bytes32"
-          },
-          {
-            "name": "enabled",
-            "type": "bool",
-            "internalType": "bool"
-          }
-        ]
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "setRecords",
-    "inputs": [
-      {
-        "name": "node",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "calls",
-        "type": "bytes[]",
-        "internalType": "bytes[]"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "setRouteRecord",
-    "inputs": [
-      {
-        "name": "node",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
+        ],
+        "internalType": "struct IDiesisPublicResolver.AgentRecord",
         "name": "record",
-        "type": "tuple",
-        "internalType": "struct IDiesisPublicResolver.RouteRecord",
+        "type": "tuple"
+      }
+    ],
+    "name": "setAgentRecord",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes",
+        "name": "value",
+        "type": "bytes"
+      }
+    ],
+    "name": "setContenthash",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "target",
+        "type": "address"
+      }
+    ],
+    "name": "setContractRecord",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "routeId",
+        "type": "bytes32"
+      },
+      {
         "components": [
           {
-            "name": "routeId",
-            "type": "bytes32",
-            "internalType": "bytes32"
+            "internalType": "uint256",
+            "name": "chainId",
+            "type": "uint256"
           },
           {
-            "name": "routeKind",
-            "type": "uint8",
-            "internalType": "uint8"
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
           },
           {
-            "name": "target",
-            "type": "bytes",
-            "internalType": "bytes"
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
           },
           {
-            "name": "contractTarget",
-            "type": "address",
-            "internalType": "address"
+            "internalType": "uint16",
+            "name": "priority",
+            "type": "uint16"
           },
           {
-            "name": "policyHash",
-            "type": "bytes32",
-            "internalType": "bytes32"
+            "internalType": "uint16",
+            "name": "feeBpsLimit",
+            "type": "uint16"
           },
           {
-            "name": "wildcard",
-            "type": "bool",
-            "internalType": "bool"
+            "internalType": "bytes32",
+            "name": "memoPolicy",
+            "type": "bytes32"
           },
           {
+            "internalType": "bool",
             "name": "enabled",
-            "type": "bool",
-            "internalType": "bool"
+            "type": "bool"
           }
-        ]
+        ],
+        "internalType": "struct IDiesisPublicResolver.PaymentRoute",
+        "name": "route",
+        "type": "tuple"
       }
     ],
+    "name": "setPaymentRoute",
     "outputs": [],
-    "stateMutability": "nonpayable"
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes[]",
+        "name": "calls",
+        "type": "bytes[]"
+      }
+    ],
+    "name": "setRecords",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
+      },
+      {
+        "components": [
+          {
+            "internalType": "bytes32",
+            "name": "routeId",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint8",
+            "name": "routeKind",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes",
+            "name": "target",
+            "type": "bytes"
+          },
+          {
+            "internalType": "address",
+            "name": "contractTarget",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "policyHash",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bool",
+            "name": "wildcard",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "enabled",
+            "type": "bool"
+          }
+        ],
+        "internalType": "struct IDiesisPublicResolver.RouteRecord",
+        "name": "record",
+        "type": "tuple"
+      }
+    ],
+    "name": "setRouteRecord",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "string",
+        "name": "key",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "value",
+        "type": "string"
+      }
+    ],
     "name": "setText",
-    "inputs": [
-      {
-        "name": "node",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "key",
-        "type": "string",
-        "internalType": "string"
-      },
-      {
-        "name": "value",
-        "type": "string",
-        "internalType": "string"
-      }
-    ],
     "outputs": [],
-    "stateMutability": "nonpayable"
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "writer",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "approved",
+        "type": "bool"
+      }
+    ],
     "name": "setTrustedWriter",
-    "inputs": [
-      {
-        "name": "writer",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "approved",
-        "type": "bool",
-        "internalType": "bool"
-      }
-    ],
     "outputs": [],
-    "stateMutability": "nonpayable"
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bool",
+        "name": "approved",
+        "type": "bool"
+      }
+    ],
     "name": "setWildcardPaymentRoutingAllowed",
-    "inputs": [
-      {
-        "name": "node",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "approved",
-        "type": "bool",
-        "internalType": "bool"
-      }
-    ],
     "outputs": [],
-    "stateMutability": "nonpayable"
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "string",
+        "name": "key",
+        "type": "string"
+      }
+    ],
     "name": "text",
-    "inputs": [
-      {
-        "name": "node",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "key",
-        "type": "string",
-        "internalType": "string"
-      }
-    ],
     "outputs": [
       {
+        "internalType": "string",
         "name": "",
-        "type": "string",
-        "internalType": "string"
+        "type": "string"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
     "name": "transferOwnership",
-    "inputs": [
-      {
-        "name": "newOwner",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
     "outputs": [],
-    "stateMutability": "nonpayable"
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "writer",
+        "type": "address"
+      }
+    ],
     "name": "trustedWriters",
-    "inputs": [
-      {
-        "name": "writer",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
     "outputs": [
       {
+        "internalType": "bool",
         "name": "approved",
-        "type": "bool",
-        "internalType": "bool"
+        "type": "bool"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
+      }
+    ],
     "name": "wildcardPaymentRoutingAllowed",
-    "inputs": [
-      {
-        "name": "node",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      }
-    ],
     "outputs": [
       {
+        "internalType": "bool",
         "name": "approved",
-        "type": "bool",
-        "internalType": "bool"
+        "type": "bool"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "type": "event",
-    "name": "AddrChanged",
+    "anonymous": false,
     "inputs": [
       {
-        "name": "node",
-        "type": "bytes32",
         "indexed": true,
-        "internalType": "bytes32"
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
       },
       {
+        "indexed": true,
+        "internalType": "address",
         "name": "addrValue",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
+        "type": "address"
       }
     ],
-    "anonymous": false
+    "name": "AddrChanged",
+    "type": "event"
   },
   {
-    "type": "event",
-    "name": "AgentRecordChanged",
+    "anonymous": false,
     "inputs": [
       {
+        "indexed": true,
+        "internalType": "bytes32",
         "name": "node",
-        "type": "bytes32",
-        "indexed": true,
-        "internalType": "bytes32"
+        "type": "bytes32"
       },
       {
-        "name": "agentId",
-        "type": "bytes32",
         "indexed": true,
-        "internalType": "bytes32"
-      },
-      {
-        "name": "endpoint",
-        "type": "string",
-        "indexed": false,
-        "internalType": "string"
-      },
-      {
-        "name": "enabled",
-        "type": "bool",
-        "indexed": false,
-        "internalType": "bool"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "ContenthashChanged",
-    "inputs": [
-      {
-        "name": "node",
-        "type": "bytes32",
-        "indexed": true,
-        "internalType": "bytes32"
-      },
-      {
-        "name": "value",
-        "type": "bytes",
-        "indexed": false,
-        "internalType": "bytes"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "ContractRecordChanged",
-    "inputs": [
-      {
-        "name": "node",
-        "type": "bytes32",
-        "indexed": true,
-        "internalType": "bytes32"
-      },
-      {
-        "name": "role",
-        "type": "bytes32",
-        "indexed": true,
-        "internalType": "bytes32"
-      },
-      {
-        "name": "target",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "MulticoinAddrChanged",
-    "inputs": [
-      {
-        "name": "node",
-        "type": "bytes32",
-        "indexed": true,
-        "internalType": "bytes32"
-      },
-      {
+        "internalType": "uint256",
         "name": "coinType",
-        "type": "uint256",
-        "indexed": true,
-        "internalType": "uint256"
+        "type": "uint256"
       },
       {
-        "name": "value",
-        "type": "bytes",
         "indexed": false,
-        "internalType": "bytes"
+        "internalType": "bytes",
+        "name": "newAddress",
+        "type": "bytes"
       }
     ],
-    "anonymous": false
+    "name": "AddressChanged",
+    "type": "event"
   },
   {
-    "type": "event",
-    "name": "OwnershipTransferred",
+    "anonymous": false,
     "inputs": [
       {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "agentId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "endpoint",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "enabled",
+        "type": "bool"
+      }
+    ],
+    "name": "AgentRecordChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes",
+        "name": "value",
+        "type": "bytes"
+      }
+    ],
+    "name": "ContenthashChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "target",
+        "type": "address"
+      }
+    ],
+    "name": "ContractRecordChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "coinType",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes",
+        "name": "value",
+        "type": "bytes"
+      }
+    ],
+    "name": "MulticoinAddrChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
         "name": "previousOwner",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
+        "type": "address"
       },
       {
+        "indexed": true,
+        "internalType": "address",
         "name": "newOwner",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
+        "type": "address"
       }
     ],
-    "anonymous": false
+    "name": "OwnershipTransferred",
+    "type": "event"
   },
   {
-    "type": "event",
-    "name": "PaymentRouteChanged",
+    "anonymous": false,
     "inputs": [
       {
+        "indexed": true,
+        "internalType": "bytes32",
         "name": "node",
-        "type": "bytes32",
-        "indexed": true,
-        "internalType": "bytes32"
+        "type": "bytes32"
       },
       {
+        "indexed": true,
+        "internalType": "bytes32",
         "name": "routeId",
-        "type": "bytes32",
-        "indexed": true,
-        "internalType": "bytes32"
+        "type": "bytes32"
       },
       {
+        "indexed": true,
+        "internalType": "address",
         "name": "recipient",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
+        "type": "address"
       },
       {
-        "name": "enabled",
-        "type": "bool",
         "indexed": false,
-        "internalType": "bool"
+        "internalType": "bool",
+        "name": "enabled",
+        "type": "bool"
       }
     ],
-    "anonymous": false
+    "name": "PaymentRouteChanged",
+    "type": "event"
   },
   {
-    "type": "event",
-    "name": "RouteRecordChanged",
+    "anonymous": false,
     "inputs": [
       {
-        "name": "node",
-        "type": "bytes32",
         "indexed": true,
-        "internalType": "bytes32"
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
       },
       {
+        "indexed": true,
+        "internalType": "bytes32",
         "name": "routeId",
-        "type": "bytes32",
-        "indexed": true,
-        "internalType": "bytes32"
+        "type": "bytes32"
       },
       {
+        "indexed": false,
+        "internalType": "uint8",
         "name": "routeKind",
-        "type": "uint8",
-        "indexed": false,
-        "internalType": "uint8"
+        "type": "uint8"
       },
       {
+        "indexed": false,
+        "internalType": "bool",
         "name": "wildcard",
-        "type": "bool",
-        "indexed": false,
-        "internalType": "bool"
+        "type": "bool"
       },
       {
+        "indexed": false,
+        "internalType": "bool",
         "name": "enabled",
-        "type": "bool",
-        "indexed": false,
-        "internalType": "bool"
+        "type": "bool"
       }
     ],
-    "anonymous": false
+    "name": "RouteRecordChanged",
+    "type": "event"
   },
   {
-    "type": "event",
-    "name": "TextChanged",
+    "anonymous": false,
     "inputs": [
       {
-        "name": "node",
-        "type": "bytes32",
         "indexed": true,
-        "internalType": "bytes32"
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
       },
       {
+        "indexed": true,
+        "internalType": "string",
         "name": "key",
-        "type": "string",
-        "indexed": true,
-        "internalType": "string"
+        "type": "string"
       },
       {
+        "indexed": false,
+        "internalType": "string",
         "name": "value",
-        "type": "string",
-        "indexed": false,
-        "internalType": "string"
+        "type": "string"
       }
     ],
-    "anonymous": false
+    "name": "TextChanged",
+    "type": "event"
   },
   {
-    "type": "event",
-    "name": "TrustedWriterChanged",
+    "anonymous": false,
     "inputs": [
       {
+        "indexed": true,
+        "internalType": "address",
         "name": "writer",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
+        "type": "address"
       },
       {
-        "name": "approved",
-        "type": "bool",
         "indexed": false,
-        "internalType": "bool"
+        "internalType": "bool",
+        "name": "approved",
+        "type": "bool"
       }
     ],
-    "anonymous": false
+    "name": "TrustedWriterChanged",
+    "type": "event"
   },
   {
-    "type": "event",
-    "name": "WildcardPaymentRoutingChanged",
+    "anonymous": false,
     "inputs": [
       {
+        "indexed": true,
+        "internalType": "bytes32",
         "name": "node",
-        "type": "bytes32",
-        "indexed": true,
-        "internalType": "bytes32"
+        "type": "bytes32"
       },
       {
-        "name": "approved",
-        "type": "bool",
         "indexed": false,
-        "internalType": "bool"
+        "internalType": "bool",
+        "name": "approved",
+        "type": "bool"
       }
     ],
-    "anonymous": false
+    "name": "WildcardPaymentRoutingChanged",
+    "type": "event"
   },
   {
-    "type": "error",
+    "inputs": [],
     "name": "InvalidRoute",
-    "inputs": []
+    "type": "error"
   },
   {
-    "type": "error",
+    "inputs": [],
     "name": "NotAuthorized",
-    "inputs": []
+    "type": "error"
   },
   {
-    "type": "error",
-    "name": "OwnableInvalidOwner",
     "inputs": [
       {
+        "internalType": "address",
         "name": "owner",
-        "type": "address",
-        "internalType": "address"
+        "type": "address"
       }
-    ]
+    ],
+    "name": "OwnableInvalidOwner",
+    "type": "error"
   },
   {
-    "type": "error",
-    "name": "OwnableUnauthorizedAccount",
     "inputs": [
       {
+        "internalType": "address",
         "name": "account",
-        "type": "address",
-        "internalType": "address"
+        "type": "address"
       }
-    ]
+    ],
+    "name": "OwnableUnauthorizedAccount",
+    "type": "error"
   },
   {
-    "type": "error",
+    "inputs": [],
     "name": "RecordTooLarge",
-    "inputs": []
+    "type": "error"
   },
   {
-    "type": "error",
+    "inputs": [],
     "name": "ResolverCallFailed",
-    "inputs": []
+    "type": "error"
   }
 ]
 ''')
+
+
+class DiesisPublicResolverAgentRecord(TypedDict):
+    agent_id: bytes
+    endpoint: str
+    public_key: bytes
+    capabilities_hash: bytes
+    policy_hash: bytes
+    valid_from: int
+    valid_until: int
+    enabled: bool
+
+
+class DiesisPublicResolverPaymentRoute(TypedDict):
+    chain_id: int
+    token: ChecksumAddress
+    recipient: ChecksumAddress
+    priority: int
+    fee_bps_limit: int
+    memo_policy: bytes
+    enabled: bool
+
+
+class DiesisPublicResolverRouteRecord(TypedDict):
+    route_id: bytes
+    route_kind: int
+    target: bytes
+    contract_target: ChecksumAddress
+    policy_hash: bytes
+    wildcard: bool
+    enabled: bool
+
+
+class DiesisPublicResolverContract:
+    """Typed wrapper for the DiesisPublicResolver contract."""
+
+    def __init__(self, address: ChecksumAddress, w3: Web3) -> None:
+        self.contract: Contract = w3.eth.contract(
+            address=address, abi=DIESISPUBLICRESOLVER_ABI,
+        )
+
+    # View/pure functions
+    def diesis_evm_coin_type(self) -> int: ...
+    def max_agent_record_bytes(self) -> int: ...
+    def max_contenthash_bytes(self) -> int: ...
+    def max_multicoin_addr_bytes(self) -> int: ...
+    def max_resolver_calls(self) -> int: ...
+    def max_route_target_bytes(self) -> int: ...
+    def max_text_key_bytes(self) -> int: ...
+    def max_text_value_bytes(self) -> int: ...
+    def route_kind_payment(self) -> int: ...
+    def addr_bytes32(self, node: bytes) -> ChecksumAddress: ...
+    def addr_bytes32_uint256(self, node: bytes, coin_type: int) -> bytes: ...
+    def agent_record(self, node: bytes, agent_id: bytes) -> dict[str, Any]: ...
+    def contenthash(self, node: bytes) -> bytes: ...
+    def contract_record(self, node: bytes, role: bytes) -> ChecksumAddress: ...
+    def owner(self) -> ChecksumAddress: ...
+    def payment_route(self, node: bytes, route_id: bytes) -> dict[str, Any]: ...
+    def registry(self) -> ChecksumAddress: ...
+    def route_record(self, node: bytes, route_id: bytes) -> dict[str, Any]: ...
+    def text(self, node: bytes, key: str) -> str: ...
+    def trusted_writers(self, writer: ChecksumAddress) -> bool: ...
+    def wildcard_payment_routing_allowed(self, node: bytes) -> bool: ...
+
+    # Write functions
+    def renounce_ownership(self) -> dict[str, Any]: ...
+    def set_addr_bytes32_uint256_bytes(self, node: bytes, coin_type: int, value: bytes) -> dict[str, Any]: ...
+    def set_addr_bytes32_address(self, node: bytes, value: ChecksumAddress) -> dict[str, Any]: ...
+    def set_agent_record(self, node: bytes, agent_id: bytes, record: dict[str, Any]) -> dict[str, Any]: ...
+    def set_contenthash(self, node: bytes, value: bytes) -> dict[str, Any]: ...
+    def set_contract_record(self, node: bytes, role: bytes, target: ChecksumAddress) -> dict[str, Any]: ...
+    def set_payment_route(self, node: bytes, route_id: bytes, route: dict[str, Any]) -> dict[str, Any]: ...
+    def set_records(self, node: bytes, calls: list[bytes]) -> dict[str, Any]: ...
+    def set_route_record(self, node: bytes, record: dict[str, Any]) -> dict[str, Any]: ...
+    def set_text(self, node: bytes, key: str, value: str) -> dict[str, Any]: ...
+    def set_trusted_writer(self, writer: ChecksumAddress, approved: bool) -> dict[str, Any]: ...
+    def set_wildcard_payment_routing_allowed(self, node: bytes, approved: bool) -> dict[str, Any]: ...
+    def transfer_ownership(self, new_owner: ChecksumAddress) -> dict[str, Any]: ...

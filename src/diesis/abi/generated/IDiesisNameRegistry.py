@@ -4,522 +4,557 @@
 from __future__ import annotations
 
 import json
-from typing import Any
+from typing import Any, TypedDict
+
+from eth_typing import ChecksumAddress
+from web3 import Web3
+from web3.contract import Contract
 
 
 IDIESISNAMEREGISTRY_ABI: list[dict[str, Any]] = json.loads('''
 [
   {
-    "type": "function",
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "controller",
+        "type": "address"
+      }
+    ],
     "name": "controllers",
-    "inputs": [
-      {
-        "name": "controller",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
     "outputs": [
       {
+        "internalType": "bool",
         "name": "",
-        "type": "bool",
-        "internalType": "bool"
+        "type": "bool"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
+      }
+    ],
     "name": "expiry",
-    "inputs": [
-      {
-        "name": "node",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      }
-    ],
     "outputs": [
       {
+        "internalType": "uint64",
         "name": "",
-        "type": "uint64",
-        "internalType": "uint64"
+        "type": "uint64"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "owner_",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      }
+    ],
     "name": "isApprovedForAll",
-    "inputs": [
-      {
-        "name": "owner_",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "operator",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
     "outputs": [
       {
+        "internalType": "bool",
         "name": "",
-        "type": "bool",
-        "internalType": "bool"
+        "type": "bool"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "type": "function",
-    "name": "isAuthorized",
     "inputs": [
       {
+        "internalType": "bytes32",
         "name": "node",
-        "type": "bytes32",
-        "internalType": "bytes32"
+        "type": "bytes32"
       },
       {
+        "internalType": "address",
         "name": "actor",
-        "type": "address",
-        "internalType": "address"
+        "type": "address"
       }
     ],
+    "name": "isAuthorized",
     "outputs": [
       {
+        "internalType": "bool",
         "name": "",
-        "type": "bool",
-        "internalType": "bool"
+        "type": "bool"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
+      }
+    ],
     "name": "isExpired",
-    "inputs": [
-      {
-        "name": "node",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      }
-    ],
     "outputs": [
       {
+        "internalType": "bool",
         "name": "",
-        "type": "bool",
-        "internalType": "bool"
+        "type": "bool"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "type": "function",
-    "name": "namePolicy",
     "inputs": [],
+    "name": "namePolicy",
     "outputs": [
       {
+        "internalType": "address",
         "name": "",
-        "type": "address",
-        "internalType": "address"
+        "type": "address"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
+      }
+    ],
     "name": "owner",
-    "inputs": [
-      {
-        "name": "node",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      }
-    ],
     "outputs": [
       {
+        "internalType": "address",
         "name": "",
-        "type": "address",
-        "internalType": "address"
+        "type": "address"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
+      }
+    ],
     "name": "resolver",
-    "inputs": [
-      {
-        "name": "node",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      }
-    ],
     "outputs": [
       {
+        "internalType": "address",
         "name": "",
-        "type": "address",
-        "internalType": "address"
+        "type": "address"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "approved",
+        "type": "bool"
+      }
+    ],
     "name": "setApprovalForAll",
-    "inputs": [
-      {
-        "name": "operator",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "approved",
-        "type": "bool",
-        "internalType": "bool"
-      }
-    ],
     "outputs": [],
-    "stateMutability": "nonpayable"
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "controller",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "approved",
+        "type": "bool"
+      }
+    ],
     "name": "setController",
-    "inputs": [
-      {
-        "name": "controller",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "approved",
-        "type": "bool",
-        "internalType": "bool"
-      }
-    ],
     "outputs": [],
-    "stateMutability": "nonpayable"
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint64",
+        "name": "expiry_",
+        "type": "uint64"
+      }
+    ],
     "name": "setExpiry",
-    "inputs": [
-      {
-        "name": "node",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "expiry_",
-        "type": "uint64",
-        "internalType": "uint64"
-      }
-    ],
     "outputs": [],
-    "stateMutability": "nonpayable"
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "policy",
+        "type": "address"
+      }
+    ],
     "name": "setNamePolicy",
-    "inputs": [
-      {
-        "name": "policy",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
     "outputs": [],
-    "stateMutability": "nonpayable"
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "owner_",
+        "type": "address"
+      }
+    ],
     "name": "setOwner",
-    "inputs": [
-      {
-        "name": "node",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "owner_",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
     "outputs": [],
-    "stateMutability": "nonpayable"
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "resolver_",
+        "type": "address"
+      }
+    ],
     "name": "setResolver",
-    "inputs": [
-      {
-        "name": "node",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "resolver_",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
     "outputs": [],
-    "stateMutability": "nonpayable"
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "label",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "owner_",
+        "type": "address"
+      }
+    ],
     "name": "setSubnodeOwner",
-    "inputs": [
-      {
-        "name": "node",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "label",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "owner_",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
     "outputs": [
       {
+        "internalType": "bytes32",
         "name": "",
-        "type": "bytes32",
-        "internalType": "bytes32"
+        "type": "bytes32"
       }
     ],
-    "stateMutability": "nonpayable"
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    "type": "function",
-    "name": "setSubnodeRecord",
     "inputs": [
       {
+        "internalType": "bytes32",
         "name": "node",
-        "type": "bytes32",
-        "internalType": "bytes32"
+        "type": "bytes32"
       },
       {
+        "internalType": "bytes32",
         "name": "label",
-        "type": "bytes32",
-        "internalType": "bytes32"
+        "type": "bytes32"
       },
       {
+        "internalType": "address",
         "name": "owner_",
-        "type": "address",
-        "internalType": "address"
+        "type": "address"
       },
       {
+        "internalType": "address",
         "name": "resolver_",
-        "type": "address",
-        "internalType": "address"
+        "type": "address"
       },
       {
+        "internalType": "uint64",
         "name": "ttl_",
-        "type": "uint64",
-        "internalType": "uint64"
+        "type": "uint64"
       },
       {
+        "internalType": "uint64",
         "name": "expiry_",
-        "type": "uint64",
-        "internalType": "uint64"
+        "type": "uint64"
       }
     ],
+    "name": "setSubnodeRecord",
     "outputs": [
       {
+        "internalType": "bytes32",
         "name": "",
-        "type": "bytes32",
-        "internalType": "bytes32"
+        "type": "bytes32"
       }
     ],
-    "stateMutability": "nonpayable"
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    "type": "function",
-    "name": "setTTL",
     "inputs": [
       {
+        "internalType": "bytes32",
         "name": "node",
-        "type": "bytes32",
-        "internalType": "bytes32"
+        "type": "bytes32"
       },
       {
+        "internalType": "uint64",
         "name": "ttl_",
-        "type": "uint64",
-        "internalType": "uint64"
+        "type": "uint64"
       }
     ],
+    "name": "setTTL",
     "outputs": [],
-    "stateMutability": "nonpayable"
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    "type": "function",
-    "name": "ttl",
     "inputs": [
       {
+        "internalType": "bytes32",
         "name": "node",
-        "type": "bytes32",
-        "internalType": "bytes32"
+        "type": "bytes32"
       }
     ],
+    "name": "ttl",
     "outputs": [
       {
+        "internalType": "uint64",
         "name": "",
-        "type": "uint64",
-        "internalType": "uint64"
+        "type": "uint64"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "type": "event",
-    "name": "ApprovalForAll",
+    "anonymous": false,
     "inputs": [
       {
-        "name": "owner",
-        "type": "address",
         "indexed": true,
-        "internalType": "address"
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
       },
       {
+        "indexed": true,
+        "internalType": "address",
         "name": "operator",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
+        "type": "address"
       },
       {
-        "name": "approved",
-        "type": "bool",
         "indexed": false,
-        "internalType": "bool"
+        "internalType": "bool",
+        "name": "approved",
+        "type": "bool"
       }
     ],
-    "anonymous": false
+    "name": "ApprovalForAll",
+    "type": "event"
   },
   {
-    "type": "event",
-    "name": "ControllerChanged",
+    "anonymous": false,
     "inputs": [
       {
+        "indexed": true,
+        "internalType": "address",
         "name": "controller",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
+        "type": "address"
       },
       {
+        "indexed": false,
+        "internalType": "bool",
         "name": "approved",
-        "type": "bool",
-        "indexed": false,
-        "internalType": "bool"
+        "type": "bool"
       }
     ],
-    "anonymous": false
+    "name": "ControllerChanged",
+    "type": "event"
   },
   {
-    "type": "event",
-    "name": "ExpiryChanged",
+    "anonymous": false,
     "inputs": [
       {
-        "name": "node",
-        "type": "bytes32",
         "indexed": true,
-        "internalType": "bytes32"
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
       },
       {
+        "indexed": false,
+        "internalType": "uint64",
         "name": "expiry",
-        "type": "uint64",
-        "indexed": false,
-        "internalType": "uint64"
+        "type": "uint64"
       }
     ],
-    "anonymous": false
+    "name": "ExpiryChanged",
+    "type": "event"
   },
   {
-    "type": "event",
-    "name": "NamePolicyChanged",
+    "anonymous": false,
     "inputs": [
       {
+        "indexed": true,
+        "internalType": "address",
         "name": "policy",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
+        "type": "address"
       }
     ],
-    "anonymous": false
+    "name": "NamePolicyChanged",
+    "type": "event"
   },
   {
-    "type": "event",
-    "name": "OwnerChanged",
+    "anonymous": false,
     "inputs": [
       {
-        "name": "node",
-        "type": "bytes32",
         "indexed": true,
-        "internalType": "bytes32"
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
       },
       {
+        "indexed": true,
+        "internalType": "address",
         "name": "owner",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
+        "type": "address"
       }
     ],
-    "anonymous": false
+    "name": "OwnerChanged",
+    "type": "event"
   },
   {
-    "type": "event",
-    "name": "ResolverChanged",
+    "anonymous": false,
     "inputs": [
       {
-        "name": "node",
-        "type": "bytes32",
         "indexed": true,
-        "internalType": "bytes32"
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
       },
       {
+        "indexed": true,
+        "internalType": "address",
         "name": "resolver",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
+        "type": "address"
       }
     ],
-    "anonymous": false
+    "name": "ResolverChanged",
+    "type": "event"
   },
   {
-    "type": "event",
-    "name": "TTLChanged",
+    "anonymous": false,
     "inputs": [
       {
-        "name": "node",
-        "type": "bytes32",
         "indexed": true,
-        "internalType": "bytes32"
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
       },
       {
-        "name": "ttl",
-        "type": "uint64",
         "indexed": false,
-        "internalType": "uint64"
+        "internalType": "uint64",
+        "name": "ttl",
+        "type": "uint64"
       }
     ],
-    "anonymous": false
+    "name": "TTLChanged",
+    "type": "event"
   },
   {
-    "type": "error",
+    "inputs": [],
     "name": "NotAuthorized",
-    "inputs": []
+    "type": "error"
   },
   {
-    "type": "error",
+    "inputs": [],
     "name": "ZeroOwner",
-    "inputs": []
+    "type": "error"
   }
 ]
 ''')
+
+
+class IDiesisNameRegistryContract:
+    """Typed wrapper for the IDiesisNameRegistry contract."""
+
+    def __init__(self, address: ChecksumAddress, w3: Web3) -> None:
+        self.contract: Contract = w3.eth.contract(
+            address=address, abi=IDIESISNAMEREGISTRY_ABI,
+        )
+
+    # View/pure functions
+    def controllers(self, controller: ChecksumAddress) -> bool: ...
+    def expiry(self, node: bytes) -> int: ...
+    def is_approved_for_all(self, owner: ChecksumAddress, operator: ChecksumAddress) -> bool: ...
+    def is_authorized(self, node: bytes, actor: ChecksumAddress) -> bool: ...
+    def is_expired(self, node: bytes) -> bool: ...
+    def name_policy(self) -> ChecksumAddress: ...
+    def owner(self, node: bytes) -> ChecksumAddress: ...
+    def resolver(self, node: bytes) -> ChecksumAddress: ...
+    def ttl(self, node: bytes) -> int: ...
+
+    # Write functions
+    def set_approval_for_all(self, operator: ChecksumAddress, approved: bool) -> dict[str, Any]: ...
+    def set_controller(self, controller: ChecksumAddress, approved: bool) -> dict[str, Any]: ...
+    def set_expiry(self, node: bytes, expiry: int) -> dict[str, Any]: ...
+    def set_name_policy(self, policy: ChecksumAddress) -> dict[str, Any]: ...
+    def set_owner(self, node: bytes, owner: ChecksumAddress) -> dict[str, Any]: ...
+    def set_resolver(self, node: bytes, resolver: ChecksumAddress) -> dict[str, Any]: ...
+    def set_subnode_owner(self, node: bytes, label: bytes, owner: ChecksumAddress) -> dict[str, Any]: ...
+    def set_subnode_record(self, node: bytes, label: bytes, owner: ChecksumAddress, resolver: ChecksumAddress, ttl: int, expiry: int) -> dict[str, Any]: ...
+    def set_ttl(self, node: bytes, ttl: int) -> dict[str, Any]: ...

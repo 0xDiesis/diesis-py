@@ -255,6 +255,12 @@ genesis_precompile_names: list[GenesisPrecompileName] = [
         "address": addresses.DIESIS_CONDUCTORS,
     },
     {
+        "key": "diesis-core-vault",
+        "name": "diesis-core-vault.ds",
+        "group": "exchange",
+        "address": addresses.DIESIS_CORE_VAULT,
+    },
+    {
         "key": "diesis-issuance-auction",
         "name": "diesis-issuance-auction.ds",
         "group": "economics",

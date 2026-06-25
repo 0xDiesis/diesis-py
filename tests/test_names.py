@@ -56,6 +56,7 @@ def test_genesis_precompile_names_cover_registry_slots() -> None:
     assert by_key["diesis-staking"]["name"] == "diesis-staking.ds"
     assert by_key["diesis-staking"]["address"] == "0xd1e5150000000000000000000000000000000001"
     assert by_key["diesis-name-registry"]["name"] == "diesis-name-registry.ds"
+    assert by_key["diesis-core-vault"]["address"] == "0x00D1E5150000000000000000000000000000C04e"
     assert by_key["ml-dsa"]["address"] == "0x0000000000000000000000000000000000000300"
     assert by_key["diesis-test-usd"]["address"] == "0xD1E5150000000000000000000000000000000040"
 

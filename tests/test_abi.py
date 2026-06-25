@@ -5,6 +5,7 @@ from diesis.abi.generated import (
     BOOTSTRAPCONFIG_ABI,
     DIESISBASEREGISTRAR_ABI,
     DIESISCONFIG_ABI,
+    DIESISCOREVAULT_ABI,
     DIESISNAMEPOLICY_ABI,
     DIESISNAMEREGISTRY_ABI,
     DIESISNAMEVERIFIER_ABI,
@@ -18,6 +19,7 @@ from diesis.abi.generated import (
     IDIESISBOOTSTRAPORACLE_ABI,
     IDIESISBUYBACKBURN_ABI,
     IDIESISCONDUCTORS_ABI,
+    IDIESISCOREVAULT_ABI,
     IDIESISERC20FACTORY_ABI,
     IDIESISISSUANCEAUCTION_ABI,
     IDIESISMARGIN_ABI,
@@ -46,6 +48,7 @@ def test_contract_abis_match_foundry_artifacts() -> None:
         "BootstrapConfig": BOOTSTRAPCONFIG_ABI,
         "DiesisBaseRegistrar": DIESISBASEREGISTRAR_ABI,
         "DiesisConfig": DIESISCONFIG_ABI,
+        "DiesisCoreVault": DIESISCOREVAULT_ABI,
         "DiesisNamePolicy": DIESISNAMEPOLICY_ABI,
         "DiesisNameRegistry": DIESISNAMEREGISTRY_ABI,
         "DiesisNameVerifier": DIESISNAMEVERIFIER_ABI,
@@ -59,6 +62,7 @@ def test_contract_abis_match_foundry_artifacts() -> None:
         "IDiesisBootstrapOracle": IDIESISBOOTSTRAPORACLE_ABI,
         "IDiesisBuybackBurn": IDIESISBUYBACKBURN_ABI,
         "IDiesisConductors": IDIESISCONDUCTORS_ABI,
+        "IDiesisCoreVault": IDIESISCOREVAULT_ABI,
         "IDiesisErc20Factory": IDIESISERC20FACTORY_ABI,
         "IDiesisIssuanceAuction": IDIESISISSUANCEAUCTION_ABI,
         "IDiesisMargin": IDIESISMARGIN_ABI,
@@ -79,7 +83,7 @@ def test_contract_abis_match_foundry_artifacts() -> None:
         "IWrappedDS": IWRAPPEDDS_ABI,
     }
 
-    assert len(abis) == 34
+    assert len(abis) == 36
     for contract_name, generated_abi in abis.items():
         artifact_path = ARTIFACT_DIR / f"{contract_name}.sol" / f"{contract_name}.json"
         artifact_abi = json.loads(artifact_path.read_text())["abi"]

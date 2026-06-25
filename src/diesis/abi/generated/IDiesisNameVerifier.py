@@ -4,589 +4,640 @@
 from __future__ import annotations
 
 import json
-from typing import Any
+from typing import Any, TypedDict
+
+from eth_typing import ChecksumAddress
+from web3 import Web3
+from web3.contract import Contract
 
 
 IDIESISNAMEVERIFIER_ABI: list[dict[str, Any]] = json.loads('''
 [
   {
-    "type": "function",
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "subject",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "kind",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "digest",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint64",
+        "name": "expiresAt",
+        "type": "uint64"
+      }
+    ],
     "name": "attest",
-    "inputs": [
-      {
-        "name": "node",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "subject",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "kind",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "digest",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "expiresAt",
-        "type": "uint64",
-        "internalType": "uint64"
-      }
-    ],
     "outputs": [
       {
+        "internalType": "bytes32",
         "name": "attestationId",
-        "type": "bytes32",
-        "internalType": "bytes32"
+        "type": "bytes32"
       }
     ],
-    "stateMutability": "nonpayable"
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "bytes32",
+            "name": "node",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "attestationType",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "address",
+            "name": "issuer",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "subjectHash",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "evidenceHash",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint64",
+            "name": "issuedAt",
+            "type": "uint64"
+          },
+          {
+            "internalType": "uint64",
+            "name": "validUntil",
+            "type": "uint64"
+          },
+          {
+            "internalType": "bytes",
+            "name": "extraData",
+            "type": "bytes"
+          }
+        ],
+        "internalType": "struct IDiesisNameVerifier.NameAttestation",
+        "name": "attestation",
+        "type": "tuple"
+      }
+    ],
     "name": "attestationDigest",
-    "inputs": [
-      {
-        "name": "attestation",
-        "type": "tuple",
-        "internalType": "struct IDiesisNameVerifier.NameAttestation",
-        "components": [
-          {
-            "name": "node",
-            "type": "bytes32",
-            "internalType": "bytes32"
-          },
-          {
-            "name": "attestationType",
-            "type": "bytes32",
-            "internalType": "bytes32"
-          },
-          {
-            "name": "issuer",
-            "type": "address",
-            "internalType": "address"
-          },
-          {
-            "name": "subjectHash",
-            "type": "bytes32",
-            "internalType": "bytes32"
-          },
-          {
-            "name": "evidenceHash",
-            "type": "bytes32",
-            "internalType": "bytes32"
-          },
-          {
-            "name": "issuedAt",
-            "type": "uint64",
-            "internalType": "uint64"
-          },
-          {
-            "name": "validUntil",
-            "type": "uint64",
-            "internalType": "uint64"
-          },
-          {
-            "name": "extraData",
-            "type": "bytes",
-            "internalType": "bytes"
-          }
-        ]
-      }
-    ],
     "outputs": [
       {
+        "internalType": "bytes32",
         "name": "",
-        "type": "bytes32",
-        "internalType": "bytes32"
+        "type": "bytes32"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "bytes32",
+            "name": "node",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "attestationType",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "address",
+            "name": "issuer",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "subjectHash",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "evidenceHash",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint64",
+            "name": "issuedAt",
+            "type": "uint64"
+          },
+          {
+            "internalType": "uint64",
+            "name": "validUntil",
+            "type": "uint64"
+          },
+          {
+            "internalType": "bytes",
+            "name": "extraData",
+            "type": "bytes"
+          }
+        ],
+        "internalType": "struct IDiesisNameVerifier.NameAttestation",
+        "name": "attestation",
+        "type": "tuple"
+      }
+    ],
     "name": "attestationHash",
-    "inputs": [
-      {
-        "name": "attestation",
-        "type": "tuple",
-        "internalType": "struct IDiesisNameVerifier.NameAttestation",
-        "components": [
-          {
-            "name": "node",
-            "type": "bytes32",
-            "internalType": "bytes32"
-          },
-          {
-            "name": "attestationType",
-            "type": "bytes32",
-            "internalType": "bytes32"
-          },
-          {
-            "name": "issuer",
-            "type": "address",
-            "internalType": "address"
-          },
-          {
-            "name": "subjectHash",
-            "type": "bytes32",
-            "internalType": "bytes32"
-          },
-          {
-            "name": "evidenceHash",
-            "type": "bytes32",
-            "internalType": "bytes32"
-          },
-          {
-            "name": "issuedAt",
-            "type": "uint64",
-            "internalType": "uint64"
-          },
-          {
-            "name": "validUntil",
-            "type": "uint64",
-            "internalType": "uint64"
-          },
-          {
-            "name": "extraData",
-            "type": "bytes",
-            "internalType": "bytes"
-          }
-        ]
-      }
-    ],
     "outputs": [
       {
+        "internalType": "bytes32",
         "name": "",
-        "type": "bytes32",
-        "internalType": "bytes32"
+        "type": "bytes32"
       }
     ],
-    "stateMutability": "pure"
+    "stateMutability": "pure",
+    "type": "function"
   },
   {
-    "type": "function",
-    "name": "attestations",
     "inputs": [
       {
+        "internalType": "bytes32",
         "name": "node",
-        "type": "bytes32",
-        "internalType": "bytes32"
+        "type": "bytes32"
       },
       {
+        "internalType": "bytes32",
         "name": "attestationType",
-        "type": "bytes32",
-        "internalType": "bytes32"
+        "type": "bytes32"
       }
     ],
+    "name": "attestations",
     "outputs": [
       {
+        "internalType": "bytes32[]",
         "name": "",
-        "type": "bytes32[]",
-        "internalType": "bytes32[]"
+        "type": "bytes32[]"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "type": "function",
-    "name": "attestations",
     "inputs": [
       {
+        "internalType": "bytes32",
         "name": "attestationId",
-        "type": "bytes32",
-        "internalType": "bytes32"
+        "type": "bytes32"
       }
     ],
+    "name": "attestations",
     "outputs": [
       {
-        "name": "",
-        "type": "tuple",
-        "internalType": "struct IDiesisNameVerifier.Attestation",
         "components": [
           {
+            "internalType": "bytes32",
             "name": "node",
-            "type": "bytes32",
-            "internalType": "bytes32"
+            "type": "bytes32"
           },
           {
+            "internalType": "address",
             "name": "subject",
-            "type": "address",
-            "internalType": "address"
+            "type": "address"
           },
           {
+            "internalType": "bytes32",
             "name": "kind",
-            "type": "bytes32",
-            "internalType": "bytes32"
+            "type": "bytes32"
           },
           {
+            "internalType": "bytes32",
             "name": "digest",
-            "type": "bytes32",
-            "internalType": "bytes32"
+            "type": "bytes32"
           },
           {
+            "internalType": "address",
             "name": "issuer",
-            "type": "address",
-            "internalType": "address"
+            "type": "address"
           },
           {
+            "internalType": "uint64",
             "name": "issuedAt",
-            "type": "uint64",
-            "internalType": "uint64"
+            "type": "uint64"
           },
           {
+            "internalType": "uint64",
             "name": "expiresAt",
-            "type": "uint64",
-            "internalType": "uint64"
+            "type": "uint64"
           },
           {
+            "internalType": "bool",
             "name": "revoked",
-            "type": "bool",
-            "internalType": "bool"
+            "type": "bool"
           }
-        ]
+        ],
+        "internalType": "struct IDiesisNameVerifier.Attestation",
+        "name": "",
+        "type": "tuple"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "type": "function",
-    "name": "isAttested",
     "inputs": [
       {
+        "internalType": "bytes32",
         "name": "node",
-        "type": "bytes32",
-        "internalType": "bytes32"
+        "type": "bytes32"
       },
       {
+        "internalType": "bytes32",
         "name": "attestationType",
-        "type": "bytes32",
-        "internalType": "bytes32"
+        "type": "bytes32"
       },
       {
+        "internalType": "address",
         "name": "issuer",
-        "type": "address",
-        "internalType": "address"
+        "type": "address"
       }
     ],
+    "name": "isAttested",
     "outputs": [
       {
+        "internalType": "bool",
         "name": "",
-        "type": "bool",
-        "internalType": "bool"
+        "type": "bool"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "attestationId",
+        "type": "bytes32"
+      }
+    ],
     "name": "isValid",
-    "inputs": [
-      {
-        "name": "attestationId",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      }
-    ],
     "outputs": [
       {
+        "internalType": "bool",
         "name": "",
-        "type": "bool",
-        "internalType": "bool"
+        "type": "bool"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "type": "function",
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "issuer",
+        "type": "address"
+      }
+    ],
     "name": "issuers",
-    "inputs": [
-      {
-        "name": "issuer",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
     "outputs": [
       {
+        "internalType": "bool",
         "name": "",
-        "type": "bool",
-        "internalType": "bool"
+        "type": "bool"
       }
     ],
-    "stateMutability": "view"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    "type": "function",
-    "name": "revoke",
     "inputs": [
       {
+        "internalType": "bytes32",
         "name": "attestationId",
-        "type": "bytes32",
-        "internalType": "bytes32"
+        "type": "bytes32"
       }
     ],
+    "name": "revoke",
     "outputs": [],
-    "stateMutability": "nonpayable"
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    "type": "function",
-    "name": "revokeAttestation",
     "inputs": [
       {
+        "internalType": "bytes32",
         "name": "node",
-        "type": "bytes32",
-        "internalType": "bytes32"
+        "type": "bytes32"
       },
       {
+        "internalType": "bytes32",
         "name": "attestationHash",
-        "type": "bytes32",
-        "internalType": "bytes32"
+        "type": "bytes32"
       }
     ],
+    "name": "revokeAttestation",
     "outputs": [],
-    "stateMutability": "nonpayable"
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    "type": "function",
-    "name": "setIssuer",
     "inputs": [
       {
+        "internalType": "address",
         "name": "issuer",
-        "type": "address",
-        "internalType": "address"
+        "type": "address"
       },
       {
+        "internalType": "bool",
         "name": "approved",
-        "type": "bool",
-        "internalType": "bool"
+        "type": "bool"
       }
     ],
+    "name": "setIssuer",
     "outputs": [],
-    "stateMutability": "nonpayable"
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    "type": "function",
-    "name": "submitAttestation",
     "inputs": [
       {
-        "name": "attestation",
-        "type": "tuple",
-        "internalType": "struct IDiesisNameVerifier.NameAttestation",
         "components": [
           {
+            "internalType": "bytes32",
             "name": "node",
-            "type": "bytes32",
-            "internalType": "bytes32"
+            "type": "bytes32"
           },
           {
+            "internalType": "bytes32",
             "name": "attestationType",
-            "type": "bytes32",
-            "internalType": "bytes32"
+            "type": "bytes32"
           },
           {
+            "internalType": "address",
             "name": "issuer",
-            "type": "address",
-            "internalType": "address"
+            "type": "address"
           },
           {
+            "internalType": "bytes32",
             "name": "subjectHash",
-            "type": "bytes32",
-            "internalType": "bytes32"
+            "type": "bytes32"
           },
           {
+            "internalType": "bytes32",
             "name": "evidenceHash",
-            "type": "bytes32",
-            "internalType": "bytes32"
+            "type": "bytes32"
           },
           {
+            "internalType": "uint64",
             "name": "issuedAt",
-            "type": "uint64",
-            "internalType": "uint64"
+            "type": "uint64"
           },
           {
+            "internalType": "uint64",
             "name": "validUntil",
-            "type": "uint64",
-            "internalType": "uint64"
+            "type": "uint64"
           },
           {
+            "internalType": "bytes",
             "name": "extraData",
-            "type": "bytes",
-            "internalType": "bytes"
+            "type": "bytes"
           }
-        ]
+        ],
+        "internalType": "struct IDiesisNameVerifier.NameAttestation",
+        "name": "attestation",
+        "type": "tuple"
       },
       {
+        "internalType": "bytes",
         "name": "signature",
-        "type": "bytes",
-        "internalType": "bytes"
+        "type": "bytes"
       }
     ],
+    "name": "submitAttestation",
     "outputs": [],
-    "stateMutability": "nonpayable"
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "attestationHash",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "issuer",
+        "type": "address"
+      }
+    ],
     "name": "AttestationRevoked",
-    "inputs": [
-      {
-        "name": "node",
-        "type": "bytes32",
-        "indexed": true,
-        "internalType": "bytes32"
-      },
-      {
-        "name": "attestationHash",
-        "type": "bytes32",
-        "indexed": true,
-        "internalType": "bytes32"
-      },
-      {
-        "name": "issuer",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      }
-    ],
-    "anonymous": false
+    "type": "event"
   },
   {
-    "type": "event",
-    "name": "AttestationSubmitted",
+    "anonymous": false,
     "inputs": [
       {
-        "name": "node",
-        "type": "bytes32",
         "indexed": true,
-        "internalType": "bytes32"
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
       },
       {
+        "indexed": true,
+        "internalType": "bytes32",
         "name": "attestationType",
-        "type": "bytes32",
-        "indexed": true,
-        "internalType": "bytes32"
+        "type": "bytes32"
       },
       {
+        "indexed": true,
+        "internalType": "address",
         "name": "issuer",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
+        "type": "address"
       },
       {
+        "indexed": false,
+        "internalType": "bytes32",
         "name": "attestationHash",
-        "type": "bytes32",
-        "indexed": false,
-        "internalType": "bytes32"
+        "type": "bytes32"
       },
       {
+        "indexed": false,
+        "internalType": "uint64",
         "name": "validUntil",
-        "type": "uint64",
-        "indexed": false,
-        "internalType": "uint64"
+        "type": "uint64"
       }
     ],
-    "anonymous": false
+    "name": "AttestationSubmitted",
+    "type": "event"
   },
   {
-    "type": "event",
-    "name": "Attested",
+    "anonymous": false,
     "inputs": [
       {
-        "name": "attestationId",
-        "type": "bytes32",
         "indexed": true,
-        "internalType": "bytes32"
+        "internalType": "bytes32",
+        "name": "attestationId",
+        "type": "bytes32"
       },
       {
+        "indexed": true,
+        "internalType": "bytes32",
         "name": "node",
-        "type": "bytes32",
-        "indexed": true,
-        "internalType": "bytes32"
+        "type": "bytes32"
       },
       {
+        "indexed": true,
+        "internalType": "address",
         "name": "subject",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
+        "type": "address"
       },
       {
+        "indexed": false,
+        "internalType": "bytes32",
         "name": "kind",
-        "type": "bytes32",
-        "indexed": false,
-        "internalType": "bytes32"
+        "type": "bytes32"
       },
       {
+        "indexed": false,
+        "internalType": "bytes32",
         "name": "digest",
-        "type": "bytes32",
-        "indexed": false,
-        "internalType": "bytes32"
+        "type": "bytes32"
       },
       {
+        "indexed": false,
+        "internalType": "uint64",
         "name": "expiresAt",
-        "type": "uint64",
-        "indexed": false,
-        "internalType": "uint64"
+        "type": "uint64"
       }
     ],
-    "anonymous": false
+    "name": "Attested",
+    "type": "event"
   },
   {
-    "type": "event",
-    "name": "IssuerChanged",
+    "anonymous": false,
     "inputs": [
       {
-        "name": "issuer",
-        "type": "address",
         "indexed": true,
-        "internalType": "address"
+        "internalType": "address",
+        "name": "issuer",
+        "type": "address"
       },
       {
-        "name": "approved",
-        "type": "bool",
         "indexed": false,
-        "internalType": "bool"
+        "internalType": "bool",
+        "name": "approved",
+        "type": "bool"
       }
     ],
-    "anonymous": false
+    "name": "IssuerChanged",
+    "type": "event"
   },
   {
-    "type": "event",
-    "name": "Revoked",
+    "anonymous": false,
     "inputs": [
       {
-        "name": "attestationId",
-        "type": "bytes32",
         "indexed": true,
-        "internalType": "bytes32"
+        "internalType": "bytes32",
+        "name": "attestationId",
+        "type": "bytes32"
       }
     ],
-    "anonymous": false
+    "name": "Revoked",
+    "type": "event"
   },
   {
-    "type": "error",
+    "inputs": [],
     "name": "AttestationAlreadySubmitted",
-    "inputs": []
+    "type": "error"
   },
   {
-    "type": "error",
+    "inputs": [],
     "name": "BadSignature",
-    "inputs": []
+    "type": "error"
   },
   {
-    "type": "error",
+    "inputs": [],
     "name": "NotIssuer",
-    "inputs": []
+    "type": "error"
   },
   {
-    "type": "error",
+    "inputs": [],
     "name": "UnknownAttestation",
-    "inputs": []
+    "type": "error"
   }
 ]
 ''')
+
+
+class IDiesisNameVerifierNameAttestation(TypedDict):
+    node: bytes
+    attestation_type: bytes
+    issuer: ChecksumAddress
+    subject_hash: bytes
+    evidence_hash: bytes
+    issued_at: int
+    valid_until: int
+    extra_data: bytes
+
+
+class IDiesisNameVerifierAttestation(TypedDict):
+    node: bytes
+    subject: ChecksumAddress
+    kind: bytes
+    digest: bytes
+    issuer: ChecksumAddress
+    issued_at: int
+    expires_at: int
+    revoked: bool
+
+
+class IDiesisNameVerifierContract:
+    """Typed wrapper for the IDiesisNameVerifier contract."""
+
+    def __init__(self, address: ChecksumAddress, w3: Web3) -> None:
+        self.contract: Contract = w3.eth.contract(
+            address=address, abi=IDIESISNAMEVERIFIER_ABI,
+        )
+
+    # View/pure functions
+    def attestation_digest(self, attestation: dict[str, Any]) -> bytes: ...
+    def attestation_hash(self, attestation: dict[str, Any]) -> bytes: ...
+    def attestations_bytes32_bytes32(self, node: bytes, attestation_type: bytes) -> list[bytes]: ...
+    def attestations_bytes32(self, attestation_id: bytes) -> dict[str, Any]: ...
+    def is_attested(self, node: bytes, attestation_type: bytes, issuer: ChecksumAddress) -> bool: ...
+    def is_valid(self, attestation_id: bytes) -> bool: ...
+    def issuers(self, issuer: ChecksumAddress) -> bool: ...
+
+    # Write functions
+    def attest(self, node: bytes, subject: ChecksumAddress, kind: bytes, digest: bytes, expires_at: int) -> dict[str, Any]: ...
+    def revoke(self, attestation_id: bytes) -> dict[str, Any]: ...
+    def revoke_attestation(self, node: bytes, attestation_hash: bytes) -> dict[str, Any]: ...
+    def set_issuer(self, issuer: ChecksumAddress, approved: bool) -> dict[str, Any]: ...
+    def submit_attestation(self, attestation: dict[str, Any], signature: bytes) -> dict[str, Any]: ...

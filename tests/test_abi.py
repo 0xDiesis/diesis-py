@@ -37,6 +37,7 @@ from diesis.abi.generated import (
     IDIESISSPOTBOOK_ABI,
     IDIESISSTATEWRITER_ABI,
     ILIQUIDSTAKEDDS_ABI,
+    IVALIDATORSHARE_ABI,
     IWRAPPEDDS_ABI,
 )
 
@@ -80,10 +81,11 @@ def test_contract_abis_match_foundry_artifacts() -> None:
         "IDiesisSpotBook": IDIESISSPOTBOOK_ABI,
         "IDiesisStateWriter": IDIESISSTATEWRITER_ABI,
         "ILiquidStakedDS": ILIQUIDSTAKEDDS_ABI,
+        "IValidatorShare": IVALIDATORSHARE_ABI,
         "IWrappedDS": IWRAPPEDDS_ABI,
     }
 
-    assert len(abis) == 36
+    assert len(abis) == 37
     for contract_name, generated_abi in abis.items():
         artifact_path = ARTIFACT_DIR / f"{contract_name}.sol" / f"{contract_name}.json"
         artifact_abi = json.loads(artifact_path.read_text())["abi"]

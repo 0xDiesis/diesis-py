@@ -35,4 +35,5 @@ from .IDiesisSettlement import *  # noqa: F401, F403
 from .IDiesisSpotBook import *  # noqa: F401, F403
 from .IDiesisStateWriter import *  # noqa: F401, F403
 from .ILiquidStakedDS import *  # noqa: F401, F403
+from .IValidatorShare import *  # noqa: F401, F403
 from .IWrappedDS import *  # noqa: F401, F403

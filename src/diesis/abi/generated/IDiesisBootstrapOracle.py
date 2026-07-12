@@ -239,6 +239,26 @@ IDIESISBOOTSTRAPORACLE_ABI: list[dict[str, Any]] = json.loads('''
             "internalType": "uint256",
             "name": "lastTransferOrder",
             "type": "uint256"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "confirmationAttestationEpochDigest",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "lastTransitionAttestationEpochDigest",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint64",
+            "name": "confirmationAttestationEpoch",
+            "type": "uint64"
+          },
+          {
+            "internalType": "uint64",
+            "name": "lastTransitionAttestationEpoch",
+            "type": "uint64"
           }
         ],
         "internalType": "struct IDiesisBootstrapOracle.DepositRecord",
@@ -263,6 +283,66 @@ IDIESISBOOTSTRAPORACLE_ABI: list[dict[str, Any]] = json.loads('''
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address[]",
+        "name": "validators",
+        "type": "address[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "weights",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "epochIdentityDigest",
+        "type": "bytes32"
+      }
+    ],
+    "name": "setValidatorEpoch",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint64",
+        "name": "epoch",
+        "type": "uint64"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "epochIdentityDigest",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "attestationEpochDigest",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "quorumThresholdBps",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "totalValidatorWeight",
+        "type": "uint256"
+      }
+    ],
+    "name": "AttestationEpochRotated",
+    "type": "event"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {
@@ -276,6 +356,12 @@ IDIESISBOOTSTRAPORACLE_ABI: list[dict[str, Any]] = json.loads('''
         "internalType": "uint256",
         "name": "depositId",
         "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "attestationEpochDigest",
+        "type": "bytes32"
       },
       {
         "indexed": false,
@@ -295,6 +381,12 @@ IDIESISBOOTSTRAPORACLE_ABI: list[dict[str, Any]] = json.loads('''
         "internalType": "uint256",
         "name": "depositId",
         "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "attestationEpochDigest",
+        "type": "bytes32"
       },
       {
         "indexed": false,
@@ -322,6 +414,12 @@ IDIESISBOOTSTRAPORACLE_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       },
       {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "attestationEpochDigest",
+        "type": "bytes32"
+      },
+      {
         "indexed": false,
         "internalType": "address",
         "name": "attester",
@@ -341,6 +439,12 @@ IDIESISBOOTSTRAPORACLE_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       },
       {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "attestationEpochDigest",
+        "type": "bytes32"
+      },
+      {
         "indexed": false,
         "internalType": "uint256",
         "name": "lumpSumDs",
@@ -348,6 +452,31 @@ IDIESISBOOTSTRAPORACLE_ABI: list[dict[str, Any]] = json.loads('''
       }
     ],
     "name": "ForfeitConfirmed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "quorumThresholdBps",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "attestationEpochDigest",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint64",
+        "name": "epoch",
+        "type": "uint64"
+      }
+    ],
+    "name": "QuorumThresholdUpdated",
     "type": "event"
   },
   {
@@ -403,6 +532,12 @@ IDIESISBOOTSTRAPORACLE_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       },
       {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "attestationEpochDigest",
+        "type": "bytes32"
+      },
+      {
         "indexed": false,
         "internalType": "address",
         "name": "attester",
@@ -422,6 +557,12 @@ IDIESISBOOTSTRAPORACLE_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       },
       {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "attestationEpochDigest",
+        "type": "bytes32"
+      },
+      {
         "indexed": false,
         "internalType": "address",
         "name": "newOwner",
@@ -429,6 +570,43 @@ IDIESISBOOTSTRAPORACLE_ABI: list[dict[str, Any]] = json.loads('''
       }
     ],
     "name": "TransferConfirmed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "epochIdentityDigest",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "attestationEpochDigest",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint64",
+        "name": "epoch",
+        "type": "uint64"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "validatorCount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "totalValidatorWeight",
+        "type": "uint256"
+      }
+    ],
+    "name": "ValidatorEpochSet",
     "type": "event"
   },
   {
@@ -445,6 +623,12 @@ IDIESISBOOTSTRAPORACLE_ABI: list[dict[str, Any]] = json.loads('''
         "internalType": "uint256",
         "name": "depositId",
         "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "attestationEpochDigest",
+        "type": "bytes32"
       },
       {
         "indexed": false,
@@ -464,6 +648,12 @@ IDIESISBOOTSTRAPORACLE_ABI: list[dict[str, Any]] = json.loads('''
         "internalType": "uint256",
         "name": "depositId",
         "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "attestationEpochDigest",
+        "type": "bytes32"
       }
     ],
     "name": "WithdrawalConfirmed",
@@ -496,7 +686,17 @@ IDIESISBOOTSTRAPORACLE_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
+    "name": "EpochIdentityDigestReused",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "InvalidQuorumThreshold",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidValidatorSetLength",
     "type": "error"
   },
   {
@@ -516,7 +716,22 @@ IDIESISBOOTSTRAPORACLE_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
+    "name": "TotalValidatorWeightOverflow",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ValidatorSetIdentityUnchanged",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "ValidatorSetUnconfigured",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ValidatorsNotStrictlySorted",
     "type": "error"
   },
   {
@@ -527,6 +742,11 @@ IDIESISBOOTSTRAPORACLE_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [],
     "name": "ZeroAmount",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ZeroEpochIdentityDigest",
     "type": "error"
   }
 ]
@@ -547,6 +767,10 @@ class IDiesisBootstrapOracleDepositRecord(TypedDict):
     current_owner: ChecksumAddress
     last_reward_timestamp: int
     last_transfer_order: int
+    confirmation_attestation_epoch_digest: bytes
+    last_transition_attestation_epoch_digest: bytes
+    confirmation_attestation_epoch: int
+    last_transition_attestation_epoch: int
 
 
 class IDiesisBootstrapOracleContract:
@@ -580,4 +804,7 @@ class IDiesisBootstrapOracleContract:
         ...
     def claim_bootstrap_rewards(self, deposit_ids: list[int]) -> dict[str, Any]:
         """Claim ongoing bootstrap rewards for one or more deposits."""
+        ...
+    def set_validator_epoch(self, validators: list[ChecksumAddress], weights: list[int], epoch_identity_digest: bytes) -> dict[str, Any]:
+        """Atomically install a complete, sorted weighted validator epoch."""
         ...

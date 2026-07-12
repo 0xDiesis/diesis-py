@@ -89,6 +89,25 @@ IDIESISPOSITION_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       }
     ],
+    "name": "effectiveLockUntil",
+    "outputs": [
+      {
+        "internalType": "uint40",
+        "name": "",
+        "type": "uint40"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      }
+    ],
     "name": "freeCollateralOf",
     "outputs": [
       {
@@ -114,6 +133,35 @@ IDIESISPOSITION_ABI: list[dict[str, Any]] = json.loads('''
         "internalType": "address",
         "name": "operator",
         "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "manager",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "lockId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "hasLockCapacity",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
       }
     ],
     "stateMutability": "view",
@@ -198,6 +246,11 @@ IDIESISPOSITION_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       },
       {
+        "internalType": "bytes32",
+        "name": "lockId",
+        "type": "bytes32"
+      },
+      {
         "internalType": "uint40",
         "name": "lockDuration",
         "type": "uint40"
@@ -206,6 +259,88 @@ IDIESISPOSITION_ABI: list[dict[str, Any]] = json.loads('''
     "name": "lockPositionFor",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "index",
+        "type": "uint256"
+      }
+    ],
+    "name": "lockRecordAt",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "manager",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "lockId",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint40",
+        "name": "lockedUntil",
+        "type": "uint40"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "lockRecordCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "manager",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "lockId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "lockUntilFor",
+    "outputs": [
+      {
+        "internalType": "uint40",
+        "name": "",
+        "type": "uint40"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -355,16 +490,21 @@ IDIESISPOSITION_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "tokenId",
+        "name": "fromTokenId",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "shareDebt",
+        "name": "toTokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "shareAmount",
         "type": "uint256"
       }
     ],
-    "name": "redeemShareDebt",
+    "name": "redeemShareBacking",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -714,6 +854,11 @@ IDIESISPOSITION_ABI: list[dict[str, Any]] = json.loads('''
         "internalType": "uint256",
         "name": "tokenId",
         "type": "uint256"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "lockId",
+        "type": "bytes32"
       }
     ],
     "name": "unlockPosition",
@@ -999,6 +1144,62 @@ IDIESISPOSITION_ABI: list[dict[str, Any]] = json.loads('''
       {
         "indexed": true,
         "internalType": "address",
+        "name": "manager",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "lockId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "LockRemoved",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "manager",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "lockId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint40",
+        "name": "lockedUntil",
+        "type": "uint40"
+      }
+    ],
+    "name": "LockSet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
         "name": "owner",
         "type": "address"
       },
@@ -1098,6 +1299,31 @@ IDIESISPOSITION_ABI: list[dict[str, Any]] = json.loads('''
       }
     ],
     "name": "RewardsRestaked",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "fromTokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "toTokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "ShareBackingRedeemed",
     "type": "event"
   },
   {
@@ -1246,12 +1472,48 @@ IDIESISPOSITION_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
+    "name": "HasOutstandingLockRecords",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "HasOutstandingShareDebt",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "HasPendingWithdrawal",
     "type": "error"
   },
   {
     "inputs": [],
     "name": "InsufficientCollateral",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint40",
+        "name": "existingUntil",
+        "type": "uint40"
+      },
+      {
+        "internalType": "uint40",
+        "name": "requestedUntil",
+        "type": "uint40"
+      }
+    ],
+    "name": "LockNotExtended",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "LockNotFound",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "LockRecordIndexOutOfBounds",
     "type": "error"
   },
   {
@@ -1306,12 +1568,27 @@ IDIESISPOSITION_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
+    "name": "TooManyLockRecords",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "ValidatorMismatch",
     "type": "error"
   },
   {
     "inputs": [],
     "name": "ZeroAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ZeroLockDuration",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ZeroShareAmount",
     "type": "error"
   }
 ]
@@ -1336,12 +1613,27 @@ class IDiesisPositionContract:
 
     # View/pure functions
     def balance_of(self, owner: ChecksumAddress) -> int: ...
+    def effective_lock_until(self, token_id: int) -> int:
+        """Return the effective unexpired maximum lock deadline, or zero when unlocked."""
+        ...
     def free_collateral_of(self, token_id: int) -> int:
         """Return the free (unencumbered) collateral: stakedAmount - totalDebt."""
         ...
     def get_approved(self, token_id: int) -> ChecksumAddress: ...
+    def has_lock_capacity(self, token_id: int, manager: ChecksumAddress, lock_id: bytes) -> bool:
+        """Whether a new record can be added, or the specified existing record can be extended."""
+        ...
     def is_approved_for_all(self, owner: ChecksumAddress, operator: ChecksumAddress) -> bool: ...
     def is_function_approved(self, token_id: int, fn: int, caller: ChecksumAddress) -> bool: ...
+    def lock_record_at(self, token_id: int, index: int) -> tuple[ChecksumAddress, bytes, int]:
+        """Return one outstanding lock record by index."""
+        ...
+    def lock_record_count(self, token_id: int) -> int:
+        """Return the number of bounded outstanding lock records, including expired provenance."""
+        ...
+    def lock_until_for(self, token_id: int, manager: ChecksumAddress, lock_id: bytes) -> int:
+        """Return the deadline recorded for one lock identity."""
+        ...
     def owner_of(self, token_id: int) -> ChecksumAddress: ...
     def position_info(self, token_id: int) -> dict[str, Any]: ...
     def share_debt_of(self, token_id: int) -> int:
@@ -1363,8 +1655,10 @@ class IDiesisPositionContract:
     def approve(self, to: ChecksumAddress, token_id: int) -> dict[str, Any]: ...
     def claim_rewards(self, token_id: int, recipient: ChecksumAddress) -> dict[str, Any]: ...
     def delegate(self, token_id: int) -> dict[str, Any]: ...
-    def lock_position(self, token_id: int, lock_duration: int) -> dict[str, Any]: ...
-    def lock_position_for(self, token_id: int, lock_duration: int) -> dict[str, Any]:
+    def lock_position(self, token_id: int, lock_duration: int) -> dict[str, Any]:
+        """Create or strictly extend the intrinsic owner lock."""
+        ...
+    def lock_position_for(self, token_id: int, lock_id: bytes, lock_duration: int) -> dict[str, Any]:
         """Lock a position on behalf of its owner."""
         ...
     def merge_position(self, from_token_id: int, into_token_id: int) -> dict[str, Any]:
@@ -1373,7 +1667,9 @@ class IDiesisPositionContract:
     def mint(self, validator: int) -> dict[str, Any]: ...
     def mint_liquid_token(self, token_id: int, mint_amount: int, recipient: ChecksumAddress) -> dict[str, Any]: ...
     def mint_share_debt(self, token_id: int, share_debt: int) -> dict[str, Any]: ...
-    def redeem_share_debt(self, token_id: int, share_debt: int) -> dict[str, Any]: ...
+    def redeem_share_backing(self, from_token_id: int, to_token_id: int, share_amount: int) -> dict[str, Any]:
+        """Extinguish source share debt and move the same backing stake to a same-validator destination."""
+        ...
     def repay_liquid_token(self, token_id: int, burn_amount: int) -> dict[str, Any]: ...
     def restake_rewards(self, token_id: int) -> dict[str, Any]: ...
     def revoke_function_approval(self, token_id: int, fn: int) -> dict[str, Any]: ...
@@ -1389,8 +1685,8 @@ class IDiesisPositionContract:
         ...
     def transfer_from(self, _from: ChecksumAddress, to: ChecksumAddress, token_id: int) -> dict[str, Any]: ...
     def undelegate(self, token_id: int, wr_id: int, undelegate_amount: int) -> dict[str, Any]: ...
-    def unlock_position(self, token_id: int) -> dict[str, Any]:
-        """Clear the lock on a position (callable by authorized incentive contracts)."""
+    def unlock_position(self, token_id: int, lock_id: bytes) -> dict[str, Any]:
+        """Clear one caller-owned lock on a position."""
         ...
     def withdraw(self, token_id: int, wr_id: int) -> dict[str, Any]: ...
     def withdraw_to(self, token_id: int, wr_id: int, recipient: ChecksumAddress) -> dict[str, Any]:

@@ -396,6 +396,13 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
+    "name": "cancelKeyRecovery",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "circulatingSupply",
     "outputs": [
       {
@@ -535,7 +542,7 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "internalType": "address",
-        "name": "newAddress",
+        "name": "oldAddress",
         "type": "address"
       }
     ],
@@ -1864,6 +1871,75 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
         "internalType": "address",
         "name": "newAddress",
         "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "authorizer",
+        "type": "address"
+      }
+    ],
+    "name": "KeyRecoveryApproved",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "oldAddress",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newAddress",
+        "type": "address"
+      }
+    ],
+    "name": "KeyRecoveryCancelled",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "validatorId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "oldAddress",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newAddress",
+        "type": "address"
+      }
+    ],
+    "name": "KeyRecoveryExecuted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "oldAddress",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newAddress",
+        "type": "address"
       }
     ],
     "name": "KeyRecoveryRequested",
@@ -2609,7 +2685,9 @@ class DiesisStakingContract:
     def mark_uptime_drift(self) -> int: ...
     def node_active(self) -> int: ...
     def node_exiting(self) -> int: ...
-    def active_recovery(self, arg0: ChecksumAddress) -> ChecksumAddress: ...
+    def active_recovery(self, arg0: ChecksumAddress) -> ChecksumAddress:
+        """Exact old-to-new pair approved by the independent recovery authorizer."""
+        ...
     def aggregate_active_stake(self) -> int:
         """Returns the aggregate active stake across all validators."""
         ...
@@ -2649,7 +2727,9 @@ class DiesisStakingContract:
     def pending_operator_take_rate(self, arg0: int) -> int:
         """Pending operator cut change: validatorId → new rate."""
         ...
-    def pending_recovery(self, arg0: ChecksumAddress) -> ChecksumAddress: ...
+    def pending_recovery(self, arg0: ChecksumAddress) -> ChecksumAddress:
+        """Destination preconfigured by the current operator, keyed by its old address."""
+        ...
     def pending_treasury_fees(self) -> int: ...
     def recovery_authorizer(self) -> ChecksumAddress: ...
     def rewards_accrued_through(self, arg0: int) -> int:
@@ -2679,7 +2759,9 @@ class DiesisStakingContract:
         """Fund additional rewards for the currently open checkpoint."""
         ...
     def approve(self, to: ChecksumAddress, token_id: int) -> dict[str, Any]: ...
-    def approve_key_recovery(self, old_address: ChecksumAddress, new_address: ChecksumAddress) -> dict[str, Any]: ...
+    def approve_key_recovery(self, old_address: ChecksumAddress, new_address: ChecksumAddress) -> dict[str, Any]:
+        """Approve the exact recovery pair previously configured by `oldAddress`."""
+        ...
     def bootstrap_delegation(self, delegator: ChecksumAddress, to_validator_id: int, stake_amount: int) -> dict[str, Any]:
         """Bootstrap a delegation at genesis (driver only)."""
         ...
@@ -2688,6 +2770,9 @@ class DiesisStakingContract:
         ...
     def burn_tokens(self) -> dict[str, Any]:
         """Burn tokens by accepting msg.value and removing it from gross supply."""
+        ...
+    def cancel_key_recovery(self) -> dict[str, Any]:
+        """Cancel the caller's pending recovery and any approval for it."""
         ...
     def commit_validator_set(self, next_validator_ids: list[int]) -> dict[str, Any]:
         """Record the active validator set and their stakes for the new checkpoint."""
@@ -2704,7 +2789,9 @@ class DiesisStakingContract:
     def compound_rewards_for_position(self, token_id: int) -> dict[str, Any]:
         """Compound rewards back into the position."""
         ...
-    def execute_key_recovery(self, new_address: ChecksumAddress) -> dict[str, Any]: ...
+    def execute_key_recovery(self, old_address: ChecksumAddress) -> dict[str, Any]:
+        """Replace `oldAddress` as validator operator with the caller."""
+        ...
     def finalize_checkpoint(self, metrics: dict[str, Any]) -> dict[str, Any]:
         """Finalize the current checkpoint with validator performance metrics. Called by the Rust node as a system transaction (msg.sender == address(0))."""
         ...

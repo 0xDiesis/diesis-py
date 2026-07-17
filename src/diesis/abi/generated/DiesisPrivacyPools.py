@@ -15,25 +15,35 @@ DIESISPRIVACYPOOLS_ABI: list[dict[str, Any]] = json.loads('''
 [
   {
     "inputs": [],
+    "name": "acceptOwnership",
+    "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "constructor"
+    "type": "function"
   },
   {
-    "inputs": [
+    "inputs": [],
+    "name": "artifactClass",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "associationVerifier",
+    "outputs": [
       {
         "internalType": "address",
-        "name": "_verifier",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_owner",
+        "name": "",
         "type": "address"
       }
     ],
-    "name": "initialize",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "pure",
     "type": "function"
   },
   {
@@ -52,6 +62,19 @@ DIESISPRIVACYPOOLS_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [],
     "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "pendingOwner",
     "outputs": [
       {
         "internalType": "address",
@@ -168,19 +191,6 @@ DIESISPRIVACYPOOLS_ABI: list[dict[str, Any]] = json.loads('''
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "verifierAddr",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "bytes",
@@ -207,11 +217,11 @@ DIESISPRIVACYPOOLS_ABI: list[dict[str, Any]] = json.loads('''
     "outputs": [
       {
         "internalType": "bool",
-        "name": "valid",
+        "name": "",
         "type": "bool"
       }
     ],
-    "stateMutability": "nonpayable",
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -239,23 +249,36 @@ DIESISPRIVACYPOOLS_ABI: list[dict[str, Any]] = json.loads('''
       {
         "indexed": true,
         "internalType": "address",
-        "name": "provider",
+        "name": "currentOwner",
         "type": "address"
       },
       {
-        "indexed": false,
-        "internalType": "bytes32",
-        "name": "nullifier",
-        "type": "bytes32"
-      },
-      {
-        "indexed": false,
-        "internalType": "bool",
-        "name": "valid",
-        "type": "bool"
+        "indexed": true,
+        "internalType": "address",
+        "name": "pendingOwner",
+        "type": "address"
       }
     ],
-    "name": "AssociationVerified",
+    "name": "OwnershipTransferStarted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipTransferred",
     "type": "event"
   },
   {
@@ -279,11 +302,6 @@ DIESISPRIVACYPOOLS_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "AlreadyInitialized",
-    "type": "error"
-  },
-  {
-    "inputs": [],
     "name": "AlreadyRegistered",
     "type": "error"
   },
@@ -294,7 +312,22 @@ DIESISPRIVACYPOOLS_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
+    "name": "InvalidVerifierIdentity",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NonCanonicalField",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "NotInitialized",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotPendingOwner",
     "type": "error"
   },
   {
@@ -319,6 +352,11 @@ DIESISPRIVACYPOOLS_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
+    "name": "ZeroNullifier",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "ZeroRoot",
     "type": "error"
   }
@@ -335,28 +373,18 @@ class DiesisPrivacyPoolsContract:
         )
 
     # View/pure functions
+    def artifact_class(self) -> bytes: ...
+    def association_verifier(self) -> ChecksumAddress: ...
     def initialized(self) -> bool: ...
     def owner(self) -> ChecksumAddress: ...
-    def provider_count(self) -> int:
-        """Get the number of registered providers"""
-        ...
+    def pending_owner(self) -> ChecksumAddress: ...
+    def provider_count(self) -> int: ...
     def provider_list(self, arg0: int) -> ChecksumAddress: ...
     def providers(self, arg0: ChecksumAddress) -> tuple[str, bool, bytes]: ...
-    def verifier_addr(self) -> ChecksumAddress: ...
+    def verify_association(self, proof: bytes, association_set_root: bytes, nullifier: bytes, provider: ChecksumAddress) -> bool: ...
 
     # Write functions
-    def initialize(self, verifier: ChecksumAddress, owner: ChecksumAddress) -> dict[str, Any]:
-        """Initialize the contract (at genesis, storage is pre-populated)"""
-        ...
-    def register_provider(self, provider: ChecksumAddress, name: str) -> dict[str, Any]:
-        """Register a new compliance provider (governance-controlled)"""
-        ...
-    def transfer_ownership(self, new_owner: ChecksumAddress) -> dict[str, Any]:
-        """Transfer ownership"""
-        ...
-    def update_association_set(self, new_root: bytes) -> dict[str, Any]:
-        """Update the association set Merkle root (called by providers)"""
-        ...
-    def verify_association(self, proof: bytes, association_set_root: bytes, nullifier: bytes, provider: ChecksumAddress) -> dict[str, Any]:
-        """Verify that a nullifier belongs to a compliant association set"""
-        ...
+    def accept_ownership(self) -> dict[str, Any]: ...
+    def register_provider(self, provider: ChecksumAddress, name: str) -> dict[str, Any]: ...
+    def transfer_ownership(self, new_owner: ChecksumAddress) -> dict[str, Any]: ...
+    def update_association_set(self, new_root: bytes) -> dict[str, Any]: ...

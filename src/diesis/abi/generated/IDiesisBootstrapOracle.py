@@ -17,6 +17,116 @@ IDIESISBOOTSTRAPORACLE_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "internalType": "bytes32",
+        "name": "identityDigest",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "oldIdentityDigest",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint64",
+        "name": "activationBlockNumber",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint64",
+        "name": "certificationBoundaryNumber",
+        "type": "uint64"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "certificationBoundaryParentHash",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "certifiedCheckpointDigest",
+        "type": "bytes32"
+      }
+    ],
+    "name": "activationRecordMatches",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint64",
+            "name": "oldEpoch",
+            "type": "uint64"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "oldIdentityDigest",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "nextIdentityDigest",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint64",
+            "name": "activationBlockNumber",
+            "type": "uint64"
+          },
+          {
+            "internalType": "uint64",
+            "name": "certificationBoundaryNumber",
+            "type": "uint64"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "certificationBoundaryParentHash",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "certifiedCheckpointDigest",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes",
+            "name": "signerBitmap",
+            "type": "bytes"
+          },
+          {
+            "internalType": "bytes",
+            "name": "aggregateSignature",
+            "type": "bytes"
+          }
+        ],
+        "internalType": "struct IDiesisEpochAuthority.EpochTransitionCertificateV1",
+        "name": "certificate",
+        "type": "tuple"
+      }
+    ],
+    "name": "activationRecordMatchesCertificate",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
         "name": "ethTxHash",
         "type": "bytes32"
       },
@@ -270,6 +380,274 @@ IDIESISBOOTSTRAPORACLE_ABI: list[dict[str, Any]] = json.loads('''
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "identityDigest",
+        "type": "bytes32"
+      }
+    ],
+    "name": "epochActivationCertificateHash",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint64",
+        "name": "epoch",
+        "type": "uint64"
+      }
+    ],
+    "name": "epochActivationRecord",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "bytes32",
+            "name": "identityDigest",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "oldIdentityDigest",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint64",
+            "name": "activationBlockNumber",
+            "type": "uint64"
+          },
+          {
+            "internalType": "uint64",
+            "name": "certificationBoundaryNumber",
+            "type": "uint64"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "certificationBoundaryParentHash",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "certifiedCheckpointDigest",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "signerBitmapHash",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "aggregateSignatureHash",
+            "type": "bytes32"
+          }
+        ],
+        "internalType": "struct IDiesisEpochAuthority.EpochActivationRecord",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "certificateHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "epochActivationRecordByCertificateHash",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "bytes32",
+            "name": "identityDigest",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "oldIdentityDigest",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint64",
+            "name": "activationBlockNumber",
+            "type": "uint64"
+          },
+          {
+            "internalType": "uint64",
+            "name": "certificationBoundaryNumber",
+            "type": "uint64"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "certificationBoundaryParentHash",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "certifiedCheckpointDigest",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "signerBitmapHash",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "aggregateSignatureHash",
+            "type": "bytes32"
+          }
+        ],
+        "internalType": "struct IDiesisEpochAuthority.EpochActivationRecord",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "identityDigest",
+        "type": "bytes32"
+      }
+    ],
+    "name": "epochActivationRecordByIdentityDigest",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "bytes32",
+            "name": "identityDigest",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "oldIdentityDigest",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint64",
+            "name": "activationBlockNumber",
+            "type": "uint64"
+          },
+          {
+            "internalType": "uint64",
+            "name": "certificationBoundaryNumber",
+            "type": "uint64"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "certificationBoundaryParentHash",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "certifiedCheckpointDigest",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "signerBitmapHash",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "aggregateSignatureHash",
+            "type": "bytes32"
+          }
+        ],
+        "internalType": "struct IDiesisEpochAuthority.EpochActivationRecord",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint64",
+            "name": "oldEpoch",
+            "type": "uint64"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "oldIdentityDigest",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "nextIdentityDigest",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint64",
+            "name": "activationBlockNumber",
+            "type": "uint64"
+          },
+          {
+            "internalType": "uint64",
+            "name": "certificationBoundaryNumber",
+            "type": "uint64"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "certificationBoundaryParentHash",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "certifiedCheckpointDigest",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes",
+            "name": "signerBitmap",
+            "type": "bytes"
+          },
+          {
+            "internalType": "bytes",
+            "name": "aggregateSignature",
+            "type": "bytes"
+          }
+        ],
+        "internalType": "struct IDiesisEpochAuthority.EpochTransitionCertificateV1",
+        "name": "certificate",
+        "type": "tuple"
+      }
+    ],
+    "name": "epochTransitionCertificateHash",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "oraclePaused",
     "outputs": [
@@ -285,6 +663,72 @@ IDIESISBOOTSTRAPORACLE_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [
       {
+        "components": [
+          {
+            "internalType": "uint64",
+            "name": "oldEpoch",
+            "type": "uint64"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "oldIdentityDigest",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "nextIdentityDigest",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint64",
+            "name": "activationBlockNumber",
+            "type": "uint64"
+          },
+          {
+            "internalType": "uint64",
+            "name": "certificationBoundaryNumber",
+            "type": "uint64"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "certificationBoundaryParentHash",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "certifiedCheckpointDigest",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes",
+            "name": "signerBitmap",
+            "type": "bytes"
+          },
+          {
+            "internalType": "bytes",
+            "name": "aggregateSignature",
+            "type": "bytes"
+          }
+        ],
+        "internalType": "struct IDiesisEpochAuthority.EpochTransitionCertificateV1",
+        "name": "certificate",
+        "type": "tuple"
+      }
+    ],
+    "name": "persistEpochActivationRecord",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "certificateHash",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address[]",
         "name": "validators",
         "type": "address[]"
@@ -293,14 +737,9 @@ IDIESISBOOTSTRAPORACLE_ABI: list[dict[str, Any]] = json.loads('''
         "internalType": "uint256[]",
         "name": "weights",
         "type": "uint256[]"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "epochIdentityDigest",
-        "type": "bytes32"
       }
     ],
-    "name": "setValidatorEpoch",
+    "name": "syncValidatorEpoch",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -686,6 +1125,11 @@ IDIESISBOOTSTRAPORACLE_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
+    "name": "EpochActivationRecordConflict",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "EpochIdentityDigestReused",
     "type": "error"
   },
@@ -731,11 +1175,6 @@ IDIESISBOOTSTRAPORACLE_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "ValidatorsNotStrictlySorted",
-    "type": "error"
-  },
-  {
-    "inputs": [],
     "name": "ZeroAddress",
     "type": "error"
   },
@@ -751,6 +1190,18 @@ IDIESISBOOTSTRAPORACLE_ABI: list[dict[str, Any]] = json.loads('''
   }
 ]
 ''')
+
+
+class IDiesisBootstrapOracleEpochTransitionCertificateV1(TypedDict):
+    old_epoch: int
+    old_identity_digest: bytes
+    next_identity_digest: bytes
+    activation_block_number: int
+    certification_boundary_number: int
+    certification_boundary_parent_hash: bytes
+    certified_checkpoint_digest: bytes
+    signer_bitmap: bytes
+    aggregate_signature: bytes
 
 
 class IDiesisBootstrapOracleDepositRecord(TypedDict):
@@ -773,6 +1224,17 @@ class IDiesisBootstrapOracleDepositRecord(TypedDict):
     last_transition_attestation_epoch: int
 
 
+class IDiesisBootstrapOracleEpochActivationRecord(TypedDict):
+    identity_digest: bytes
+    old_identity_digest: bytes
+    activation_block_number: int
+    certification_boundary_number: int
+    certification_boundary_parent_hash: bytes
+    certified_checkpoint_digest: bytes
+    signer_bitmap_hash: bytes
+    aggregate_signature_hash: bytes
+
+
 class IDiesisBootstrapOracleContract:
     """Typed wrapper for the IDiesisBootstrapOracle contract."""
 
@@ -782,9 +1244,16 @@ class IDiesisBootstrapOracleContract:
         )
 
     # View/pure functions
+    def activation_record_matches(self, identity_digest: bytes, old_identity_digest: bytes, activation_block_number: int, certification_boundary_number: int, certification_boundary_parent_hash: bytes, certified_checkpoint_digest: bytes) -> bool: ...
+    def activation_record_matches_certificate(self, certificate: dict[str, Any]) -> bool: ...
     def deposit_record(self, deposit_id: int) -> dict[str, Any]:
         """Return the full deposit record for a given deposit ID."""
         ...
+    def epoch_activation_certificate_hash(self, identity_digest: bytes) -> bytes: ...
+    def epoch_activation_record(self, epoch: int) -> dict[str, Any]: ...
+    def epoch_activation_record_by_certificate_hash(self, certificate_hash: bytes) -> dict[str, Any]: ...
+    def epoch_activation_record_by_identity_digest(self, identity_digest: bytes) -> dict[str, Any]: ...
+    def epoch_transition_certificate_hash(self, certificate: dict[str, Any]) -> bytes: ...
     def oracle_paused(self) -> bool:
         """Whether the oracle is currently paused."""
         ...
@@ -805,6 +1274,7 @@ class IDiesisBootstrapOracleContract:
     def claim_bootstrap_rewards(self, deposit_ids: list[int]) -> dict[str, Any]:
         """Claim ongoing bootstrap rewards for one or more deposits."""
         ...
-    def set_validator_epoch(self, validators: list[ChecksumAddress], weights: list[int], epoch_identity_digest: bytes) -> dict[str, Any]:
-        """Atomically install a complete, sorted weighted validator epoch."""
+    def persist_epoch_activation_record(self, certificate: dict[str, Any]) -> dict[str, Any]: ...
+    def sync_validator_epoch(self, validators: list[ChecksumAddress], weights: list[int]) -> dict[str, Any]:
+        """Synchronize the complete validator-ID-ordered weighted set from canonical staking authority."""
         ...

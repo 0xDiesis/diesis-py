@@ -17,17 +17,33 @@ IDIESISPERPSBOOK_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "internalType": "bytes32",
-        "name": "marketId",
+        "name": "orderId",
         "type": "bytes32"
       },
       {
-        "internalType": "int256",
-        "name": "marginDelta",
-        "type": "int256"
+        "internalType": "uint256",
+        "name": "price",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint64",
+        "name": "expiry",
+        "type": "uint64"
       }
     ],
-    "name": "adjustIsolatedMargin",
-    "outputs": [],
+    "name": "amendPerpOrderV1",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "replacementOrderId",
+        "type": "bytes32"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -44,20 +60,7 @@ IDIESISPERPSBOOK_ABI: list[dict[str, Any]] = json.loads('''
         "type": "int256"
       }
     ],
-    "name": "applyFunding",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "marketId",
-        "type": "bytes32"
-      }
-    ],
-    "name": "closePosition",
+    "name": "applyPerpFundingV1",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -67,6 +70,24 @@ IDIESISPERPSBOOK_ABI: list[dict[str, Any]] = json.loads('''
       {
         "internalType": "bytes32",
         "name": "orderId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "cancelPerpOrderV1",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "makerOrderId",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "takerOrderId",
         "type": "bytes32"
       },
       {
@@ -80,12 +101,12 @@ IDIESISPERPSBOOK_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       }
     ],
-    "name": "executePerpFill",
+    "name": "executePerpTradeV1",
     "outputs": [
       {
-        "internalType": "uint256",
-        "name": "success",
-        "type": "uint256"
+        "internalType": "bytes32",
+        "name": "clearingTransactionId",
+        "type": "bytes32"
       }
     ],
     "stateMutability": "nonpayable",
@@ -95,103 +116,42 @@ IDIESISPERPSBOOK_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "internalType": "bytes32",
-        "name": "marketId",
+        "name": "orderId",
         "type": "bytes32"
       }
     ],
-    "name": "getFundingRate",
-    "outputs": [
-      {
-        "internalType": "int256",
-        "name": "fundingRate",
-        "type": "int256"
-      }
-    ],
-    "stateMutability": "view",
+    "name": "expirePerpOrderV1",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
+        "internalType": "bytes",
+        "name": "encodedActions",
+        "type": "bytes"
+      }
+    ],
+    "name": "submitExchangeActionsV2",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "resultHash",
+        "type": "bytes32"
       },
       {
-        "internalType": "bytes32",
-        "name": "marketId",
-        "type": "bytes32"
-      }
-    ],
-    "name": "getIsolatedMargin",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "isolatedMargin",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "marketId",
-        "type": "bytes32"
-      }
-    ],
-    "name": "getMarkPrice",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "markPrice",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
+        "internalType": "uint16",
+        "name": "acceptedCount",
+        "type": "uint16"
       },
       {
-        "internalType": "bytes32",
-        "name": "marketId",
-        "type": "bytes32"
+        "internalType": "uint16",
+        "name": "rejectedCount",
+        "type": "uint16"
       }
     ],
-    "name": "getPosition",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "bytes32",
-            "name": "header",
-            "type": "bytes32"
-          },
-          {
-            "internalType": "uint256",
-            "name": "size",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "entryPrice",
-            "type": "uint256"
-          }
-        ],
-        "internalType": "struct IDiesisPerpsBook.PackedPosition",
-        "name": "position",
-        "type": "tuple"
-      }
-    ],
-    "stateMutability": "view",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -204,6 +164,11 @@ IDIESISPERPSBOOK_ABI: list[dict[str, Any]] = json.loads('''
       {
         "internalType": "uint8",
         "name": "side",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint8",
+        "name": "orderType",
         "type": "uint8"
       },
       {
@@ -225,9 +190,14 @@ IDIESISPERPSBOOK_ABI: list[dict[str, Any]] = json.loads('''
         "internalType": "uint8",
         "name": "marginType",
         "type": "uint8"
+      },
+      {
+        "internalType": "uint64",
+        "name": "expiry",
+        "type": "uint64"
       }
     ],
-    "name": "submitPerpLimitOrder",
+    "name": "submitPerpOrderV1",
     "outputs": [
       {
         "internalType": "bytes32",
@@ -246,82 +216,107 @@ IDIESISPERPSBOOK_ABI: list[dict[str, Any]] = json.loads('''
         "type": "bytes32"
       },
       {
-        "internalType": "uint8",
-        "name": "side",
-        "type": "uint8"
-      },
-      {
         "internalType": "uint256",
-        "name": "amount",
+        "name": "markPrice",
         "type": "uint256"
-      },
-      {
-        "internalType": "uint8",
-        "name": "marginType",
-        "type": "uint8"
       }
     ],
-    "name": "submitPerpMarketOrder",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "filledAmount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "orderId",
-        "type": "bytes32"
-      }
-    ],
+    "name": "updatePerpMarkV1",
+    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
+    "anonymous": false,
     "inputs": [
       {
+        "indexed": true,
+        "internalType": "bytes16",
+        "name": "clientActionId",
+        "type": "bytes16"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint16",
+        "name": "actionIndex",
+        "type": "uint16"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "actionTag",
+        "type": "uint8"
+      },
+      {
+        "indexed": true,
         "internalType": "bytes32",
         "name": "marketId",
         "type": "bytes32"
       },
       {
-        "internalType": "uint256",
-        "name": "price",
-        "type": "uint256"
+        "indexed": false,
+        "internalType": "address",
+        "name": "principal",
+        "type": "address"
       },
       {
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "resultId",
+        "type": "bytes32"
       }
     ],
-    "name": "updateMarkPrice",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    "name": "ExchangeActionAcceptedV2",
+    "type": "event"
   },
   {
+    "anonymous": false,
     "inputs": [
       {
-        "internalType": "bytes32[]",
-        "name": "marketIds",
-        "type": "bytes32[]"
+        "indexed": true,
+        "internalType": "bytes16",
+        "name": "clientActionId",
+        "type": "bytes16"
       },
       {
-        "internalType": "uint256[]",
-        "name": "prices",
-        "type": "uint256[]"
+        "indexed": true,
+        "internalType": "uint16",
+        "name": "actionIndex",
+        "type": "uint16"
       },
       {
-        "internalType": "uint256[]",
-        "name": "timestamps",
-        "type": "uint256[]"
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "actionTag",
+        "type": "uint8"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "principal",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "reasonCode",
+        "type": "uint16"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "context",
+        "type": "bytes32"
       }
     ],
-    "name": "updateOraclePrices",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    "name": "ExchangeActionRejectedV2",
+    "type": "event"
   },
   {
     "anonymous": false,
@@ -333,24 +328,60 @@ IDIESISPERPSBOOK_ABI: list[dict[str, Any]] = json.loads('''
         "type": "bytes32"
       },
       {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "orderId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "trader",
+        "type": "address"
+      },
+      {
         "indexed": false,
-        "internalType": "int256",
-        "name": "fundingRate",
-        "type": "int256"
+        "internalType": "uint8",
+        "name": "mutation",
+        "type": "uint8"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "side",
+        "type": "uint8"
       },
       {
         "indexed": false,
         "internalType": "uint64",
-        "name": "timestamp",
+        "name": "priceTicks",
+        "type": "uint64"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint64",
+        "name": "quantityLots",
+        "type": "uint64"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint64",
+        "name": "remainingLots",
         "type": "uint64"
       }
     ],
-    "name": "FundingApplied",
+    "name": "ExchangeL3MutationV2",
     "type": "event"
   },
   {
     "anonymous": false,
     "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "orderId",
+        "type": "bytes32"
+      },
       {
         "indexed": true,
         "internalType": "bytes32",
@@ -362,46 +393,9 @@ IDIESISPERPSBOOK_ABI: list[dict[str, Any]] = json.loads('''
         "internalType": "address",
         "name": "trader",
         "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "int256",
-        "name": "marginDelta",
-        "type": "int256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "newIsolatedMargin",
-        "type": "uint256"
       }
     ],
-    "name": "IsolatedMarginAdjusted",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "marketId",
-        "type": "bytes32"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "price",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
-      }
-    ],
-    "name": "MarkPriceUpdated",
+    "name": "OrderCancelled",
     "type": "event"
   },
   {
@@ -501,40 +495,9 @@ IDIESISPERPSBOOK_ABI: list[dict[str, Any]] = json.loads('''
     ],
     "name": "OrderPlaced",
     "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "marketId",
-        "type": "bytes32"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "trader",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "int256",
-        "name": "realizedPnl",
-        "type": "int256"
-      }
-    ],
-    "name": "PositionClosed",
-    "type": "event"
   }
 ]
 ''')
-
-
-class IDiesisPerpsBookPackedPosition(TypedDict):
-    header: bytes
-    size: int
-    entry_price: int
 
 
 class IDiesisPerpsBookContract:
@@ -545,22 +508,28 @@ class IDiesisPerpsBookContract:
             address=address, abi=IDIESISPERPSBOOK_ABI,
         )
 
-    # View/pure functions
-    def get_funding_rate(self, market_id: bytes) -> int: ...
-    def get_isolated_margin(self, user: ChecksumAddress, market_id: bytes) -> int:
-        """Read the quote collateral dedicated to a user's isolated-margin position."""
-        ...
-    def get_mark_price(self, market_id: bytes) -> int: ...
-    def get_position(self, user: ChecksumAddress, market_id: bytes) -> dict[str, Any]: ...
-
     # Write functions
-    def adjust_isolated_margin(self, market_id: bytes, margin_delta: int) -> dict[str, Any]:
-        """Add or remove isolated margin on the caller's position in `marketId`."""
+    def amend_perp_order_v1(self, order_id: bytes, price: int, amount: int, expiry: int) -> dict[str, Any]:
+        """Atomically cancel and replace an order with new price, amount,         expiry, canonical margin reservation, and priority identity."""
         ...
-    def apply_funding(self, market_id: bytes, funding_rate_bps: int) -> dict[str, Any]: ...
-    def close_position(self, market_id: bytes) -> dict[str, Any]: ...
-    def execute_perp_fill(self, order_id: bytes, fill_price: int, fill_qty: int) -> dict[str, Any]: ...
-    def submit_perp_limit_order(self, market_id: bytes, side: int, price: int, amount: int, flags: int, margin_type: int) -> dict[str, Any]: ...
-    def submit_perp_market_order(self, market_id: bytes, side: int, amount: int, margin_type: int) -> dict[str, Any]: ...
-    def update_mark_price(self, market_id: bytes, price: int, timestamp: int) -> dict[str, Any]: ...
-    def update_oracle_prices(self, market_ids: list[bytes], prices: list[int], timestamps: list[int]) -> dict[str, Any]: ...
+    def apply_perp_funding_v1(self, market_id: bytes, funding_rate_bps: int) -> dict[str, Any]:
+        """Advance canonical funding through solvency-frontier segments."""
+        ...
+    def cancel_perp_order_v1(self, order_id: bytes) -> dict[str, Any]:
+        """Cancel an owned V1 order and return all unused canonical margin."""
+        ...
+    def execute_perp_trade_v1(self, maker_order_id: bytes, taker_order_id: bytes, fill_price: int, fill_qty: int) -> dict[str, Any]:
+        """Commit one system-owned opposite-side fill through canonical clearing."""
+        ...
+    def expire_perp_order_v1(self, order_id: bytes) -> dict[str, Any]:
+        """Permissionlessly expire a GTD order after its canonical deadline."""
+        ...
+    def submit_exchange_actions_v2(self, encoded_actions: bytes) -> dict[str, Any]:
+        """Encode the shared bounded V2 action call for future Lane B use."""
+        ...
+    def submit_perp_order_v1(self, market_id: bytes, side: int, order_type: int, price: int, amount: int, flags: int, margin_type: int, expiry: int) -> dict[str, Any]:
+        """Submit one versioned perpetual order funded from canonical settlement custody."""
+        ...
+    def update_perp_mark_v1(self, market_id: bytes, mark_price: int) -> dict[str, Any]:
+        """Advance the canonical scaled mark through solvency-frontier segments."""
+        ...

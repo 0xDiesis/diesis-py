@@ -343,6 +343,35 @@ IDIESISSPOTBOOK_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [
       {
+        "internalType": "bytes",
+        "name": "encodedActions",
+        "type": "bytes"
+      }
+    ],
+    "name": "submitExchangeActionsV2",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "resultHash",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint16",
+        "name": "acceptedCount",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint16",
+        "name": "rejectedCount",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "bytes32",
         "name": "marketId",
         "type": "bytes32"
@@ -474,6 +503,208 @@ IDIESISSPOTBOOK_ABI: list[dict[str, Any]] = json.loads('''
       }
     ],
     "name": "BatchAuctionCleared",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes16",
+        "name": "clientActionId",
+        "type": "bytes16"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint16",
+        "name": "actionIndex",
+        "type": "uint16"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "actionTag",
+        "type": "uint8"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "principal",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "resultId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "ExchangeActionAcceptedV2",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes16",
+        "name": "clientActionId",
+        "type": "bytes16"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint16",
+        "name": "actionIndex",
+        "type": "uint16"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "actionTag",
+        "type": "uint8"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "principal",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "reasonCode",
+        "type": "uint16"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "context",
+        "type": "bytes32"
+      }
+    ],
+    "name": "ExchangeActionRejectedV2",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "orderId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "trader",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "mutation",
+        "type": "uint8"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "side",
+        "type": "uint8"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint64",
+        "name": "priceTicks",
+        "type": "uint64"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint64",
+        "name": "quantityLots",
+        "type": "uint64"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint64",
+        "name": "remainingLots",
+        "type": "uint64"
+      }
+    ],
+    "name": "ExchangeL3MutationV2",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "makerOrderId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "takerOrderId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "maker",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "taker",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "aggressorSide",
+        "type": "uint8"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint64",
+        "name": "priceTicks",
+        "type": "uint64"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint64",
+        "name": "quantityLots",
+        "type": "uint64"
+      }
+    ],
+    "name": "ExchangeTradeFillV2",
     "type": "event"
   },
   {
@@ -646,6 +877,9 @@ class IDiesisSpotBookContract:
         ...
     def start_opening_auction(self, market_id: bytes, start_block: int, end_block: int, reference_price: int) -> dict[str, Any]:
         """Start an opening auction for an active empty market."""
+        ...
+    def submit_exchange_actions_v2(self, encoded_actions: bytes) -> dict[str, Any]:
+        """Submit one strictly bounded canonical V2 action batch."""
         ...
     def submit_limit_order(self, market_id: bytes, side: int, price_ticks: int, amount_lots: int, flags: int) -> dict[str, Any]:
         """Place a limit order in an active spot market."""

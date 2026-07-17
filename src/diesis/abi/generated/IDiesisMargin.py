@@ -16,86 +16,20 @@ IDIESISMARGIN_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
         "internalType": "bytes32",
         "name": "marketId",
         "type": "bytes32"
       }
     ],
-    "name": "adlRanking",
+    "name": "resolvePerpProtectionV1",
     "outputs": [
-      {
-        "internalType": "int256",
-        "name": "score",
-        "type": "int256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "tier",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "globalInsuranceBalance",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "balance",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      },
       {
         "internalType": "bytes32",
-        "name": "marketId",
+        "name": "transactionId",
         "type": "bytes32"
-      }
-    ],
-    "name": "liquidate",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "success",
-        "type": "uint256"
       }
     ],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "marketId",
-        "type": "bytes32"
-      }
-    ],
-    "name": "marketInsuranceBalance",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "balance",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -184,10 +118,7 @@ class IDiesisMarginContract:
             address=address, abi=IDIESISMARGIN_ABI,
         )
 
-    # View/pure functions
-    def adl_ranking(self, user: ChecksumAddress, market_id: bytes) -> tuple[int, int]: ...
-    def global_insurance_balance(self) -> int: ...
-    def market_insurance_balance(self, market_id: bytes) -> int: ...
-
     # Write functions
-    def liquidate(self, account: ChecksumAddress, market_id: bytes) -> dict[str, Any]: ...
+    def resolve_perp_protection_v1(self, market_id: bytes) -> dict[str, Any]:
+        """System-owned canonical frontier resolution. External callers are rejected."""
+        ...

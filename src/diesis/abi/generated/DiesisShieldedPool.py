@@ -15,15 +15,6 @@ DIESISSHIELDEDPOOL_ABI: list[dict[str, Any]] = json.loads('''
 [
   {
     "inputs": [],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
-  },
-  {
-    "stateMutability": "payable",
-    "type": "receive"
-  },
-  {
-    "inputs": [],
     "name": "DENOMINATION",
     "outputs": [
       {
@@ -38,6 +29,19 @@ DIESISSHIELDEDPOOL_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [],
     "name": "DEPTH",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "ENCRYPTED_NOTE_BYTES",
     "outputs": [
       {
         "internalType": "uint256",
@@ -76,12 +80,31 @@ DIESISSHIELDEDPOOL_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "bootstrapOwner",
+    "name": "artifactClass",
     "outputs": [
       {
-        "internalType": "address",
+        "internalType": "bytes32",
         "name": "",
-        "type": "address"
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "name": "commitmentSeen",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
       }
     ],
     "stateMutability": "view",
@@ -106,6 +129,11 @@ DIESISSHIELDEDPOOL_ABI: list[dict[str, Any]] = json.loads('''
         "internalType": "bytes32",
         "name": "commitment",
         "type": "bytes32"
+      },
+      {
+        "internalType": "bytes",
+        "name": "encryptedNote",
+        "type": "bytes"
       }
     ],
     "name": "deposit",
@@ -133,19 +161,6 @@ DIESISSHIELDEDPOOL_ABI: list[dict[str, Any]] = json.loads('''
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_verifier",
-        "type": "address"
-      }
-    ],
-    "name": "initialize",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "initialized",
     "outputs": [
@@ -162,7 +177,7 @@ DIESISSHIELDEDPOOL_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "internalType": "bytes32",
-        "name": "_root",
+        "name": "rootValue",
         "type": "bytes32"
       }
     ],
@@ -211,6 +226,19 @@ DIESISSHIELDEDPOOL_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
+    "name": "outstandingNotes",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "root",
     "outputs": [
       {
@@ -244,6 +272,25 @@ DIESISSHIELDEDPOOL_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [
       {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "name": "rootReferenceCount",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "bytes",
         "name": "proof",
         "type": "bytes"
@@ -254,24 +301,42 @@ DIESISSHIELDEDPOOL_ABI: list[dict[str, Any]] = json.loads('''
         "type": "bytes32"
       },
       {
-        "internalType": "bytes32[]",
-        "name": "_nullifiers",
-        "type": "bytes32[]"
+        "internalType": "bytes32[2]",
+        "name": "inputNullifiers",
+        "type": "bytes32[2]"
       },
       {
-        "internalType": "bytes32[]",
-        "name": "commitments",
-        "type": "bytes32[]"
+        "internalType": "bytes32[2]",
+        "name": "outputCommitments",
+        "type": "bytes32[2]"
       },
       {
-        "internalType": "bytes32",
-        "name": "extDataHash",
-        "type": "bytes32"
+        "internalType": "uint8",
+        "name": "activeCount",
+        "type": "uint8"
+      },
+      {
+        "internalType": "bytes",
+        "name": "encryptedOutputs",
+        "type": "bytes"
       }
     ],
     "name": "transact",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "transferVerifier",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "pure",
     "type": "function"
   },
   {
@@ -282,19 +347,6 @@ DIESISSHIELDEDPOOL_ABI: list[dict[str, Any]] = json.loads('''
         "internalType": "bool",
         "name": "",
         "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "verifierAddr",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -314,18 +366,13 @@ DIESISSHIELDEDPOOL_ABI: list[dict[str, Any]] = json.loads('''
       },
       {
         "internalType": "bytes32",
-        "name": "nullifierHash",
+        "name": "nullifier",
         "type": "bytes32"
       },
       {
         "internalType": "address payable",
         "name": "recipient",
         "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
       },
       {
         "internalType": "address payable",
@@ -341,6 +388,19 @@ DIESISSHIELDEDPOOL_ABI: list[dict[str, Any]] = json.loads('''
     "name": "withdraw",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "withdrawVerifier",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "pure",
     "type": "function"
   },
   {
@@ -372,19 +432,25 @@ DIESISSHIELDEDPOOL_ABI: list[dict[str, Any]] = json.loads('''
         "type": "bytes32"
       },
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256",
         "name": "leafIndex",
         "type": "uint256"
       },
       {
         "indexed": false,
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
+        "internalType": "bytes",
+        "name": "encryptedNote",
+        "type": "bytes"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "resultingRoot",
+        "type": "bytes32"
       }
     ],
-    "name": "Deposit",
+    "name": "DepositV1",
     "type": "event"
   },
   {
@@ -392,24 +458,48 @@ DIESISSHIELDEDPOOL_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "indexed": false,
-        "internalType": "bytes32[]",
+        "internalType": "bytes32[2]",
         "name": "nullifiers",
-        "type": "bytes32[]"
+        "type": "bytes32[2]"
       },
       {
         "indexed": false,
-        "internalType": "bytes32[]",
+        "internalType": "bytes32[2]",
         "name": "commitments",
-        "type": "bytes32[]"
+        "type": "bytes32[2]"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "activeCount",
+        "type": "uint8"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "firstOutputLeafIndex",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes",
+        "name": "encryptedOutputs",
+        "type": "bytes"
       },
       {
         "indexed": false,
         "internalType": "bytes32",
-        "name": "extDataHash",
+        "name": "externalDataField",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "resultingRoot",
         "type": "bytes32"
       }
     ],
-    "name": "Transact",
+    "name": "TransferV1",
     "type": "event"
   },
   {
@@ -417,18 +507,18 @@ DIESISSHIELDEDPOOL_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "indexed": true,
+        "internalType": "bytes32",
+        "name": "nullifier",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
         "internalType": "address",
         "name": "recipient",
         "type": "address"
       },
       {
-        "indexed": false,
-        "internalType": "bytes32",
-        "name": "nullifierHash",
-        "type": "bytes32"
-      },
-      {
-        "indexed": false,
+        "indexed": true,
         "internalType": "address",
         "name": "relayer",
         "type": "address"
@@ -438,24 +528,65 @@ DIESISSHIELDEDPOOL_ABI: list[dict[str, Any]] = json.loads('''
         "internalType": "uint256",
         "name": "fee",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "outstandingNotes",
+        "type": "uint256"
       }
     ],
-    "name": "Withdrawal",
+    "name": "WithdrawalV1",
     "type": "event"
   },
   {
     "inputs": [],
-    "name": "AlreadyInitialized",
+    "name": "CommitmentAlreadySeen",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "AmountExceedsDenomination",
+    "name": "CorruptRootHistory",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DuplicateCommitment",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DuplicateNullifier",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "FeeExceedsDenomination",
     "type": "error"
   },
   {
     "inputs": [],
     "name": "IncorrectDepositAmount",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InsolventPool",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InsufficientOutstandingNotes",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidActiveCount",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidEncryptedPayloadLength",
     "type": "error"
   },
   {
@@ -470,7 +601,32 @@ DIESISSHIELDEDPOOL_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
+    "name": "InvalidRecipient",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidRelayer",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidVerifierIdentity",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "NativeTransferFailed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NonCanonicalField",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NonZeroInactiveSlot",
     "type": "error"
   },
   {
@@ -490,7 +646,7 @@ DIESISSHIELDEDPOOL_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "TreeAlreadyInitialized",
+    "name": "ReentrantCall",
     "type": "error"
   },
   {
@@ -500,22 +656,12 @@ DIESISSHIELDEDPOOL_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "Unauthorized",
-    "type": "error"
-  },
-  {
-    "inputs": [],
     "name": "UnknownMerkleRoot",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "ZeroAddress",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "ZeroCommitment",
+    "name": "ZeroActiveField",
     "type": "error"
   }
 ]
@@ -533,33 +679,29 @@ class DiesisShieldedPoolContract:
     # View/pure functions
     def denomination(self) -> int: ...
     def depth(self) -> int: ...
+    def encrypted_note_bytes(self) -> int: ...
     def max_leaves(self) -> int: ...
     def root_history_size(self) -> int: ...
-    def bootstrap_owner(self) -> ChecksumAddress: ...
+    def artifact_class(self) -> bytes: ...
+    def commitment_seen(self, arg0: bytes) -> bool: ...
     def current_root_index(self) -> int: ...
     def filled_subtrees(self, arg0: int) -> bytes: ...
     def initialized(self) -> bool: ...
-    def is_known_root(self, root: bytes) -> bool:
+    def is_known_root(self, root_value: bytes) -> bool:
         """Check if a root is in the history"""
         ...
     def next_index(self) -> int: ...
     def nullifiers(self, arg0: bytes) -> bool: ...
+    def outstanding_notes(self) -> int: ...
     def root(self) -> bytes: ...
     def root_history(self, arg0: int) -> bytes: ...
+    def root_reference_count(self, arg0: bytes) -> int: ...
+    def transfer_verifier(self) -> ChecksumAddress: ...
     def tree_initialized(self) -> bool: ...
-    def verifier_addr(self) -> ChecksumAddress: ...
+    def withdraw_verifier(self) -> ChecksumAddress: ...
     def zeros(self, arg0: int) -> bytes: ...
 
     # Write functions
-    def deposit(self, commitment: bytes) -> dict[str, Any]:
-        """Deposit tokens and create a shielded UTXO commitment"""
-        ...
-    def initialize(self, verifier: ChecksumAddress) -> dict[str, Any]:
-        """Initialize the contract (at genesis, storage is pre-populated instead)"""
-        ...
-    def transact(self, proof: bytes, merkle_root: bytes, nullifiers: list[bytes], commitments: list[bytes], ext_data_hash: bytes) -> dict[str, Any]:
-        """Execute a private transfer (spend inputs, create outputs)"""
-        ...
-    def withdraw(self, proof: bytes, merkle_root: bytes, nullifier_hash: bytes, recipient: ChecksumAddress, amount: int, relayer: ChecksumAddress, fee: int) -> dict[str, Any]:
-        """Withdraw from the shielded pool"""
-        ...
+    def deposit(self, commitment: bytes, encrypted_note: bytes) -> dict[str, Any]: ...
+    def transact(self, proof: bytes, merkle_root: bytes, input_nullifiers: list[bytes], output_commitments: list[bytes], active_count: int, encrypted_outputs: bytes) -> dict[str, Any]: ...
+    def withdraw(self, proof: bytes, merkle_root: bytes, nullifier: bytes, recipient: ChecksumAddress, relayer: ChecksumAddress, fee: int) -> dict[str, Any]: ...

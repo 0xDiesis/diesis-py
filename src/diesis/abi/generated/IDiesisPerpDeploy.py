@@ -88,6 +88,55 @@ IDIESISPERPDEPLOY_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "baseToken",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "quoteToken",
+        "type": "address"
+      },
+      {
+        "internalType": "uint64",
+        "name": "tickSize",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint64",
+        "name": "lotSize",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint256",
+        "name": "maxOpenInterest",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "initialMark",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint8",
+        "name": "maxLeverage",
+        "type": "uint8"
+      }
+    ],
+    "name": "initializePerpMarketV1",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "bytes32",
         "name": "marketId",
         "type": "bytes32"
@@ -255,6 +304,9 @@ class IDiesisPerpDeployContract:
         ...
     def finalize_close(self, market_id: bytes) -> dict[str, Any]:
         """Finalize close on a market whose `Delisting` or `Slashed`         window has elapsed. Transitions to `Closed`."""
+        ...
+    def initialize_perp_market_v1(self, base_token: ChecksumAddress, quote_token: ChecksumAddress, tick_size: int, lot_size: int, max_open_interest: int, initial_mark: int, max_leverage: int) -> dict[str, Any]:
+        """Materialize a live auction deployment into the canonical market         and clearing registries. `initialMark` is an unscaled tick price."""
         ...
     def initiate_delist(self, market_id: bytes) -> dict[str, Any]:
         """Operator-initiated voluntary delist. Opens a 30-day backstop         claim window before the bond becomes release-eligible."""

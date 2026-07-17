@@ -17,6 +17,45 @@ IDIESISSETTLEMENT_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "internalType": "address",
+        "name": "sessionKey",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "actionScope",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint64",
+        "name": "validUntil",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint256",
+        "name": "maxNotionalOrSpend",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "allowedMarketsMask",
+        "type": "bytes32"
+      }
+    ],
+    "name": "authorizeSessionKeyV2",
+    "outputs": [
+      {
+        "internalType": "uint64",
+        "name": "generation",
+        "type": "uint64"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
         "name": "user",
         "type": "address"
       },
@@ -78,6 +117,35 @@ IDIESISSETTLEMENT_ABI: list[dict[str, Any]] = json.loads('''
     ],
     "name": "deposit",
     "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "nonce",
+        "type": "uint256"
+      }
+    ],
+    "name": "fundPerpBackstopV1",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "transactionId",
+        "type": "bytes32"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -183,6 +251,25 @@ IDIESISSETTLEMENT_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "internalType": "address",
+        "name": "sessionKey",
+        "type": "address"
+      }
+    ],
+    "name": "revokeSessionKeyV2",
+    "outputs": [
+      {
+        "internalType": "uint64",
+        "name": "generation",
+        "type": "uint64"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
         "name": "tradingKey",
         "type": "address"
       }
@@ -276,6 +363,43 @@ IDIESISSETTLEMENT_ABI: list[dict[str, Any]] = json.loads('''
       }
     ],
     "name": "NonceCancelled",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "funder",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "quoteToken",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "transactionId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "PerpBackstopFunded",
     "type": "event"
   },
   {
@@ -390,12 +514,21 @@ class IDiesisSettlementContract:
     def total_balance(self, user: ChecksumAddress, token: ChecksumAddress) -> int: ...
 
     # Write functions
+    def authorize_session_key_v2(self, session_key: ChecksumAddress, action_scope: int, valid_until: int, max_notional_or_spend: int, allowed_markets_mask: bytes) -> dict[str, Any]:
+        """Authorize one ordinary Ethereum sender as a scoped V2 session key."""
+        ...
     def cancel_nonce_word(self, word_pos: int) -> dict[str, Any]: ...
     def cancel_order_nonce(self, nonce: int) -> dict[str, Any]: ...
     def deposit(self, token: ChecksumAddress, amount: int) -> dict[str, Any]:
         """Move supported precompile-native tokens into the exchange settlement ledger."""
         ...
+    def fund_perp_backstop_v1(self, market_id: bytes, amount: int, nonce: int) -> dict[str, Any]:
+        """Permanently contribute already-deposited quote collateral to a perpetual market's canonical liquidation backstop."""
+        ...
     def register_trading_key(self, trading_key: ChecksumAddress, valid_until: int, max_order_notional: int, allowed_markets_mask: bytes, can_withdraw: bool) -> dict[str, Any]: ...
+    def revoke_session_key_v2(self, session_key: ChecksumAddress) -> dict[str, Any]:
+        """Revoke a V2 session key and advance its invalidating generation."""
+        ...
     def revoke_trading_key(self, trading_key: ChecksumAddress) -> dict[str, Any]: ...
     def withdraw(self, token: ChecksumAddress, amount: int) -> dict[str, Any]:
         """Move unlocked settlement balance back to the caller's precompile-native token balance."""

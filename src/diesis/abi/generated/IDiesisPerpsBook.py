@@ -211,6 +211,25 @@ IDIESISPERPSBOOK_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [
       {
+        "internalType": "bytes",
+        "name": "signedEnvelope",
+        "type": "bytes"
+      }
+    ],
+    "name": "submitSignedPerpActionsV2",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "batchId",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "bytes32",
         "name": "marketId",
         "type": "bytes32"
@@ -222,6 +241,49 @@ IDIESISPERPSBOOK_ABI: list[dict[str, Any]] = json.loads('''
       }
     ],
     "name": "updatePerpMarkV1",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint256",
+        "name": "indexPrice",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "markPrice",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint64",
+        "name": "observedAt",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint64",
+        "name": "oracleRound",
+        "type": "uint64"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "sourceSetHash",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "evidenceHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "updatePerpOracleV1",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -530,6 +592,12 @@ class IDiesisPerpsBookContract:
     def submit_perp_order_v1(self, market_id: bytes, side: int, order_type: int, price: int, amount: int, flags: int, margin_type: int, expiry: int) -> dict[str, Any]:
         """Submit one versioned perpetual order funded from canonical settlement custody."""
         ...
+    def submit_signed_perp_actions_v2(self, signed_envelope: bytes) -> dict[str, Any]:
+        """Execute a sponsored bounded V2 action batch on behalf of a signer."""
+        ...
     def update_perp_mark_v1(self, market_id: bytes, mark_price: int) -> dict[str, Any]:
         """Advance the canonical scaled mark through solvency-frontier segments."""
+        ...
+    def update_perp_oracle_v1(self, market_id: bytes, index_price: int, mark_price: int, observed_at: int, oracle_round: int, source_set_hash: bytes, evidence_hash: bytes) -> dict[str, Any]:
+        """Persist one validator-attested oracle round for a market."""
         ...

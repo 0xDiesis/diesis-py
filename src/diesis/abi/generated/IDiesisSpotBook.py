@@ -475,6 +475,35 @@ IDIESISSPOTBOOK_ABI: list[dict[str, Any]] = json.loads('''
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint16",
+        "name": "maxOrders",
+        "type": "uint16"
+      }
+    ],
+    "name": "triggerSpotStops",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "activated",
+        "type": "uint16"
+      },
+      {
+        "internalType": "bool",
+        "name": "hasMore",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {
@@ -829,6 +858,43 @@ IDIESISSPOTBOOK_ABI: list[dict[str, Any]] = json.loads('''
     ],
     "name": "OrderPlaced",
     "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "orderId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "trader",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "triggerPrice",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "activationPrice",
+        "type": "uint256"
+      }
+    ],
+    "name": "StopOrderTriggered",
+    "type": "event"
   }
 ]
 ''')
@@ -892,4 +958,7 @@ class IDiesisSpotBookContract:
         ...
     def submit_signed_spot_intent(self, signed_intent_json: bytes) -> dict[str, Any]:
         """Submit a signed order or cancel intent."""
+        ...
+    def trigger_spot_stops(self, market_id: bytes, max_orders: int) -> dict[str, Any]:
+        """Activate dormant stops triggered by the market's last settled trade."""
         ...

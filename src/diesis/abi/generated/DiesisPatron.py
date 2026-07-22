@@ -34,6 +34,24 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
     "type": "receive"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint64",
+        "name": "blockNumber",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint256",
+        "name": "totalActualFee",
+        "type": "uint256"
+      }
+    ],
+    "name": "accrueSettledBurnV2",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "accruedBurn",
     "outputs": [
@@ -65,8 +83,226 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "cancelGrant",
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "salt",
+        "type": "bytes32"
+      }
+    ],
+    "name": "campaignIdFor",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "campaignId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "campaignOwner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "campaignId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "campaignRevoked",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "bytes32",
+            "name": "campaignId",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "address",
+            "name": "beneficiary",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "target",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes4",
+            "name": "selector",
+            "type": "bytes4"
+          },
+          {
+            "internalType": "uint32",
+            "name": "maxTransactions",
+            "type": "uint32"
+          },
+          {
+            "internalType": "uint256",
+            "name": "maxLifetimeSpend",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint64",
+            "name": "expiry",
+            "type": "uint64"
+          },
+          {
+            "internalType": "uint256",
+            "name": "nonce",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct IDiesisPatron.CampaignVoucherV1",
+        "name": "voucher",
+        "type": "tuple"
+      }
+    ],
+    "name": "campaignVoucherDigest",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "campaignId",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "beneficiary",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "nonce",
+        "type": "uint256"
+      }
+    ],
+    "name": "campaignVoucherUsed",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "reservationId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "cancelGrantV2",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "bytes32",
+            "name": "campaignId",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "address",
+            "name": "beneficiary",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "target",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes4",
+            "name": "selector",
+            "type": "bytes4"
+          },
+          {
+            "internalType": "uint32",
+            "name": "maxTransactions",
+            "type": "uint32"
+          },
+          {
+            "internalType": "uint256",
+            "name": "maxLifetimeSpend",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint64",
+            "name": "expiry",
+            "type": "uint64"
+          },
+          {
+            "internalType": "uint256",
+            "name": "nonce",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct IDiesisPatron.CampaignVoucherV1",
+        "name": "voucher",
+        "type": "tuple"
+      },
+      {
+        "internalType": "bytes",
+        "name": "signature",
+        "type": "bytes"
+      }
+    ],
+    "name": "claimCampaignVoucherV1",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -316,6 +552,19 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
+    "name": "lastAccruedBlock",
+    "outputs": [
+      {
+        "internalType": "uint64",
+        "name": "",
+        "type": "uint64"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "owner",
     "outputs": [
       {
@@ -341,26 +590,58 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "pendingReservation",
-    "outputs": [
+    "inputs": [
       {
         "internalType": "bytes32",
-        "name": "grantId",
+        "name": "reservationId",
         "type": "bytes32"
-      },
+      }
+    ],
+    "name": "pendingReservations",
+    "outputs": [
       {
-        "internalType": "address",
-        "name": "beneficiary",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "maximumFee",
-        "type": "uint256"
+        "components": [
+          {
+            "internalType": "bytes32",
+            "name": "grantId",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "address",
+            "name": "beneficiary",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "maximumFee",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct IDiesisPatron.PendingReservationV2",
+        "name": "reservation",
+        "type": "tuple"
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "salt",
+        "type": "bytes32"
+      }
+    ],
+    "name": "registerCampaignV1",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "campaignId",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -371,7 +652,25 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "reserveGrantGasLimit",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "reservationId",
+        "type": "bytes32"
+      },
       {
         "internalType": "address",
         "name": "sender",
@@ -393,7 +692,7 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       }
     ],
-    "name": "reserveGrant",
+    "name": "reserveGrantV2",
     "outputs": [
       {
         "internalType": "bytes32",
@@ -402,19 +701,6 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
       }
     ],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "reserveGrantGasLimit",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -455,6 +741,88 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "internalType": "address",
+        "name": "sender",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "target",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "input",
+        "type": "bytes"
+      },
+      {
+        "internalType": "uint256",
+        "name": "fee",
+        "type": "uint256"
+      }
+    ],
+    "name": "resolveGrantContext",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "grantId",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint256",
+        "name": "jarBalance",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint32",
+        "name": "maxTransactions",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint32",
+        "name": "transactionsUsed",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint256",
+        "name": "maxLifetimeSpend",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "lifetimeSpent",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "campaignId",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "beneficiary",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "nonce",
+        "type": "uint256"
+      }
+    ],
+    "name": "revokeCampaignVoucherV1",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
         "name": "beneficiary",
         "type": "address"
       },
@@ -465,6 +833,42 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
       }
     ],
     "name": "revokeGrantAuthorization",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "campaignId",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "rotateCampaignOwnerV1",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "campaignId",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bool",
+        "name": "revoked",
+        "type": "bool"
+      }
+    ],
+    "name": "setCampaignRevokedV1",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -544,19 +948,6 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "actualFee",
-        "type": "uint256"
-      }
-    ],
-    "name": "settleGrant",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "settleGrantGasLimit",
     "outputs": [
@@ -567,6 +958,24 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "reservationId",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint256",
+        "name": "actualFee",
+        "type": "uint256"
+      }
+    ],
+    "name": "settleGrantV2",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -706,6 +1115,125 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "indexed": true,
+        "internalType": "bytes32",
+        "name": "campaignId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "CampaignOwnerRotated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "campaignId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      }
+    ],
+    "name": "CampaignRegistered",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "campaignId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "revoked",
+        "type": "bool"
+      }
+    ],
+    "name": "CampaignRevocationSet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "campaignId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "beneficiary",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "nonce",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "grantId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "CampaignVoucherClaimed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "campaignId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "beneficiary",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "nonce",
+        "type": "uint256"
+      }
+    ],
+    "name": "CampaignVoucherRevoked",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
         "internalType": "address",
         "name": "beneficiary",
         "type": "address"
@@ -819,11 +1347,17 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
       {
         "indexed": true,
         "internalType": "bytes32",
-        "name": "grantId",
+        "name": "reservationId",
         "type": "bytes32"
       },
       {
         "indexed": true,
+        "internalType": "bytes32",
+        "name": "grantId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
         "internalType": "address",
         "name": "beneficiary",
         "type": "address"
@@ -841,6 +1375,12 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
   {
     "anonymous": false,
     "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "reservationId",
+        "type": "bytes32"
+      },
       {
         "indexed": true,
         "internalType": "bytes32",
@@ -869,11 +1409,17 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
       {
         "indexed": true,
         "internalType": "bytes32",
-        "name": "grantId",
+        "name": "reservationId",
         "type": "bytes32"
       },
       {
         "indexed": true,
+        "internalType": "bytes32",
+        "name": "grantId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
         "internalType": "address",
         "name": "beneficiary",
         "type": "address"
@@ -981,6 +1527,25 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "indexed": true,
+        "internalType": "uint64",
+        "name": "blockNumber",
+        "type": "uint64"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "totalActualFee",
+        "type": "uint256"
+      }
+    ],
+    "name": "SettledBurnAccrued",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
         "internalType": "address",
         "name": "newAddress",
         "type": "address"
@@ -996,12 +1561,69 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
+    "name": "CampaignAlreadyFunded",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CampaignAlreadyRegistered",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CampaignIsRevoked",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CampaignJarUnfunded",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CampaignNotRegistered",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "ContractPaused",
     "type": "error"
   },
   {
     "inputs": [],
+    "name": "ECDSAInvalidSignature",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "length",
+        "type": "uint256"
+      }
+    ],
+    "name": "ECDSAInvalidSignatureLength",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "s",
+        "type": "bytes32"
+      }
+    ],
+    "name": "ECDSAInvalidSignatureS",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "FeeExceedsReservation",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidAccrualBlock",
     "type": "error"
   },
   {
@@ -1017,6 +1639,21 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [],
     "name": "InvalidGrantId",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidReservationId",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidVoucher",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidVoucherSignature",
     "type": "error"
   },
   {
@@ -1070,15 +1707,42 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [],
     "name": "Unauthorized",
     "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "VoucherAlreadyUsed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "VoucherExpired",
+    "type": "error"
   }
 ]
 ''')
+
+
+class DiesisPatronCampaignVoucherV1(TypedDict):
+    campaign_id: bytes
+    beneficiary: ChecksumAddress
+    target: ChecksumAddress
+    selector: bytes
+    max_transactions: int
+    max_lifetime_spend: int
+    expiry: int
+    nonce: int
 
 
 class DiesisPatronGrantInfo(TypedDict):
     balance: int
     total_contributed: int
     total_spent: int
+
+
+class DiesisPatronPendingReservationV2(TypedDict):
+    grant_id: bytes
+    beneficiary: ChecksumAddress
+    maximum_fee: int
 
 
 class DiesisPatronContract:
@@ -1091,7 +1755,22 @@ class DiesisPatronContract:
 
     # View/pure functions
     def accrued_burn(self) -> int:
-        """Settled fees waiting for a best-effort burn outside consensus settlement."""
+        """Settled fees waiting for a best-effort burn outside consensus settlement. Updated once per block by the system-authorized `accrueSettledBurnV2`."""
+        ...
+    def campaign_id_for(self, owner: ChecksumAddress, salt: bytes) -> bytes:
+        """Deterministic, owner-bound campaign id for a `(owner, salt)` pair."""
+        ...
+    def campaign_owner(self, campaign_id: bytes) -> ChecksumAddress:
+        """Current owner of a campaign, or zero if unregistered."""
+        ...
+    def campaign_revoked(self, campaign_id: bytes) -> bool:
+        """Whether a campaign is revoked and refusing new claims."""
+        ...
+    def campaign_voucher_digest(self, voucher: dict[str, Any]) -> bytes:
+        """EIP-712 digest a campaign owner signs to authorize a voucher. Bound to this chain and Patron address so a signature cannot be replayed across chains or a redeployed contract."""
+        ...
+    def campaign_voucher_used(self, campaign_id: bytes, beneficiary: ChecksumAddress, nonce: int) -> bool:
+        """Whether one (beneficiary, nonce) voucher has been claimed or revoked."""
         ...
     def grant_authorizations(self, arg0: ChecksumAddress, arg1: bytes) -> tuple[ChecksumAddress, bytes, int, int, int, int, int]:
         """Beneficiary → grantId → exact route and bounded lifetime authorization."""
@@ -1115,10 +1794,13 @@ class DiesisPatronContract:
     def grants(self, arg0: bytes) -> tuple[int, int, int]:
         """grantId → public grant accounting"""
         ...
+    def last_accrued_block(self) -> int:
+        """Highest block number whose settled fees have been accrued to `accruedBurn`. The strictly-increasing latch makes duplicate accrual unrepresentable and is restored to its prior value by canonical reorg rollback."""
+        ...
     def owner(self) -> ChecksumAddress: ...
     def paused(self) -> bool: ...
-    def pending_reservation(self) -> tuple[bytes, ChecksumAddress, int]:
-        """The sequential executor may have at most one transaction reservation."""
+    def pending_reservations(self, reservation_id: bytes) -> dict[str, Any]:
+        """View one in-flight reservation by its canonical id."""
         ...
     def reserve_grant_gas_limit(self) -> int:
         """Gas overhead limits published for nodes to reserve gas for patronage checks"""
@@ -1126,17 +1808,26 @@ class DiesisPatronContract:
     def resolve_grant(self, sender: ChecksumAddress, target: ChecksumAddress, input: bytes, fee: int) -> bytes:
         """Determine which onboarding grant, if any, should cover this transaction's gas. Returns grantId or bytes32(0) if no patron found. Priority: account assignment > referral encore > welcome jar."""
         ...
+    def resolve_grant_context(self, sender: ChecksumAddress, target: ChecksumAddress, input: bytes, fee: int) -> tuple[bytes, int, int, int, int, int]:
+        """Resolve a grant and return the effective jar and authorization bounds the node needs for pool-admission accounting in one system call."""
+        ...
     def settle_grant_gas_limit(self) -> int: ...
     def staking_address(self) -> ChecksumAddress:
         """DiesisStaking address used by permissionless deferred burn flushing."""
         ...
 
     # Write functions
+    def accrue_settled_burn_v2(self, block_number: int, total_actual_fee: int) -> dict[str, Any]:
+        """Accrue the block's total settled Patron fees into the burn accumulator exactly once, before block finalization."""
+        ...
     def assign_account_grant(self, account: ChecksumAddress, grant_id: bytes) -> dict[str, Any]:
         """Assign a funded grant jar to a specific account."""
         ...
-    def cancel_grant(self) -> dict[str, Any]:
-        """Reverse the active reservation after pre-commit execution failure."""
+    def cancel_grant_v2(self, reservation_id: bytes) -> dict[str, Any]:
+        """Reverse one reservation after pre-commit execution failure."""
+        ...
+    def claim_campaign_voucher_v1(self, voucher: dict[str, Any], signature: bytes) -> dict[str, Any]:
+        """Claim a signed campaign voucher, atomically assigning the campaign jar to the beneficiary and installing the exact bounded authorization."""
         ...
     def contribute(self, grant_id: bytes) -> dict[str, Any]:
         """Deposit native tokens into a grant identified by `grantId`."""
@@ -1144,12 +1835,24 @@ class DiesisPatronContract:
     def flush_burn(self) -> dict[str, Any]:
         """Best-effort burn of all settled fees. Anyone may retry after a staking outage; failure restores the accrual and never reverts settlement."""
         ...
+    def register_campaign_v1(self, salt: bytes) -> dict[str, Any]:
+        """Register a campaign, deriving an owner-bound id from `salt`."""
+        ...
     def renounce_ownership(self) -> dict[str, Any]: ...
-    def reserve_grant(self, sender: ChecksumAddress, target: ChecksumAddress, input: bytes, maximum_fee: int) -> dict[str, Any]:
+    def reserve_grant_v2(self, reservation_id: bytes, sender: ChecksumAddress, target: ChecksumAddress, input: bytes, maximum_fee: int) -> dict[str, Any]:
         """Reserve a grant's maximum transaction fee before user execution. Only callable by the Rust node (msg.sender == address(0))."""
+        ...
+    def revoke_campaign_voucher_v1(self, campaign_id: bytes, beneficiary: ChecksumAddress, nonce: int) -> dict[str, Any]:
+        """Pre-burn one specific (beneficiary, nonce) voucher so it can never be claimed, without revoking the whole campaign."""
         ...
     def revoke_grant_authorization(self, beneficiary: ChecksumAddress, grant_id: bytes) -> dict[str, Any]:
         """Revoke one beneficiary's authorization without changing its jar assignment."""
+        ...
+    def rotate_campaign_owner_v1(self, campaign_id: bytes, new_owner: ChecksumAddress) -> dict[str, Any]:
+        """Transfer campaign ownership and voucher-signing authority."""
+        ...
+    def set_campaign_revoked_v1(self, campaign_id: bytes, revoked: bool) -> dict[str, Any]:
+        """Pause or resume all new claims for a campaign."""
         ...
     def set_grant_authorization(self, beneficiary: ChecksumAddress, grant_id: bytes, target: ChecksumAddress, selector: bytes, max_transactions: int, max_lifetime_spend: int, expiry: int) -> dict[str, Any]:
         """Set one exact, bounded beneficiary route for a grant jar."""
@@ -1158,8 +1861,8 @@ class DiesisPatronContract:
     def set_referral(self, referred: ChecksumAddress, referrer: ChecksumAddress) -> dict[str, Any]:
         """Link a referred address to the referrer's grant key. Contributor funds into `grantIdForReferral(referrer, referred)` separately."""
         ...
-    def settle_grant(self, actual_fee: int) -> dict[str, Any]:
-        """Finalize the active reservation at its actual transaction fee."""
+    def settle_grant_v2(self, reservation_id: bytes, actual_fee: int) -> dict[str, Any]:
+        """Finalize one reservation at its actual transaction fee."""
         ...
     def transfer_ownership(self, new_owner: ChecksumAddress) -> dict[str, Any]: ...
     def update_gas_limits(self, reserve_gas: int, settle_gas: int) -> dict[str, Any]: ...

@@ -148,6 +148,35 @@ IDIESISPERPDEPLOY_ABI: list[dict[str, Any]] = json.loads('''
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint16",
+        "name": "maxOrders",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint16",
+        "name": "maxPositions",
+        "type": "uint16"
+      }
+    ],
+    "name": "preparePerpMarketCloseV1",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "readyToFinalize",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {
@@ -310,4 +339,7 @@ class IDiesisPerpDeployContract:
         ...
     def initiate_delist(self, market_id: bytes) -> dict[str, Any]:
         """Operator-initiated voluntary delist. Opens a 30-day backstop         claim window before the bond becomes release-eligible."""
+        ...
+    def prepare_perp_market_close_v1(self, market_id: bytes, max_orders: int, max_positions: int) -> dict[str, Any]:
+        """Advance one bounded step of market-close preparation."""
         ...

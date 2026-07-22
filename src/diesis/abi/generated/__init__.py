@@ -2,6 +2,7 @@
 
 from .BootstrapConfig import *  # noqa: F401, F403
 from .DiesisBaseRegistrar import *  # noqa: F401, F403
+from .DiesisBundleEscrow import *  # noqa: F401, F403
 from .DiesisConfig import *  # noqa: F401, F403
 from .DiesisCoreVault import *  # noqa: F401, F403
 from .DiesisNamePolicy import *  # noqa: F401, F403
@@ -11,10 +12,12 @@ from .DiesisPatron import *  # noqa: F401, F403
 from .DiesisPrivacyPools import *  # noqa: F401, F403
 from .DiesisPublicResolver import *  # noqa: F401, F403
 from .DiesisReverseRegistrar import *  # noqa: F401, F403
+from .DiesisSettlementRouter import *  # noqa: F401, F403
 from .DiesisShieldedPool import *  # noqa: F401, F403
 from .DiesisStaking import *  # noqa: F401, F403
 from .IDiesisBaseRegistrar import *  # noqa: F401, F403
 from .IDiesisBootstrapOracle import *  # noqa: F401, F403
+from .IDiesisBundleEscrow import *  # noqa: F401, F403
 from .IDiesisBuybackBurn import *  # noqa: F401, F403
 from .IDiesisConductors import *  # noqa: F401, F403
 from .IDiesisCoreVault import *  # noqa: F401, F403

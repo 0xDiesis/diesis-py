@@ -305,9 +305,7 @@ genesis_precompile_names: list[GenesisPrecompileName] = [
 ]
 
 _genesis_precompile_by_name = {entry["name"]: entry for entry in genesis_precompile_names}
-_genesis_precompile_by_address = {
-    entry["address"].lower(): entry for entry in genesis_precompile_names
-}
+_genesis_precompile_by_address = {entry["address"].lower(): entry for entry in genesis_precompile_names}
 
 _DIESIS_NAME_SUFFIX = ".ds"
 _MIN_REGISTRAR_LABEL_LENGTH = 3

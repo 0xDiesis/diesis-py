@@ -106,6 +106,52 @@ IDIESISSETTLEMENT_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "creditRouterDeposit",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "debitRouterWithdrawal",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
         "name": "token",
         "type": "address"
       },
@@ -519,6 +565,12 @@ class IDiesisSettlementContract:
         ...
     def cancel_nonce_word(self, word_pos: int) -> dict[str, Any]: ...
     def cancel_order_nonce(self, nonce: int) -> dict[str, Any]: ...
+    def credit_router_deposit(self, user: ChecksumAddress, token: ChecksumAddress, amount: int) -> dict[str, Any]:
+        """Credit a generic ERC-20 settlement balance on behalf of the router."""
+        ...
+    def debit_router_withdrawal(self, user: ChecksumAddress, token: ChecksumAddress, amount: int) -> dict[str, Any]:
+        """Debit a generic ERC-20 settlement balance on behalf of the router."""
+        ...
     def deposit(self, token: ChecksumAddress, amount: int) -> dict[str, Any]:
         """Move supported precompile-native tokens into the exchange settlement ledger."""
         ...

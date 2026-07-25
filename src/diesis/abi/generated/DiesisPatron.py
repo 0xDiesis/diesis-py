@@ -565,6 +565,32 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
+    "name": "maxActiveReservationsPerGrant",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "outstandingReservationExitClaims",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "owner",
     "outputs": [
       {
@@ -649,6 +675,93 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
     "name": "renounceOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "reservationId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "reservationExitSettlement",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "bytes32",
+            "name": "grantId",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalRefund",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalDetachedShares",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "remainingDetachedShares",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "remainingEscrow",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct IDiesisPatron.ReservationExitSettlementV1",
+        "name": "settlement",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "reservationId",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "contributor",
+        "type": "address"
+      }
+    ],
+    "name": "reservationExitSnapshot",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "detachedShares",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "claimed",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "snapshotted",
+            "type": "bool"
+          }
+        ],
+        "internalType": "struct IDiesisPatron.ReservationExitSnapshotV1",
+        "name": "snapshot",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -1049,6 +1162,19 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
       }
     ],
     "name": "withdrawContribution",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "reservationId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "withdrawReservationExit",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1527,6 +1653,74 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "indexed": true,
+        "internalType": "bytes32",
+        "name": "reservationId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "grantId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "contributor",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint64",
+        "name": "contributionGeneration",
+        "type": "uint64"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "claimShares",
+        "type": "uint256"
+      }
+    ],
+    "name": "ReservationExitSnapshotted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "reservationId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "grantId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "contributor",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "ReservationExitWithdrawn",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
         "internalType": "uint64",
         "name": "blockNumber",
         "type": "uint64"
@@ -1553,6 +1747,11 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
     ],
     "name": "StakingAddressUpdated",
     "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "ActiveReservationLimitReached",
+    "type": "error"
   },
   {
     "inputs": [],
@@ -1623,6 +1822,11 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
+    "name": "IncompleteReservationExit",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "InvalidAccrualBlock",
     "type": "error"
   },
@@ -1672,6 +1876,11 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
     "type": "error"
   },
   {
+    "inputs": [],
+    "name": "NoReservationExitClaim",
+    "type": "error"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -1696,6 +1905,11 @@ DIESISPATRON_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [],
     "name": "ReservationActive",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ReservationGenerationMismatch",
     "type": "error"
   },
   {
@@ -1743,6 +1957,20 @@ class DiesisPatronPendingReservationV2(TypedDict):
     grant_id: bytes
     beneficiary: ChecksumAddress
     maximum_fee: int
+
+
+class DiesisPatronReservationExitSettlementV1(TypedDict):
+    grant_id: bytes
+    total_refund: int
+    total_detached_shares: int
+    remaining_detached_shares: int
+    remaining_escrow: int
+
+
+class DiesisPatronReservationExitSnapshotV1(TypedDict):
+    detached_shares: int
+    claimed: bool
+    snapshotted: bool
 
 
 class DiesisPatronContract:
@@ -1797,11 +2025,19 @@ class DiesisPatronContract:
     def last_accrued_block(self) -> int:
         """Highest block number whose settled fees have been accrued to `accruedBurn`. The strictly-increasing latch makes duplicate accrual unrepresentable and is restored to its prior value by canonical reorg rollback."""
         ...
+    def max_active_reservations_per_grant(self) -> int:
+        """Bounded by the published reserve overhead: an exit walks every active reservation and each reservation's earlier active predecessors."""
+        ...
+    def outstanding_reservation_exit_claims(self) -> int:
+        """Native-token refund escrow that is no longer part of a live grant jar."""
+        ...
     def owner(self) -> ChecksumAddress: ...
     def paused(self) -> bool: ...
     def pending_reservations(self, reservation_id: bytes) -> dict[str, Any]:
         """View one in-flight reservation by its canonical id."""
         ...
+    def reservation_exit_settlement(self, reservation_id: bytes) -> dict[str, Any]: ...
+    def reservation_exit_snapshot(self, reservation_id: bytes, contributor: ChecksumAddress) -> dict[str, Any]: ...
     def reserve_grant_gas_limit(self) -> int:
         """Gas overhead limits published for nodes to reserve gas for patronage checks"""
         ...
@@ -1868,5 +2104,8 @@ class DiesisPatronContract:
     def update_gas_limits(self, reserve_gas: int, settle_gas: int) -> dict[str, Any]: ...
     def update_staking_address(self, staking: ChecksumAddress) -> dict[str, Any]: ...
     def withdraw_contribution(self, grant_id: bytes, amount: int) -> dict[str, Any]:
-        """Reclaim a proportional share of a grant's remaining balance. Patron-targeted calls are categorically unsponsorable in resolveGrant."""
+        """Reclaim a proportional share of a grant's remaining balance."""
+        ...
+    def withdraw_reservation_exit(self, reservation_id: bytes) -> dict[str, Any]:
+        """Pull the settled or cancelled refund for one reservation-time contributor exit. Replay is rejected before any value is transferred."""
         ...

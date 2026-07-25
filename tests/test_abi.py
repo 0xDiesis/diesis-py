@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from typing import Any, get_type_hints
 
 from diesis.abi.generated import (
     BOOTSTRAPCONFIG_ABI,
@@ -39,6 +40,11 @@ from diesis.abi.generated import (
     ILIQUIDSTAKEDDS_ABI,
     IVALIDATORSHARE_ABI,
     IWRAPPEDDS_ABI,
+)
+from diesis.abi.generated.DiesisPatron import (
+    DiesisPatronContract,
+    DiesisPatronReservationExitSettlementV1,
+    DiesisPatronReservationExitSnapshotV1,
 )
 
 ARTIFACT_DIR = Path(__file__).resolve().parents[2] / "diesis" / "contracts" / "out"
@@ -90,3 +96,41 @@ def test_contract_abis_match_foundry_artifacts() -> None:
         artifact_path = ARTIFACT_DIR / f"{contract_name}.sol" / f"{contract_name}.json"
         artifact_abi = json.loads(artifact_path.read_text())["abi"]
         assert generated_abi == artifact_abi
+
+
+def test_patron_reservation_exit_binding_shape_matches_contract_api() -> None:
+    """The generator must expose the complete reservation-exit read/write surface."""
+    abi_entries = {entry["name"]: entry for entry in DIESISPATRON_ABI if "name" in entry}
+
+    assert {
+        "maxActiveReservationsPerGrant",
+        "outstandingReservationExitClaims",
+        "reservationExitSnapshot",
+        "reservationExitSettlement",
+        "withdrawReservationExit",
+        "ActiveReservationLimitReached",
+        "IncompleteReservationExit",
+        "NoReservationExitClaim",
+        "ReservationGenerationMismatch",
+        "ReservationExitSnapshotted",
+        "ReservationExitWithdrawn",
+    } <= abi_entries.keys()
+
+    assert get_type_hints(DiesisPatronReservationExitSnapshotV1) == {
+        "detached_shares": int,
+        "claimed": bool,
+        "snapshotted": bool,
+    }
+    assert get_type_hints(DiesisPatronReservationExitSettlementV1) == {
+        "grant_id": bytes,
+        "total_refund": int,
+        "total_detached_shares": int,
+        "remaining_detached_shares": int,
+        "remaining_escrow": int,
+    }
+
+    assert get_type_hints(DiesisPatronContract.max_active_reservations_per_grant)["return"] is int
+    assert get_type_hints(DiesisPatronContract.outstanding_reservation_exit_claims)["return"] is int
+    assert get_type_hints(DiesisPatronContract.reservation_exit_snapshot)["return"] == dict[str, Any]
+    assert get_type_hints(DiesisPatronContract.reservation_exit_settlement)["return"] == dict[str, Any]
+    assert get_type_hints(DiesisPatronContract.withdraw_reservation_exit)["return"] == dict[str, Any]

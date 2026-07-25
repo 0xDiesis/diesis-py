@@ -32,6 +32,12 @@ def test_client_has_bundles_namespace() -> None:
         assert isinstance(client.bundles, BundleActions)
 
 
+def test_client_does_not_expose_legacy_generic_stealth_bundle_shortcut() -> None:
+    with patch("diesis.client.Web3"):
+        client = DiesisClient("https://rpc.diesis.xyz")
+        assert not hasattr(client, "send_stealth_bundle")
+
+
 def test_client_has_patronage_namespace() -> None:
     with patch("diesis.client.Web3"):
         client = DiesisClient("https://rpc.diesis.xyz")

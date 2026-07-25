@@ -121,7 +121,3 @@ class DiesisClient:
                 }
             ],
         )
-
-    def send_stealth_bundle(self, funding_tx: str, announce_tx: str) -> Any:
-        """Send a stealth bundle via ``diesis_sendStealthBundle``."""
-        return self._rpc("diesis_sendStealthBundle", [{"fundingTx": funding_tx, "announceTx": announce_tx}])

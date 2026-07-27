@@ -54,11 +54,6 @@ IDIESISOPERATORBOND_ABI: list[dict[str, Any]] = json.loads('''
             "type": "uint256"
           },
           {
-            "internalType": "uint32",
-            "name": "consecutiveMissedFundingPeriods",
-            "type": "uint32"
-          },
-          {
             "internalType": "uint64",
             "name": "releaseUnlockBlock",
             "type": "uint64"
@@ -150,38 +145,6 @@ IDIESISOPERATORBOND_ABI: list[dict[str, Any]] = json.loads('''
         "internalType": "bytes32",
         "name": "marketId",
         "type": "bytes32"
-      }
-    ],
-    "name": "FundedPeriod",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "marketId",
-        "type": "bytes32"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint32",
-        "name": "consecutiveMissed",
-        "type": "uint32"
-      }
-    ],
-    "name": "MissedFundingPeriod",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "marketId",
-        "type": "bytes32"
       },
       {
         "indexed": false,
@@ -220,7 +183,6 @@ class IDiesisOperatorBondBondInfo(TypedDict):
     operator: ChecksumAddress
     market_id: bytes
     bond_ds: int
-    consecutive_missed_funding_periods: int
     release_unlock_block: int
 
 

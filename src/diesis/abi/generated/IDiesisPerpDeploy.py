@@ -17,6 +17,117 @@ IDIESISPERPDEPLOY_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "parentHash",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint64",
+        "name": "blockNumber",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint64",
+        "name": "policyEpoch",
+        "type": "uint64"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "policyHash",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint64",
+        "name": "windowStart",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint64",
+        "name": "windowEnd",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint256",
+        "name": "filledVolume",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "operatorFees",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint64",
+        "name": "lastMetadataUpdate",
+        "type": "uint64"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "inputHash",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint64",
+        "name": "committeeEpoch",
+        "type": "uint64"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "committeeIdentity",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint64",
+        "name": "quorumPower",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint64",
+        "name": "attestingPower",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint16",
+        "name": "voterCount",
+        "type": "uint16"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "evidenceHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "applyPerpAbandonmentV1",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint8",
+        "name": "reason",
+        "type": "uint8"
+      }
+    ],
+    "name": "applySlash",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
         "name": "slotId",
         "type": "bytes32"
       },
@@ -24,9 +135,50 @@ IDIESISPERPDEPLOY_ABI: list[dict[str, Any]] = json.loads('''
         "internalType": "bytes32",
         "name": "marketId",
         "type": "bytes32"
+      },
+      {
+        "internalType": "bytes",
+        "name": "sourceList",
+        "type": "bytes"
+      },
+      {
+        "internalType": "bytes",
+        "name": "metadata",
+        "type": "bytes"
+      },
+      {
+        "internalType": "bytes",
+        "name": "signatures",
+        "type": "bytes"
       }
     ],
-    "name": "activate",
+    "name": "deployPerp",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "expireNextUnactivatedPerpV1",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "expireUnactivatedPerpV1",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -40,6 +192,29 @@ IDIESISPERPDEPLOY_ABI: list[dict[str, Any]] = json.loads('''
       }
     ],
     "name": "finalizeClose",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint64",
+        "name": "revision",
+        "type": "uint64"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "proposalId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "finalizePerpPolicyV1",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -79,6 +254,141 @@ IDIESISPERPDEPLOY_ABI: list[dict[str, Any]] = json.loads('''
         ],
         "internalType": "struct IDiesisPerpDeploy.DeploymentInfo",
         "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getMarketDeploymentState",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint8",
+            "name": "stateTag",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint64",
+            "name": "deadlineOrLiveBlock",
+            "type": "uint64"
+          },
+          {
+            "internalType": "uint64",
+            "name": "windowCloseBlock",
+            "type": "uint64"
+          },
+          {
+            "internalType": "uint8",
+            "name": "slashReason",
+            "type": "uint8"
+          }
+        ],
+        "internalType": "struct IDiesisPerpDeploy.DeploymentInfo",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      }
+    ],
+    "name": "getOperatorBalance",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getPerpPolicyV1",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint64",
+            "name": "revision",
+            "type": "uint64"
+          },
+          {
+            "internalType": "uint16",
+            "name": "backstopTopupBps",
+            "type": "uint16"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint64",
+                "name": "maxNotional",
+                "type": "uint64"
+              },
+              {
+                "internalType": "uint8",
+                "name": "maxLeverage",
+                "type": "uint8"
+              },
+              {
+                "internalType": "uint16",
+                "name": "maintenanceMarginBps",
+                "type": "uint16"
+              }
+            ],
+            "internalType": "struct IDiesisPerpDeploy.RiskTierInputV1[]",
+            "name": "tiers",
+            "type": "tuple[]"
+          }
+        ],
+        "internalType": "struct IDiesisPerpDeploy.PerpPolicyV1",
+        "name": "policy",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint64",
+            "name": "epoch",
+            "type": "uint64"
+          },
+          {
+            "internalType": "uint8",
+            "name": "threshold",
+            "type": "uint8"
+          },
+          {
+            "internalType": "address[]",
+            "name": "signers",
+            "type": "address[]"
+          }
+        ],
+        "internalType": "struct IDiesisPerpDeploy.MetadataKeysetV1",
+        "name": "keyset",
         "type": "tuple"
       }
     ],
@@ -137,6 +447,111 @@ IDIESISPERPDEPLOY_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "baseToken",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "quoteToken",
+        "type": "address"
+      },
+      {
+        "internalType": "uint64",
+        "name": "tickSize",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint64",
+        "name": "lotSize",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint256",
+        "name": "maxOpenInterest",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "initialMark",
+        "type": "uint256"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint64",
+            "name": "revision",
+            "type": "uint64"
+          },
+          {
+            "internalType": "uint16",
+            "name": "backstopTopupBps",
+            "type": "uint16"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint64",
+                "name": "maxNotional",
+                "type": "uint64"
+              },
+              {
+                "internalType": "uint8",
+                "name": "maxLeverage",
+                "type": "uint8"
+              },
+              {
+                "internalType": "uint16",
+                "name": "maintenanceMarginBps",
+                "type": "uint16"
+              }
+            ],
+            "internalType": "struct IDiesisPerpDeploy.RiskTierInputV1[]",
+            "name": "tiers",
+            "type": "tuple[]"
+          }
+        ],
+        "internalType": "struct IDiesisPerpDeploy.PerpPolicyV1",
+        "name": "policy",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint64",
+            "name": "epoch",
+            "type": "uint64"
+          },
+          {
+            "internalType": "uint8",
+            "name": "threshold",
+            "type": "uint8"
+          },
+          {
+            "internalType": "address[]",
+            "name": "signers",
+            "type": "address[]"
+          }
+        ],
+        "internalType": "struct IDiesisPerpDeploy.MetadataKeysetV1",
+        "name": "keyset",
+        "type": "tuple"
+      }
+    ],
+    "name": "initializePerpMarketV2",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "bytes32",
         "name": "marketId",
         "type": "bytes32"
@@ -173,6 +588,145 @@ IDIESISPERPDEPLOY_ABI: list[dict[str, Any]] = json.loads('''
         "type": "bool"
       }
     ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "promoteToLive",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint64",
+        "name": "expectedRevision",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint64",
+        "name": "expectedKeysetEpoch",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint16",
+        "name": "backstopTopupBps",
+        "type": "uint16"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint64",
+            "name": "maxNotional",
+            "type": "uint64"
+          },
+          {
+            "internalType": "uint8",
+            "name": "maxLeverage",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint16",
+            "name": "maintenanceMarginBps",
+            "type": "uint16"
+          }
+        ],
+        "internalType": "struct IDiesisPerpDeploy.RiskTierInputV1[]",
+        "name": "tiers",
+        "type": "tuple[]"
+      },
+      {
+        "internalType": "address[]",
+        "name": "nextSigners",
+        "type": "address[]"
+      },
+      {
+        "internalType": "uint8",
+        "name": "nextThreshold",
+        "type": "uint8"
+      },
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "signer",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "r",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "s",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint8",
+            "name": "v",
+            "type": "uint8"
+          }
+        ],
+        "internalType": "struct IDiesisPerpDeploy.MetadataSignatureV1[]",
+        "name": "signatures",
+        "type": "tuple[]"
+      }
+    ],
+    "name": "proposePerpPolicyV1",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "proposalId",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint64",
+        "name": "executeAfter",
+        "type": "uint64"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "registrationDigest",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "evidenceHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "recordAuctionWin",
+    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -270,31 +824,6 @@ IDIESISPERPDEPLOY_ABI: list[dict[str, Any]] = json.loads('''
       },
       {
         "indexed": false,
-        "internalType": "bytes32",
-        "name": "metadataHash",
-        "type": "bytes32"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint64",
-        "name": "unlockBlock",
-        "type": "uint64"
-      }
-    ],
-    "name": "MetadataUpdateProposed",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "marketId",
-        "type": "bytes32"
-      },
-      {
-        "indexed": false,
         "internalType": "uint16",
         "name": "ordersCancelled",
         "type": "uint16"
@@ -326,6 +855,31 @@ IDIESISPERPDEPLOY_ABI: list[dict[str, Any]] = json.loads('''
       }
     ],
     "name": "PerpMarketInitializedV1",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "policyHash",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "keysetHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "PerpMarketInitializedV2",
     "type": "event"
   },
   {
@@ -383,6 +937,18 @@ class IDiesisPerpDeployDeploymentInfo(TypedDict):
     slash_reason: int
 
 
+class IDiesisPerpDeployPerpPolicyV1(TypedDict):
+    revision: int
+    backstop_topup_bps: int
+    tiers: list[dict[str, Any]]
+
+
+class IDiesisPerpDeployMetadataKeysetV1(TypedDict):
+    epoch: int
+    threshold: int
+    signers: list[ChecksumAddress]
+
+
 class IDiesisPerpDeployContract:
     """Typed wrapper for the IDiesisPerpDeploy contract."""
 
@@ -395,20 +961,56 @@ class IDiesisPerpDeployContract:
     def get_deployment_state(self, market_id: bytes) -> dict[str, Any]:
         """Read the current deployment record for `marketId`."""
         ...
+    def get_market_deployment_state(self, market_id: bytes) -> dict[str, Any]:
+        """Exchange-facing alias for `getDeploymentState`."""
+        ...
+    def get_operator_balance(self, operator: ChecksumAddress) -> int:
+        """Read the accrued operator fee-router balance."""
+        ...
+    def get_perp_policy_v1(self, market_id: bytes) -> tuple[dict[str, Any], dict[str, Any]]:
+        """Read the active perpetual policy through the native precompile."""
+        ...
 
     # Write functions
-    def activate(self, slot_id: bytes, market_id: bytes) -> dict[str, Any]:
-        """Activate a winning auction slot. Transitions the market from         `AwaitingDeployment` to `Cooling { live_at_block = now + 24h }`."""
+    def apply_perp_abandonment_v1(self, market_id: bytes, parent_hash: bytes, block_number: int, policy_epoch: int, policy_hash: bytes, window_start: int, window_end: int, filled_volume: int, operator_fees: int, last_metadata_update: int, input_hash: bytes, committee_epoch: int, committee_identity: bytes, quorum_power: int, attesting_power: int, voter_count: int, evidence_hash: bytes) -> dict[str, Any]:
+        """Apply one consensus-attested perpetual-market abandonment transition."""
+        ...
+    def apply_slash(self, market_id: bytes, reason: int) -> dict[str, Any]:
+        """Apply a canonical system-owned operator-bond slash."""
+        ...
+    def deploy_perp(self, slot_id: bytes, market_id: bytes, source_list: bytes, metadata: bytes, signatures: bytes) -> dict[str, Any]:
+        """Sole production deployment path for a settled slot."""
+        ...
+    def expire_next_unactivated_perp_v1(self) -> dict[str, Any]:
+        """Process at most one activation expiry and one completion expiry         from separate bounded canonical queues."""
+        ...
+    def expire_unactivated_perp_v1(self, market_id: bytes) -> dict[str, Any]:
+        """Expire one incomplete auction deployment after its deadline."""
         ...
     def finalize_close(self, market_id: bytes) -> dict[str, Any]:
         """Finalize close on a market whose `Delisting` or `Slashed`         window has elapsed. Transitions to `Closed`."""
         ...
+    def finalize_perp_policy_v1(self, market_id: bytes, revision: int, proposal_id: bytes) -> dict[str, Any]:
+        """Apply one due, system-owned perpetual policy proposal."""
+        ...
     def initialize_perp_market_v1(self, base_token: ChecksumAddress, quote_token: ChecksumAddress, tick_size: int, lot_size: int, max_open_interest: int, initial_mark: int, max_leverage: int) -> dict[str, Any]:
         """Materialize a live auction deployment into the canonical market         and clearing registries. `initialMark` is an unscaled tick price."""
+        ...
+    def initialize_perp_market_v2(self, base_token: ChecksumAddress, quote_token: ChecksumAddress, tick_size: int, lot_size: int, max_open_interest: int, initial_mark: int, policy: dict[str, Any], keyset: dict[str, Any]) -> dict[str, Any]:
+        """Atomically initialize the market and its first policy/keyset."""
         ...
     def initiate_delist(self, market_id: bytes) -> dict[str, Any]:
         """Operator-initiated voluntary delist. Opens a 30-day backstop         claim window before the bond becomes release-eligible."""
         ...
     def prepare_perp_market_close_v1(self, market_id: bytes, max_orders: int, max_positions: int) -> dict[str, Any]:
         """Advance one bounded step of market-close preparation."""
+        ...
+    def promote_to_live(self, market_id: bytes) -> dict[str, Any]:
+        """Promote an elapsed cooling market to `Live`."""
+        ...
+    def propose_perp_policy_v1(self, market_id: bytes, expected_revision: int, expected_keyset_epoch: int, backstop_topup_bps: int, tiers: list[dict[str, Any]], next_signers: list[ChecksumAddress], next_threshold: int, signatures: list[dict[str, Any]]) -> dict[str, Any]:
+        """Propose a timelocked, current-keyset-attested policy update."""
+        ...
+    def record_auction_win(self, market_id: bytes, operator: ChecksumAddress, registration_digest: bytes, evidence_hash: bytes) -> dict[str, Any]:
+        """Record a settled auction registration before operator actions."""
         ...

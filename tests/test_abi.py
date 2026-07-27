@@ -1,49 +1,12 @@
 import json
 import os
+from importlib import import_module
 from pathlib import Path
 from typing import Any, get_type_hints
 
 import pytest
 
-from diesis.abi.generated import (
-    BOOTSTRAPCONFIG_ABI,
-    DIESISBASEREGISTRAR_ABI,
-    DIESISCONFIG_ABI,
-    DIESISCOREVAULT_ABI,
-    DIESISNAMEPOLICY_ABI,
-    DIESISNAMEREGISTRY_ABI,
-    DIESISNAMEVERIFIER_ABI,
-    DIESISPATRON_ABI,
-    DIESISPRIVACYPOOLS_ABI,
-    DIESISPUBLICRESOLVER_ABI,
-    DIESISREVERSEREGISTRAR_ABI,
-    DIESISSHIELDEDPOOL_ABI,
-    DIESISSTAKING_ABI,
-    IDIESISBASEREGISTRAR_ABI,
-    IDIESISBOOTSTRAPORACLE_ABI,
-    IDIESISBUYBACKBURN_ABI,
-    IDIESISCONDUCTORS_ABI,
-    IDIESISCOREVAULT_ABI,
-    IDIESISERC20FACTORY_ABI,
-    IDIESISISSUANCEAUCTION_ABI,
-    IDIESISMARGIN_ABI,
-    IDIESISMARKETS_ABI,
-    IDIESISNAMEPOLICY_ABI,
-    IDIESISNAMEREGISTRY_ABI,
-    IDIESISNAMEVERIFIER_ABI,
-    IDIESISOPERATORBOND_ABI,
-    IDIESISPERPDEPLOY_ABI,
-    IDIESISPERPSBOOK_ABI,
-    IDIESISPOSITION_ABI,
-    IDIESISPUBLICRESOLVER_ABI,
-    IDIESISREVERSEREGISTRAR_ABI,
-    IDIESISSETTLEMENT_ABI,
-    IDIESISSPOTBOOK_ABI,
-    IDIESISSTATEWRITER_ABI,
-    ILIQUIDSTAKEDDS_ABI,
-    IVALIDATORSHARE_ABI,
-    IWRAPPEDDS_ABI,
-)
+from diesis.abi.generated import DIESISPATRON_ABI
 from diesis.abi.generated.DiesisPatron import (
     DiesisPatronContract,
     DiesisPatronReservationExitSettlementV1,
@@ -114,54 +77,33 @@ def _resolve_artifact_dir(anchor: Path) -> Path:
 
 
 ARTIFACT_DIR = _resolve_artifact_dir(Path(__file__).resolve().parent)
+CANONICAL_CONTRACT_LIST = ARTIFACT_DIR.parent / "abi-contracts.txt"
 
 
-def test_contract_abis_match_foundry_artifacts() -> None:
-    abis = {
-        "BootstrapConfig": BOOTSTRAPCONFIG_ABI,
-        "DiesisBaseRegistrar": DIESISBASEREGISTRAR_ABI,
-        "DiesisConfig": DIESISCONFIG_ABI,
-        "DiesisCoreVault": DIESISCOREVAULT_ABI,
-        "DiesisNamePolicy": DIESISNAMEPOLICY_ABI,
-        "DiesisNameRegistry": DIESISNAMEREGISTRY_ABI,
-        "DiesisNameVerifier": DIESISNAMEVERIFIER_ABI,
-        "DiesisPatron": DIESISPATRON_ABI,
-        "DiesisPrivacyPools": DIESISPRIVACYPOOLS_ABI,
-        "DiesisPublicResolver": DIESISPUBLICRESOLVER_ABI,
-        "DiesisReverseRegistrar": DIESISREVERSEREGISTRAR_ABI,
-        "DiesisShieldedPool": DIESISSHIELDEDPOOL_ABI,
-        "DiesisStaking": DIESISSTAKING_ABI,
-        "IDiesisBaseRegistrar": IDIESISBASEREGISTRAR_ABI,
-        "IDiesisBootstrapOracle": IDIESISBOOTSTRAPORACLE_ABI,
-        "IDiesisBuybackBurn": IDIESISBUYBACKBURN_ABI,
-        "IDiesisConductors": IDIESISCONDUCTORS_ABI,
-        "IDiesisCoreVault": IDIESISCOREVAULT_ABI,
-        "IDiesisErc20Factory": IDIESISERC20FACTORY_ABI,
-        "IDiesisIssuanceAuction": IDIESISISSUANCEAUCTION_ABI,
-        "IDiesisMargin": IDIESISMARGIN_ABI,
-        "IDiesisMarkets": IDIESISMARKETS_ABI,
-        "IDiesisNamePolicy": IDIESISNAMEPOLICY_ABI,
-        "IDiesisNameRegistry": IDIESISNAMEREGISTRY_ABI,
-        "IDiesisNameVerifier": IDIESISNAMEVERIFIER_ABI,
-        "IDiesisOperatorBond": IDIESISOPERATORBOND_ABI,
-        "IDiesisPerpDeploy": IDIESISPERPDEPLOY_ABI,
-        "IDiesisPerpsBook": IDIESISPERPSBOOK_ABI,
-        "IDiesisPosition": IDIESISPOSITION_ABI,
-        "IDiesisPublicResolver": IDIESISPUBLICRESOLVER_ABI,
-        "IDiesisReverseRegistrar": IDIESISREVERSEREGISTRAR_ABI,
-        "IDiesisSettlement": IDIESISSETTLEMENT_ABI,
-        "IDiesisSpotBook": IDIESISSPOTBOOK_ABI,
-        "IDiesisStateWriter": IDIESISSTATEWRITER_ABI,
-        "ILiquidStakedDS": ILIQUIDSTAKEDDS_ABI,
-        "IValidatorShare": IVALIDATORSHARE_ABI,
-        "IWrappedDS": IWRAPPEDDS_ABI,
-    }
+def _canonical_contract_names() -> list[str]:
+    """Return the contracts both SDK generators must export."""
+    return [line for line in CANONICAL_CONTRACT_LIST.read_text(encoding="utf-8").splitlines() if line]
 
-    assert len(abis) == 37
-    for contract_name, generated_abi in abis.items():
+
+def test_generated_bindings_match_the_canonical_contract_list() -> None:
+    """Every contract selected by the shared generator list has one Python ABI module."""
+    contract_names = _canonical_contract_names()
+    generated_dir = Path(__file__).resolve().parents[1] / "src" / "diesis" / "abi" / "generated"
+    generated_contract_names = {path.stem for path in generated_dir.glob("*.py")} - {"__init__"}
+
+    assert len(contract_names) == len(set(contract_names))
+    assert generated_contract_names == set(contract_names)
+
+
+def test_generated_bindings_match_their_foundry_artifacts() -> None:
+    """The canonical list drives complete ABI parity with Foundry artifacts."""
+    for contract_name in _canonical_contract_names():
+        module = import_module(f"diesis.abi.generated.{contract_name}")
+        abi_constants = [value for name, value in vars(module).items() if name.endswith("_ABI")]
         artifact_path = ARTIFACT_DIR / f"{contract_name}.sol" / f"{contract_name}.json"
-        artifact_abi = json.loads(artifact_path.read_text())["abi"]
-        assert generated_abi == artifact_abi
+
+        assert len(abi_constants) == 1
+        assert abi_constants[0] == json.loads(artifact_path.read_text())["abi"]
 
 
 def test_patron_reservation_exit_binding_shape_matches_contract_api() -> None:

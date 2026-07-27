@@ -1,15 +1,19 @@
 PYTHON ?= python3
+ABI_CONTRACTS := $(shell paste -sd, ../diesis/contracts/abi-contracts.txt)
 
-.PHONY: codegen lint lint-fix format format-check test typecheck quality quality-fix
+.PHONY: codegen codegen-check lint lint-fix format format-check test typecheck quality quality-fix
 
 codegen:
 	abi-typegen generate \
 		--artifacts ../diesis/contracts/out \
 		--out src/diesis/abi/generated \
 		--target python \
-		--contracts IDiesisSettlement,DiesisSettlementRouter,IDiesisSpotBook,IDiesisPerpsBook,IDiesisMargin,IDiesisMarkets,IDiesisStateWriter,IDiesisConductors,IDiesisCoreVault,IDiesisIssuanceAuction,IDiesisBuybackBurn,IDiesisOperatorBond,IDiesisErc20Factory,IDiesisPerpDeploy,IDiesisBundleEscrow,DiesisBundleEscrow,DiesisStaking,DiesisPatron,DiesisConfig,DiesisCoreVault,IDiesisBootstrapOracle,BootstrapConfig,IDiesisPosition,IValidatorShare,ILiquidStakedDS,IWrappedDS,DiesisShieldedPool,DiesisPrivacyPools,IDiesisNameRegistry,IDiesisBaseRegistrar,IDiesisPublicResolver,IDiesisReverseRegistrar,IDiesisNameVerifier,IDiesisNamePolicy,DiesisNameRegistry,DiesisBaseRegistrar,DiesisPublicResolver,DiesisReverseRegistrar,DiesisNameVerifier,DiesisNamePolicy \
+		--contracts $(ABI_CONTRACTS) \
 		--clean
 	$(PYTHON) scripts/generate_abi_exports.py
+
+codegen-check: codegen
+	git diff --exit-code -- src/diesis/abi/generated
 
 lint:
 	ruff check src/ tests/

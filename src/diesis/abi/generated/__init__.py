@@ -1,10 +1,12 @@
 """Auto-generated ABI re-exports."""
 
+from .AssociationVerifierV1 import *  # noqa: F401, F403
 from .BootstrapConfig import *  # noqa: F401, F403
 from .DiesisBaseRegistrar import *  # noqa: F401, F403
 from .DiesisBundleEscrow import *  # noqa: F401, F403
 from .DiesisConfig import *  # noqa: F401, F403
 from .DiesisCoreVault import *  # noqa: F401, F403
+from .DiesisEpochAuthority import *  # noqa: F401, F403
 from .DiesisNamePolicy import *  # noqa: F401, F403
 from .DiesisNameRegistry import *  # noqa: F401, F403
 from .DiesisNameVerifier import *  # noqa: F401, F403
@@ -40,3 +42,5 @@ from .IDiesisStateWriter import *  # noqa: F401, F403
 from .ILiquidStakedDS import *  # noqa: F401, F403
 from .IValidatorShare import *  # noqa: F401, F403
 from .IWrappedDS import *  # noqa: F401, F403
+from .TransferVerifierV1 import *  # noqa: F401, F403
+from .WithdrawVerifierV1 import *  # noqa: F401, F403

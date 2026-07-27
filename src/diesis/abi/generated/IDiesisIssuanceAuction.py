@@ -16,25 +16,41 @@ IDIESISISSUANCEAUCTION_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [
       {
-        "internalType": "enum IDiesisIssuanceAuction.AuctionTrack",
-        "name": "track",
-        "type": "uint8"
+        "components": [
+          {
+            "internalType": "bytes32",
+            "name": "marketId",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "address",
+            "name": "baseAsset",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "quoteAsset",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "evidenceHash",
+            "type": "bytes32"
+          }
+        ],
+        "internalType": "struct IDiesisIssuanceAuction.PerpRegistrationV1",
+        "name": "registration",
+        "type": "tuple"
       }
     ],
-    "name": "bid",
+    "name": "bidPerpListingV1",
     "outputs": [],
-    "stateMutability": "payable",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "enum IDiesisIssuanceAuction.AuctionTrack",
-        "name": "track",
-        "type": "uint8"
-      }
-    ],
-    "name": "currentPrice",
+    "inputs": [],
+    "name": "currentPerpListingPriceV1",
     "outputs": [
       {
         "internalType": "uint256",
@@ -46,22 +62,11 @@ IDIESISISSUANCEAUCTION_ABI: list[dict[str, Any]] = json.loads('''
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "enum IDiesisIssuanceAuction.AuctionTrack",
-        "name": "track",
-        "type": "uint8"
-      }
-    ],
-    "name": "getSlot",
+    "inputs": [],
+    "name": "getPerpListingSlotV1",
     "outputs": [
       {
         "components": [
-          {
-            "internalType": "enum IDiesisIssuanceAuction.AuctionTrack",
-            "name": "track",
-            "type": "uint8"
-          },
           {
             "internalType": "uint64",
             "name": "slotStartBlock",
@@ -74,21 +79,26 @@ IDIESISISSUANCEAUCTION_ABI: list[dict[str, Any]] = json.loads('''
           },
           {
             "internalType": "uint256",
-            "name": "initialPriceDs",
+            "name": "initialPriceUsdc",
             "type": "uint256"
           },
           {
             "internalType": "uint256",
-            "name": "lastWinningPriceDs",
+            "name": "winningPriceUsdc",
             "type": "uint256"
           },
           {
             "internalType": "address",
             "name": "currentWinner",
             "type": "address"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "registrationDigest",
+            "type": "bytes32"
           }
         ],
-        "internalType": "struct IDiesisIssuanceAuction.SlotInfo",
+        "internalType": "struct IDiesisIssuanceAuction.PerpListingSlotV1",
         "name": "",
         "type": "tuple"
       }
@@ -97,14 +107,15 @@ IDIESISISSUANCEAUCTION_ABI: list[dict[str, Any]] = json.loads('''
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "settlePerpListingV1",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "anonymous": false,
     "inputs": [
-      {
-        "indexed": true,
-        "internalType": "enum IDiesisIssuanceAuction.AuctionTrack",
-        "name": "track",
-        "type": "uint8"
-      },
       {
         "indexed": true,
         "internalType": "address",
@@ -112,15 +123,21 @@ IDIESISISSUANCEAUCTION_ABI: list[dict[str, Any]] = json.loads('''
         "type": "address"
       },
       {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      },
+      {
         "indexed": false,
-        "internalType": "uint256",
-        "name": "priceDs",
-        "type": "uint256"
+        "internalType": "bytes32",
+        "name": "registrationDigest",
+        "type": "bytes32"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "depositDs",
+        "name": "priceUsdc",
         "type": "uint256"
       }
     ],
@@ -132,34 +149,9 @@ IDIESISISSUANCEAUCTION_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "indexed": true,
-        "internalType": "enum IDiesisIssuanceAuction.AuctionTrack",
-        "name": "track",
-        "type": "uint8"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint64",
-        "name": "newSlotStartBlock",
-        "type": "uint64"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "initialPriceDs",
-        "type": "uint256"
-      }
-    ],
-    "name": "SlotRolled",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "enum IDiesisIssuanceAuction.AuctionTrack",
-        "name": "track",
-        "type": "uint8"
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
       },
       {
         "indexed": true,
@@ -169,25 +161,58 @@ IDIESISISSUANCEAUCTION_ABI: list[dict[str, Any]] = json.loads('''
       },
       {
         "indexed": false,
+        "internalType": "bytes32",
+        "name": "registrationDigest",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
         "internalType": "uint256",
-        "name": "priceDs",
+        "name": "priceUsdc",
         "type": "uint256"
       }
     ],
     "name": "SlotSettled",
     "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "AuctionNotSettled",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidPerpRegistrationV1",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "IssuanceAuctionCallFailed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "RegistrationConflict",
+    "type": "error"
   }
 ]
 ''')
 
 
-class IDiesisIssuanceAuctionSlotInfo(TypedDict):
-    track: int
+class IDiesisIssuanceAuctionPerpRegistrationV1(TypedDict):
+    market_id: bytes
+    base_asset: ChecksumAddress
+    quote_asset: ChecksumAddress
+    evidence_hash: bytes
+
+
+class IDiesisIssuanceAuctionPerpListingSlotV1(TypedDict):
     slot_start_block: int
     slot_length_blocks: int
-    initial_price_ds: int
-    last_winning_price_ds: int
+    initial_price_usdc: int
+    winning_price_usdc: int
     current_winner: ChecksumAddress
+    registration_digest: bytes
 
 
 class IDiesisIssuanceAuctionContract:
@@ -199,14 +224,17 @@ class IDiesisIssuanceAuctionContract:
         )
 
     # View/pure functions
-    def current_price(self, track: int) -> int:
-        """Compute the current Dutch price for `track` at the current block."""
+    def current_perp_listing_price_v1(self) -> int:
+        """Return the fixed V1 perpetual-listing price in USDC units."""
         ...
-    def get_slot(self, track: int) -> dict[str, Any]:
-        """Read the public slot record for `track`."""
+    def get_perp_listing_slot_v1(self) -> dict[str, Any]:
+        """Read the active perpetual-listing slot and registration digest."""
         ...
 
     # Write functions
-    def bid(self, track: int) -> dict[str, Any]:
-        """Place a bid on the active slot for `track`."""
+    def bid_perp_listing_v1(self, registration: dict[str, Any]) -> dict[str, Any]:
+        """Place a canonical-USDC bid bound to one perpetual registration."""
+        ...
+    def settle_perp_listing_v1(self) -> dict[str, Any]:
+        """Settle the elapsed perpetual-listing slot."""
         ...

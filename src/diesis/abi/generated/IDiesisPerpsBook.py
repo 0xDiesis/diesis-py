@@ -17,6 +17,24 @@ IDIESISPERPSBOOK_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "int256",
+        "name": "marginDelta",
+        "type": "int256"
+      }
+    ],
+    "name": "adjustIsolatedMargin",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
         "name": "orderId",
         "type": "bytes32"
       },
@@ -121,6 +139,29 @@ IDIESISPERPSBOOK_ABI: list[dict[str, Any]] = json.loads('''
       }
     ],
     "name": "expirePerpOrderV1",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint64",
+        "name": "epoch",
+        "type": "uint64"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "snapshotHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "finalizePerpFeeEpochV2",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -677,6 +718,9 @@ class IDiesisPerpsBookContract:
         )
 
     # Write functions
+    def adjust_isolated_margin(self, market_id: bytes, margin_delta: int) -> dict[str, Any]:
+        """Add or remove isolated margin on the caller's position."""
+        ...
     def amend_perp_order_v1(self, order_id: bytes, price: int, amount: int, expiry: int) -> dict[str, Any]:
         """Atomically cancel and replace an order with new price, amount,         expiry, canonical margin reservation, and priority identity."""
         ...
@@ -691,6 +735,9 @@ class IDiesisPerpsBookContract:
         ...
     def expire_perp_order_v1(self, order_id: bytes) -> dict[str, Any]:
         """Permissionlessly expire a GTD order after its canonical deadline."""
+        ...
+    def finalize_perp_fee_epoch_v2(self, market_id: bytes, epoch: int, snapshot_hash: bytes) -> dict[str, Any]:
+        """Finalize the exact stored snapshot of one closed fee epoch."""
         ...
     def submit_exchange_actions_v2(self, encoded_actions: bytes) -> dict[str, Any]:
         """Encode the shared bounded V2 action call for future Lane B use."""

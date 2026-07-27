@@ -3172,6 +3172,22 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
     "type": "error"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "count",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "maximum",
+        "type": "uint256"
+      }
+    ],
+    "name": "BootstrapValidatorSetRequiresCursor",
+    "type": "error"
+  },
+  {
     "inputs": [],
     "name": "CheckpointOutOfRange",
     "type": "error"

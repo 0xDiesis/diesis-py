@@ -169,6 +169,71 @@ IDIESISPERPSBOOK_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "trader",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getIsolatedMargin",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "isolatedMargin",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "trader",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "marketId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getPosition",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "bytes32",
+            "name": "header",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint256",
+            "name": "size",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "entryPrice",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct IDiesisPerpsBook.PackedPosition",
+        "name": "position",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "bytes",
         "name": "encodedActions",
         "type": "bytes"
@@ -709,6 +774,12 @@ IDIESISPERPSBOOK_ABI: list[dict[str, Any]] = json.loads('''
 ''')
 
 
+class IDiesisPerpsBookPackedPosition(TypedDict):
+    header: bytes
+    size: int
+    entry_price: int
+
+
 class IDiesisPerpsBookContract:
     """Typed wrapper for the IDiesisPerpsBook contract."""
 
@@ -716,6 +787,14 @@ class IDiesisPerpsBookContract:
         self.contract: Contract = w3.eth.contract(
             address=address, abi=IDIESISPERPSBOOK_ABI,
         )
+
+    # View/pure functions
+    def get_isolated_margin(self, trader: ChecksumAddress, market_id: bytes) -> int:
+        """Read one trader's quote-denominated isolated margin for a market."""
+        ...
+    def get_position(self, trader: ChecksumAddress, market_id: bytes) -> dict[str, Any]:
+        """Read one trader's canonical perpetual position for a market."""
+        ...
 
     # Write functions
     def adjust_isolated_margin(self, market_id: bytes, margin_delta: int) -> dict[str, Any]:

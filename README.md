@@ -4,8 +4,11 @@ Python SDK for the [Diesis](https://diesis.xyz) chain -- exchange, intents, bund
 
 ## Install
 
+The `diesis-sdk` distribution is not published on PyPI. Install it from an
+authenticated source checkout; the Python import package remains `diesis`:
+
 ```bash
-pip install diesis
+python -m pip install .
 ```
 
 ## Quick Start

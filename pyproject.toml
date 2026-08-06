@@ -3,7 +3,7 @@ requires = ["hatchling>=1.30"]
 build-backend = "hatchling.build"
 
 [project]
-name = "diesis"
+name = "diesis-sdk"
 version = "0.1.0"
 description = "Python SDK for the Diesis chain — exchange, intents, bundles, and patronage"
 readme = "README.md"
@@ -24,6 +24,9 @@ dev = [
     "mypy>=2.1",
     "ruff>=0.15",
 ]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/diesis"]
 
 [tool.ruff]
 target-version = "py310"

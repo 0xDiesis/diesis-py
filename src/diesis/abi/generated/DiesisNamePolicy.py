@@ -119,7 +119,7 @@ DIESISNAMEPOLICY_ABI: list[dict[str, Any]] = json.loads('''
     "outputs": [
       {
         "internalType": "bool",
-        "name": "approved",
+        "name": "",
         "type": "bool"
       }
     ],
@@ -181,7 +181,7 @@ DIESISNAMEPOLICY_ABI: list[dict[str, Any]] = json.loads('''
     "outputs": [
       {
         "internalType": "uint64",
-        "name": "delay",
+        "name": "",
         "type": "uint64"
       }
     ],
@@ -200,7 +200,7 @@ DIESISNAMEPOLICY_ABI: list[dict[str, Any]] = json.loads('''
     "outputs": [
       {
         "internalType": "bool",
-        "name": "enabled",
+        "name": "",
         "type": "bool"
       }
     ],
@@ -219,7 +219,7 @@ DIESISNAMEPOLICY_ABI: list[dict[str, Any]] = json.loads('''
     "outputs": [
       {
         "internalType": "address",
-        "name": "fallbackOwner",
+        "name": "",
         "type": "address"
       }
     ],
@@ -277,7 +277,7 @@ DIESISNAMEPOLICY_ABI: list[dict[str, Any]] = json.loads('''
     "outputs": [
       {
         "internalType": "uint8",
-        "name": "threshold",
+        "name": "",
         "type": "uint8"
       }
     ],
@@ -383,7 +383,7 @@ DIESISNAMEPOLICY_ABI: list[dict[str, Any]] = json.loads('''
     "outputs": [
       {
         "internalType": "uint64",
-        "name": "lockedUntil",
+        "name": "",
         "type": "uint64"
       }
     ],

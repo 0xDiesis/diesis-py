@@ -1150,6 +1150,11 @@ IDIESISBOOTSTRAPORACLE_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
+    "name": "NotDepositOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "OraclePaused",
     "type": "error"
   },
@@ -1272,7 +1277,7 @@ class IDiesisBootstrapOracleContract:
         """Attest a withdrawal event observed on L1."""
         ...
     def claim_bootstrap_rewards(self, deposit_ids: list[int]) -> dict[str, Any]:
-        """Claim ongoing bootstrap rewards for one or more deposits."""
+        """Claim ongoing bootstrap rewards for deposits currently owned by the caller."""
         ...
     def persist_epoch_activation_record(self, certificate: dict[str, Any]) -> dict[str, Any]: ...
     def sync_validator_epoch(self, validators: list[ChecksumAddress], weights: list[int]) -> dict[str, Any]:

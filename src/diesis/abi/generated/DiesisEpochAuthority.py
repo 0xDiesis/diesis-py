@@ -73,6 +73,34 @@ DIESISEPOCHAUTHORITY_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
+    "name": "activeValidatorSet",
+    "outputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "validatorIds",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "bondedStakeWei",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "address[]",
+        "name": "consensusAddresses",
+        "type": "address[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "weights",
+        "type": "uint256[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "cancelPendingValidatorEpoch",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -446,7 +474,13 @@ DIESISEPOCHAUTHORITY_ABI: list[dict[str, Any]] = json.loads('''
       }
     ],
     "name": "initializeEpochZero",
-    "outputs": [],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "complete",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -768,6 +802,129 @@ DIESISEPOCHAUTHORITY_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [
       {
+        "components": [
+          {
+            "internalType": "uint16",
+            "name": "version",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint64",
+            "name": "chainId",
+            "type": "uint64"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "genesisHash",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint64",
+            "name": "epoch",
+            "type": "uint64"
+          },
+          {
+            "internalType": "uint64",
+            "name": "activationBlockNumber",
+            "type": "uint64"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "previousIdentityDigest",
+            "type": "bytes32"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "validatorId",
+                "type": "uint256"
+              },
+              {
+                "internalType": "address",
+                "name": "consensusAddress",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "bondedStakeWei",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint64",
+                "name": "votingPower",
+                "type": "uint64"
+              },
+              {
+                "internalType": "bytes",
+                "name": "blsPublicKey",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "blsProofOfPossession",
+                "type": "bytes"
+              },
+              {
+                "internalType": "bytes",
+                "name": "vrfPublicKey",
+                "type": "bytes"
+              },
+              {
+                "internalType": "address",
+                "name": "quicTransportAddress",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "relayerAddress",
+                "type": "address"
+              },
+              {
+                "internalType": "uint8",
+                "name": "status",
+                "type": "uint8"
+              }
+            ],
+            "internalType": "struct IDiesisEpochIdentity.ValidatorIdentityV1[]",
+            "name": "validators",
+            "type": "tuple[]"
+          }
+        ],
+        "internalType": "struct IDiesisEpochIdentity.EpochIdentityV1",
+        "name": "identity",
+        "type": "tuple"
+      },
+      {
+        "internalType": "uint256",
+        "name": "maxEntries",
+        "type": "uint256"
+      }
+    ],
+    "name": "stageEpochIdentity",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "digest",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint256",
+        "name": "storedValidators",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "ready",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint256",
         "name": "validatorId",
         "type": "uint256"
@@ -793,6 +950,25 @@ DIESISEPOCHAUTHORITY_ABI: list[dict[str, Any]] = json.loads('''
     ],
     "stateMutability": "view",
     "type": "function"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "identityDigest",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes",
+        "name": "canonicalEncoding",
+        "type": "bytes"
+      }
+    ],
+    "name": "EpochIdentityPinned",
+    "type": "event"
   },
   {
     "anonymous": false,
@@ -921,6 +1097,17 @@ DIESISEPOCHAUTHORITY_ABI: list[dict[str, Any]] = json.loads('''
     "type": "error"
   },
   {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "digest",
+        "type": "bytes32"
+      }
+    ],
+    "name": "EpochIdentityNotPrepared",
+    "type": "error"
+  },
+  {
     "inputs": [],
     "name": "EpochZeroAlreadyInitialized",
     "type": "error"
@@ -1012,6 +1199,11 @@ DIESISEPOCHAUTHORITY_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [],
     "name": "InvalidRoleProof",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidStagePageSize",
     "type": "error"
   },
   {
@@ -1314,6 +1506,9 @@ class DiesisEpochAuthorityContract:
     def active_epoch(self) -> int: ...
     def active_epoch_identity_digest(self) -> bytes: ...
     def active_role_bundle_id(self, validator_id: int) -> bytes: ...
+    def active_validator_set(self) -> tuple[list[int], list[int], list[ChecksumAddress], list[int]]:
+        """Read the bounded active set used by staking and bootstrap synchronization."""
+        ...
     def epoch_identity_digest(self, epoch: int) -> bytes: ...
     def epoch_identity_metadata(self, epoch: int) -> tuple[int, bytes]: ...
     def epoch_identity_page(self, epoch: int, cursor: int, limit: int) -> list[dict[str, Any]]: ...
@@ -1333,3 +1528,6 @@ class DiesisEpochAuthorityContract:
     def record_epoch_certification_boundary(self, boundary_number: int, boundary_parent_hash: bytes, checkpoint_digest: bytes) -> dict[str, Any]: ...
     def register_validator_role_keys(self, operator: ChecksumAddress, validator_id: int, target_epoch: int, keys: dict[str, Any], proofs: dict[str, Any]) -> dict[str, Any]: ...
     def schedule_validator_epoch(self, activation_block_number: int) -> dict[str, Any]: ...
+    def stage_epoch_identity(self, identity: dict[str, Any], max_entries: int) -> dict[str, Any]:
+        """Store the next bounded page of an identity under its validated digest."""
+        ...

@@ -158,6 +158,25 @@ IDIESISNAMEREGISTRY_ABI: list[dict[str, Any]] = json.loads('''
         "type": "bytes32"
       }
     ],
+    "name": "ownershipEpoch",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
+      }
+    ],
     "name": "resolver",
     "outputs": [
       {
@@ -545,6 +564,7 @@ class IDiesisNameRegistryContract:
     def is_expired(self, node: bytes) -> bool: ...
     def name_policy(self) -> ChecksumAddress: ...
     def owner(self, node: bytes) -> ChecksumAddress: ...
+    def ownership_epoch(self, node: bytes) -> int: ...
     def resolver(self, node: bytes) -> ChecksumAddress: ...
     def ttl(self, node: bytes) -> int: ...
 

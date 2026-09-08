@@ -175,6 +175,25 @@ DIESISNAMEREGISTRY_ABI: list[dict[str, Any]] = json.loads('''
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "node",
+        "type": "bytes32"
+      }
+    ],
+    "name": "ownershipEpoch",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "epoch",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "renounceOwnership",
     "outputs": [],
@@ -631,6 +650,9 @@ class DiesisNameRegistryContract:
     def name_policy(self) -> ChecksumAddress: ...
     def owner_bytes32(self, node: bytes) -> ChecksumAddress: ...
     def owner(self) -> ChecksumAddress: ...
+    def ownership_epoch(self, node: bytes) -> int:
+        """Changes on every ownership assignment, including a renewal of ownership to the same address."""
+        ...
     def resolver(self, node: bytes) -> ChecksumAddress: ...
     def ttl(self, node: bytes) -> int: ...
 

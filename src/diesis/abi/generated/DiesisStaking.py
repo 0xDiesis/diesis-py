@@ -1684,6 +1684,19 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "recordBootstrapMint",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
         "name": "checkpoint",
         "type": "uint256"
       },
@@ -3694,6 +3707,9 @@ class DiesisStakingContract:
         ...
     def mint_tokens(self, amount: int) -> dict[str, Any]:
         """Mint (issue) new tokens to mintReceiver."""
+        ...
+    def record_bootstrap_mint(self, amount: int) -> dict[str, Any]:
+        """Account for native DS issued by the canonical bootstrap oracle."""
         ...
     def record_checkpoint_fees(self, checkpoint: int, fee: int) -> dict[str, Any]:
         """Record fees collected in a checkpoint (called by node during block processing)."""

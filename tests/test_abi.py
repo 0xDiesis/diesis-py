@@ -37,7 +37,10 @@ def test_artifact_dir_resolver_rejects_an_incomplete_explicit_contracts_root(
         _resolve_artifact_dir(tmp_path)
 
 
-def test_artifact_dir_resolver_finds_the_core_node_from_a_linked_worktree(tmp_path: Path) -> None:
+def test_artifact_dir_resolver_finds_the_core_node_from_a_linked_worktree(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.delenv("DIESIS_CONTRACTS_DIR", raising=False)
     worktree_tests = tmp_path / ".worktrees" / "sdk" / "tests"
     worktree_tests.mkdir(parents=True)
     node_root = tmp_path / "diesis"

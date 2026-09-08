@@ -779,6 +779,11 @@ IDIESISBASEREGISTRAR_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [],
     "name": "ResolverCallFailed",
     "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ReverseRecordUnauthorized",
+    "type": "error"
   }
 ]
 ''')

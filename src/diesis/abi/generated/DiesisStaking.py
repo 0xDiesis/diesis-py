@@ -246,6 +246,19 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "accountedNativeFees",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -594,6 +607,25 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [],
     "name": "circulatingSupply",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "checkpoint",
+        "type": "uint256"
+      }
+    ],
+    "name": "collectedCheckpointFees",
     "outputs": [
       {
         "internalType": "uint256",
@@ -1349,6 +1381,19 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
+    "name": "lastFeeAccrualBlock",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "latestFinalizedCheckpoint",
     "outputs": [
       {
@@ -1737,6 +1782,11 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
       {
         "internalType": "uint256",
         "name": "checkpoint",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "blockNumber",
         "type": "uint256"
       },
       {
@@ -2680,6 +2730,31 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
       {
         "indexed": true,
         "internalType": "uint256",
+        "name": "checkpoint",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "blockNumber",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "fee",
+        "type": "uint256"
+      }
+    ],
+    "name": "CheckpointFeesRecorded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
         "name": "checkpointId",
         "type": "uint256"
       },
@@ -3384,6 +3459,11 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
+    "name": "FeeCustodyInsufficient",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "InstantExitDisabled",
     "type": "error"
   },
@@ -3400,6 +3480,11 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [],
     "name": "InvalidAmount",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidFeeAccrualBlock",
     "type": "error"
   },
   {
@@ -3626,6 +3711,9 @@ class DiesisStakingContract:
     def mark_uptime_drift(self) -> int: ...
     def node_active(self) -> int: ...
     def node_exiting(self) -> int: ...
+    def accounted_native_fees(self) -> int:
+        """Lifetime ordinary gas fees held in this contract's locked native balance."""
+        ...
     def active_epoch(self) -> int: ...
     def active_epoch_identity_digest(self) -> bytes: ...
     def active_recovery(self, arg0: ChecksumAddress) -> ChecksumAddress:
@@ -3641,6 +3729,9 @@ class DiesisStakingContract:
     def circulating_supply(self) -> int:
         """Circulating supply = gross supply - tokens burned to address(0)."""
         ...
+    def collected_checkpoint_fees(self, checkpoint: int) -> int:
+        """Ordinary fees accrued to an open or finalized checkpoint."""
+        ...
     def config(self) -> ChecksumAddress: ...
     def consensus_key_by_node(self, arg0: int) -> bytes: ...
     def epoch_candidate(self, validator_id: int) -> tuple[ChecksumAddress, int, int]: ...
@@ -3653,6 +3744,9 @@ class DiesisStakingContract:
     def initialized(self) -> bool: ...
     def is_approved_for_all(self, owner: ChecksumAddress, operator: ChecksumAddress) -> bool: ...
     def is_slashable(self, validator_id: int) -> bool: ...
+    def last_fee_accrual_block(self) -> int:
+        """Last block whose ordinary gas fees were recorded by the node."""
+        ...
     def latest_finalized_checkpoint(self) -> int: ...
     def name(self) -> str: ...
     def next_position_id(self) -> int: ...
@@ -3774,8 +3868,8 @@ class DiesisStakingContract:
     def record_bootstrap_mint(self, amount: int) -> dict[str, Any]:
         """Account for native DS issued by the canonical bootstrap oracle."""
         ...
-    def record_checkpoint_fees(self, checkpoint: int, fee: int) -> dict[str, Any]:
-        """Record fees collected in a checkpoint (called by node during block processing)."""
+    def record_checkpoint_fees(self, checkpoint: int, block_number: int, fee: int) -> dict[str, Any]:
+        """Account for one committed block's ordinary fees already credited by the node."""
         ...
     def record_epoch_certification_boundary(self, boundary_number: int, boundary_parent_hash: bytes, checkpoint_digest: bytes) -> dict[str, Any]: ...
     def register_validator(self, pubkey: bytes) -> dict[str, Any]:

@@ -1122,7 +1122,7 @@ class DiesisConfigContract:
         """Minimum checkpoints before an unstake request can be withdrawn [2-100]"""
         ...
     def exit_delay_seconds(self) -> int:
-        """Minimum seconds before an unstake request can be withdrawn [1h-30d]"""
+        """Minimum seconds before an unstake request can be withdrawn [14d-30d]"""
         ...
     def liveness_downtime_limit(self) -> int:
         """Seconds offline that triggers offline penalty [1-10 days]"""
@@ -1147,7 +1147,7 @@ class DiesisConfigContract:
         """Number of checkpoints in the rolling average uptime window [10-87,600]"""
         ...
     def reward_stream_per_second(self) -> int:
-        """Base staking reward per second in tokens [0-32 tokens/sec]"""
+        """Base staking reward per second in tokens [0-0.27 tokens/sec]"""
         ...
     def surplus_reward_burn_cut(self) -> int:
         """Fraction of extra reward allocations that are burned [0-100%]"""

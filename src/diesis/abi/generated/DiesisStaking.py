@@ -65,6 +65,45 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
+    "name": "MAX_REWARD_STREAM_PER_SECOND",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "MIN_EXIT_DELAY_CHECKPOINTS",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "MIN_EXIT_DELAY_SECONDS",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "_MARK_EQUIVOCATION",
     "outputs": [
       {
@@ -3207,12 +3246,22 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
+    "name": "ConfigurationBindingFixed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "CooldownNotElapsed",
     "type": "error"
   },
   {
     "inputs": [],
     "name": "DelegationCapExceeded",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "DiscretionaryMintDisabled",
     "type": "error"
   },
   {
@@ -3331,6 +3380,11 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [],
     "name": "EpochAuthorityUnavailable",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InstantExitDisabled",
     "type": "error"
   },
   {
@@ -3552,6 +3606,15 @@ class DiesisStakingContract:
     def diesis_position(self) -> ChecksumAddress: ...
     def epoch_authority(self) -> ChecksumAddress: ...
     def max_registered_validators(self) -> int: ...
+    def max_reward_stream_per_second(self) -> int:
+        """Maximum native security issuance per second, independent of governance configuration."""
+        ...
+    def min_exit_delay_checkpoints(self) -> int:
+        """Minimum finalized checkpoints before any stake exit can complete."""
+        ...
+    def min_exit_delay_seconds(self) -> int:
+        """Minimum wall-clock delay before any stake exit can complete."""
+        ...
     def mark_equivocation(self) -> int: ...
     def mark_evidence_mask(self) -> int: ...
     def mark_inactive_mask(self) -> int: ...
@@ -3700,13 +3763,13 @@ class DiesisStakingContract:
         ...
     def initialize_epoch_zero(self, identity: dict[str, Any], bundles: list[dict[str, Any]], proofs: list[dict[str, Any]]) -> dict[str, Any]: ...
     def instant_unstake_for_position(self, token_id: int, amount: int, fee: int, recipient: ChecksumAddress) -> dict[str, Any]:
-        """Instantly unstake and credit the recipient, bypassing the cooldown period."""
+        """Retained controller selector; instant exits cannot bypass delayed slashing."""
         ...
     def mint_empty_position_for_split(self, validator_id: int) -> dict[str, Any]:
         """Create an empty staking position for atomic splits (controller version)."""
         ...
     def mint_tokens(self, amount: int) -> dict[str, Any]:
-        """Mint (issue) new tokens to mintReceiver."""
+        """Retired discretionary issuance selector. Security and bootstrap issuance have separate bounds."""
         ...
     def record_bootstrap_mint(self, amount: int) -> dict[str, Any]:
         """Account for native DS issued by the canonical bootstrap oracle."""
@@ -3731,7 +3794,9 @@ class DiesisStakingContract:
     def safe_transfer_from_address_address_uint256_bytes(self, _from: ChecksumAddress, to: ChecksumAddress, token_id: int, data: bytes) -> dict[str, Any]: ...
     def schedule_validator_epoch(self, activation_block_number: int) -> dict[str, Any]: ...
     def set_approval_for_all(self, operator: ChecksumAddress, approved: bool) -> dict[str, Any]: ...
-    def set_config_contract(self, config_contract: ChecksumAddress) -> dict[str, Any]: ...
+    def set_config_contract(self, config_contract: ChecksumAddress) -> dict[str, Any]:
+        """Configuration is bound once by initialization or canonical genesis storage."""
+        ...
     def set_operator_take_rate(self, validator_id: int, rate: int) -> dict[str, Any]:
         """Schedule an operator reward cut change for a validator."""
         ...

@@ -7,6 +7,7 @@ from .DiesisBundleEscrow import *  # noqa: F401, F403
 from .DiesisConfig import *  # noqa: F401, F403
 from .DiesisCoreVault import *  # noqa: F401, F403
 from .DiesisEpochAuthority import *  # noqa: F401, F403
+from .DiesisGovernanceTimelock import *  # noqa: F401, F403
 from .DiesisNamePolicy import *  # noqa: F401, F403
 from .DiesisNameRegistry import *  # noqa: F401, F403
 from .DiesisNameVerifier import *  # noqa: F401, F403

@@ -194,29 +194,6 @@ IDIESISBOOTSTRAPORACLE_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       },
       {
-        "internalType": "uint40",
-        "name": "rewardCutoffTimestamp",
-        "type": "uint40"
-      }
-    ],
-    "name": "attestForfeit",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "ethTxHash",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "uint256",
-        "name": "depositId",
-        "type": "uint256"
-      },
-      {
         "internalType": "address",
         "name": "newOwner",
         "type": "address"
@@ -263,12 +240,47 @@ IDIESISBOOTSTRAPORACLE_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [
       {
+        "internalType": "bytes32",
+        "name": "ethTxHash",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "beneficiary",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "cumulativeContributorDsWei",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "cumulativeReferralDsWei",
+        "type": "uint256"
+      }
+    ],
+    "name": "attestYieldReward",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint256[]",
         "name": "depositIds",
         "type": "uint256[]"
       }
     ],
     "name": "claimBootstrapRewards",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "claimYieldRewards",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -841,62 +853,6 @@ IDIESISBOOTSTRAPORACLE_ABI: list[dict[str, Any]] = json.loads('''
     "anonymous": false,
     "inputs": [
       {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "ethTxHash",
-        "type": "bytes32"
-      },
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "depositId",
-        "type": "uint256"
-      },
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "attestationEpochDigest",
-        "type": "bytes32"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "attester",
-        "type": "address"
-      }
-    ],
-    "name": "ForfeitAttested",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "depositId",
-        "type": "uint256"
-      },
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "attestationEpochDigest",
-        "type": "bytes32"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "lumpSumDs",
-        "type": "uint256"
-      }
-    ],
-    "name": "ForfeitConfirmed",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
         "indexed": false,
         "internalType": "uint256",
         "name": "quorumThresholdBps",
@@ -916,43 +872,6 @@ IDIESISBOOTSTRAPORACLE_ABI: list[dict[str, Any]] = json.loads('''
       }
     ],
     "name": "QuorumThresholdUpdated",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "depositId",
-        "type": "uint256"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "owner",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "referrer",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "referralAmount",
-        "type": "uint256"
-      }
-    ],
-    "name": "RewardsClaimed",
     "type": "event"
   },
   {
@@ -1099,6 +1018,87 @@ IDIESISBOOTSTRAPORACLE_ABI: list[dict[str, Any]] = json.loads('''
     "type": "event"
   },
   {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "ethTxHash",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "beneficiary",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "attestationEpochDigest",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "attester",
+        "type": "address"
+      }
+    ],
+    "name": "YieldRewardAttested",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "beneficiary",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "cumulativeContributorDsWei",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "cumulativeReferralDsWei",
+        "type": "uint256"
+      }
+    ],
+    "name": "YieldRewardConfirmed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "beneficiary",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "contributorDsWei",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "referralDsWei",
+        "type": "uint256"
+      }
+    ],
+    "name": "YieldRewardsClaimed",
+    "type": "event"
+  },
+  {
     "inputs": [],
     "name": "AlreadyAttested",
     "type": "error"
@@ -1110,12 +1110,12 @@ IDIESISBOOTSTRAPORACLE_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "BatchTooLarge",
+    "name": "DepositAlreadyConfirmed",
     "type": "error"
   },
   {
     "inputs": [],
-    "name": "DepositAlreadyConfirmed",
+    "name": "DepositAlreadySettled",
     "type": "error"
   },
   {
@@ -1150,17 +1150,17 @@ IDIESISBOOTSTRAPORACLE_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "NotDepositOwner",
-    "type": "error"
-  },
-  {
-    "inputs": [],
     "name": "OraclePaused",
     "type": "error"
   },
   {
     "inputs": [],
     "name": "StaleTransferOrder",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "TimeRewardsRetired",
     "type": "error"
   },
   {
@@ -1267,17 +1267,20 @@ class IDiesisBootstrapOracleContract:
     def attest_deposit(self, eth_tx_hash: bytes, deposit_id: int, user: ChecksumAddress, asset: ChecksumAddress, amount: int, deposit_timestamp: int, lock_until: int, sale_tier: int, lock_tier: int, referrer: ChecksumAddress) -> dict[str, Any]:
         """Attest a deposit event observed on L1."""
         ...
-    def attest_forfeit(self, eth_tx_hash: bytes, deposit_id: int, reward_cutoff_timestamp: int) -> dict[str, Any]:
-        """Attest a forfeit event observed on L1."""
-        ...
     def attest_transfer(self, eth_tx_hash: bytes, deposit_id: int, new_owner: ChecksumAddress, reward_cutoff_timestamp: int, transfer_order: int) -> dict[str, Any]:
         """Attest a transfer event observed on L1."""
         ...
     def attest_withdrawal(self, eth_tx_hash: bytes, deposit_id: int, reward_cutoff_timestamp: int) -> dict[str, Any]:
         """Attest a withdrawal event observed on L1."""
         ...
+    def attest_yield_reward(self, eth_tx_hash: bytes, beneficiary: ChecksumAddress, cumulative_contributor_ds_wei: int, cumulative_referral_ds_wei: int) -> dict[str, Any]:
+        """Confirm cumulative reward entitlements from finalized Ethereum vault events."""
+        ...
     def claim_bootstrap_rewards(self, deposit_ids: list[int]) -> dict[str, Any]:
-        """Claim ongoing bootstrap rewards for deposits currently owned by the caller."""
+        """Retired time-based claim entry point. Always reverts TimeRewardsRetired."""
+        ...
+    def claim_yield_rewards(self) -> dict[str, Any]:
+        """Credit only the caller's unclaimed confirmed cumulative yield rewards."""
         ...
     def persist_epoch_activation_record(self, certificate: dict[str, Any]) -> dict[str, Any]: ...
     def sync_validator_epoch(self, validators: list[ChecksumAddress], weights: list[int]) -> dict[str, Any]:

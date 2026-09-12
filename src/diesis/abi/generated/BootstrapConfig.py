@@ -20,7 +20,7 @@ BOOTSTRAPCONFIG_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "DEFAULT_BASE_REWARD_RATE_PER_SECOND_E18",
+    "name": "CONTRIBUTOR_CAP_WEI",
     "outputs": [
       {
         "internalType": "uint256",
@@ -33,7 +33,7 @@ BOOTSTRAPCONFIG_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "DEFAULT_LOCK_MULTIPLIER_LONG",
+    "name": "REFERRAL_CAP_WEI",
     "outputs": [
       {
         "internalType": "uint256",
@@ -46,7 +46,7 @@ BOOTSTRAPCONFIG_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "DEFAULT_LOCK_MULTIPLIER_MEDIUM",
+    "name": "UNALLOCATED_CAP_WEI",
     "outputs": [
       {
         "internalType": "uint256",
@@ -59,7 +59,7 @@ BOOTSTRAPCONFIG_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "DEFAULT_LOCK_MULTIPLIER_NONE",
+    "name": "contributorAllocated",
     "outputs": [
       {
         "internalType": "uint256",
@@ -72,208 +72,7 @@ BOOTSTRAPCONFIG_ABI: list[dict[str, Any]] = json.loads('''
   },
   {
     "inputs": [],
-    "name": "DEFAULT_LOCK_MULTIPLIER_SHORT",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "DEFAULT_REFERRAL_BONUS_BPS",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "DEFAULT_SALE_TIER_0_CAP",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "DEFAULT_SALE_TIER_0_CONVERSION_RATE",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "DEFAULT_SALE_TIER_1_CAP",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "DEFAULT_SALE_TIER_1_CONVERSION_RATE",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "DEFAULT_SALE_TIER_2_CAP",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "DEFAULT_SALE_TIER_2_CONVERSION_RATE",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "DEFAULT_SALE_TIER_3_CAP",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "DEFAULT_SALE_TIER_3_CONVERSION_RATE",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "DEFAULT_SALE_TIER_ACTIVE",
-    "outputs": [
-      {
-        "internalType": "uint8",
-        "name": "",
-        "type": "uint8"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "DEFAULT_STREAK_BONUS_BPS_PER_MONTH",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "DEFAULT_STREAK_MULTIPLIER_CAP",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "DEFAULT_TOTAL_BOOTSTRAP_MINT_CAP_WEI",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "baseRewardRatePerSecondE18",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint8",
-        "name": "",
-        "type": "uint8"
-      }
-    ],
-    "name": "lockMultiplier",
+    "name": "contributorMinted",
     "outputs": [
       {
         "internalType": "uint256",
@@ -314,18 +113,36 @@ BOOTSTRAPCONFIG_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "amount",
+        "name": "contributor",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "referral",
         "type": "uint256"
       }
     ],
-    "name": "recordMint",
+    "name": "recordYieldMint",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [],
-    "name": "referralBonusBps",
+    "name": "referralAllocated",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "referralMinted",
     "outputs": [
       {
         "internalType": "uint256",
@@ -344,83 +161,19 @@ BOOTSTRAPCONFIG_ABI: list[dict[str, Any]] = json.loads('''
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "saleTierActive",
-    "outputs": [
-      {
-        "internalType": "uint8",
-        "name": "",
-        "type": "uint8"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint8",
-        "name": "",
-        "type": "uint8"
-      }
-    ],
-    "name": "saleTierCap",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint8",
-        "name": "",
-        "type": "uint8"
-      }
-    ],
-    "name": "saleTierConversionRate",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "val",
+        "name": "contributor",
         "type": "uint256"
-      }
-    ],
-    "name": "setBaseRewardRatePerSecondE18",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint8",
-        "name": "tier",
-        "type": "uint8"
       },
       {
         "internalType": "uint256",
-        "name": "bps",
+        "name": "referral",
         "type": "uint256"
       }
     ],
-    "name": "setLockMultiplier",
+    "name": "reserveYieldRewards",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -429,112 +182,11 @@ BOOTSTRAPCONFIG_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "internalType": "address",
-        "name": "_oracle",
+        "name": "oracle_",
         "type": "address"
       }
     ],
     "name": "setOracle",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "bps",
-        "type": "uint256"
-      }
-    ],
-    "name": "setReferralBonusBps",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint8",
-        "name": "tier",
-        "type": "uint8"
-      }
-    ],
-    "name": "setSaleTierActive",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint8",
-        "name": "tier",
-        "type": "uint8"
-      },
-      {
-        "internalType": "uint256",
-        "name": "cap",
-        "type": "uint256"
-      }
-    ],
-    "name": "setSaleTierCap",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint8",
-        "name": "tier",
-        "type": "uint8"
-      },
-      {
-        "internalType": "uint256",
-        "name": "rate",
-        "type": "uint256"
-      }
-    ],
-    "name": "setSaleTierConversionRate",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "bps",
-        "type": "uint256"
-      }
-    ],
-    "name": "setStreakBonusBpsPerMonth",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "bps",
-        "type": "uint256"
-      }
-    ],
-    "name": "setStreakMultiplierCap",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "cap",
-        "type": "uint256"
-      }
-    ],
-    "name": "setTotalBootstrapMintCapWei",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -550,32 +202,6 @@ BOOTSTRAPCONFIG_ABI: list[dict[str, Any]] = json.loads('''
     "name": "setTreasuryAddress",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "streakBonusBpsPerMonth",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "streakMultiplierCap",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -636,38 +262,6 @@ BOOTSTRAPCONFIG_ABI: list[dict[str, Any]] = json.loads('''
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "newRate",
-        "type": "uint256"
-      }
-    ],
-    "name": "BaseRewardRateUpdated",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint8",
-        "name": "tier",
-        "type": "uint8"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "bps",
-        "type": "uint256"
-      }
-    ],
-    "name": "LockMultiplierUpdated",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
       },
@@ -717,109 +311,6 @@ BOOTSTRAPCONFIG_ABI: list[dict[str, Any]] = json.loads('''
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "bps",
-        "type": "uint256"
-      }
-    ],
-    "name": "ReferralBonusBpsUpdated",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint8",
-        "name": "tier",
-        "type": "uint8"
-      }
-    ],
-    "name": "SaleTierActiveUpdated",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint8",
-        "name": "tier",
-        "type": "uint8"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "cap",
-        "type": "uint256"
-      }
-    ],
-    "name": "SaleTierCapUpdated",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint8",
-        "name": "tier",
-        "type": "uint8"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "rate",
-        "type": "uint256"
-      }
-    ],
-    "name": "SaleTierConversionRateUpdated",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "bps",
-        "type": "uint256"
-      }
-    ],
-    "name": "StreakBonusBpsPerMonthUpdated",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "bps",
-        "type": "uint256"
-      }
-    ],
-    "name": "StreakMultiplierCapUpdated",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "cap",
-        "type": "uint256"
-      }
-    ],
-    "name": "TotalBootstrapMintCapUpdated",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
         "indexed": true,
         "internalType": "address",
         "name": "treasury",
@@ -830,6 +321,25 @@ BOOTSTRAPCONFIG_ABI: list[dict[str, Any]] = json.loads('''
     "type": "event"
   },
   {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "contributor",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "referral",
+        "type": "uint256"
+      }
+    ],
+    "name": "YieldAllocationReserved",
+    "type": "event"
+  },
+  {
     "inputs": [],
     "name": "MintCapExceeded",
     "type": "error"
@@ -837,6 +347,11 @@ BOOTSTRAPCONFIG_ABI: list[dict[str, Any]] = json.loads('''
   {
     "inputs": [],
     "name": "NotOracle",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "OracleAlreadySet",
     "type": "error"
   },
   {
@@ -879,98 +394,31 @@ class BootstrapConfigContract:
         )
 
     # View/pure functions
-    def default_base_reward_rate_per_second_e18(self) -> int: ...
-    def default_lock_multiplier_long(self) -> int: ...
-    def default_lock_multiplier_medium(self) -> int: ...
-    def default_lock_multiplier_none(self) -> int: ...
-    def default_lock_multiplier_short(self) -> int: ...
-    def default_referral_bonus_bps(self) -> int: ...
-    def default_sale_tier_0_cap(self) -> int: ...
-    def default_sale_tier_0_conversion_rate(self) -> int: ...
-    def default_sale_tier_1_cap(self) -> int: ...
-    def default_sale_tier_1_conversion_rate(self) -> int: ...
-    def default_sale_tier_2_cap(self) -> int: ...
-    def default_sale_tier_2_conversion_rate(self) -> int: ...
-    def default_sale_tier_3_cap(self) -> int: ...
-    def default_sale_tier_3_conversion_rate(self) -> int: ...
-    def default_sale_tier_active(self) -> int: ...
-    def default_streak_bonus_bps_per_month(self) -> int: ...
-    def default_streak_multiplier_cap(self) -> int: ...
-    def default_total_bootstrap_mint_cap_wei(self) -> int: ...
-    def base_reward_rate_per_second_e18(self) -> int:
-        """Base DS reward rate per second, scaled to 18 decimals."""
-        ...
-    def lock_multiplier(self, arg0: int) -> int:
-        """Lock-tier multiplier in basis points (10000 = 1x)."""
-        ...
-    def oracle(self) -> ChecksumAddress:
-        """Address of the oracle contract authorized to call `recordMint`."""
-        ...
+    def contributor_cap_wei(self) -> int: ...
+    def referral_cap_wei(self) -> int: ...
+    def unallocated_cap_wei(self) -> int: ...
+    def contributor_allocated(self) -> int: ...
+    def contributor_minted(self) -> int: ...
+    def oracle(self) -> ChecksumAddress: ...
     def owner(self) -> ChecksumAddress: ...
-    def referral_bonus_bps(self) -> int:
-        """Referral bonus in basis points applied to referred stakes."""
-        ...
-    def sale_tier_active(self) -> int:
-        """Currently active sale tier index."""
-        ...
-    def sale_tier_cap(self, arg0: int) -> int:
-        """Per-tier cap on stablecoin deposits (in stablecoin decimals)."""
-        ...
-    def sale_tier_conversion_rate(self, arg0: int) -> int:
-        """Sale-tier token conversion rate in USD with 18 decimals."""
-        ...
-    def streak_bonus_bps_per_month(self) -> int:
-        """Streak bonus in basis points accrued per month of continuous staking."""
-        ...
-    def streak_multiplier_cap(self) -> int:
-        """Maximum streak multiplier in basis points (e.g. 11000 = 1.1x cap)."""
-        ...
-    def total_bootstrap_mint_cap_wei(self) -> int:
-        """Maximum total DS tokens that may be minted via bootstrap."""
-        ...
-    def total_bootstrap_minted(self) -> int:
-        """Cumulative DS tokens minted so far via bootstrap."""
-        ...
-    def treasury_address(self) -> ChecksumAddress:
-        """Address that receives protocol treasury funds."""
-        ...
+    def referral_allocated(self) -> int: ...
+    def referral_minted(self) -> int: ...
+    def total_bootstrap_mint_cap_wei(self) -> int: ...
+    def total_bootstrap_minted(self) -> int: ...
+    def treasury_address(self) -> ChecksumAddress: ...
 
     # Write functions
-    def record_mint(self, amount: int) -> dict[str, Any]:
-        """Record a mint against the bootstrap cap. Only callable by the oracle."""
+    def record_yield_mint(self, contributor: int, referral: int) -> dict[str, Any]:
+        """Consume a reserved allocation when the oracle credits a beneficiary."""
         ...
     def renounce_ownership(self) -> dict[str, Any]: ...
-    def set_base_reward_rate_per_second_e18(self, val: int) -> dict[str, Any]:
-        """Set the base DS reward rate per second (18-decimal fixed point)."""
-        ...
-    def set_lock_multiplier(self, tier: int, bps: int) -> dict[str, Any]:
-        """Set the multiplier for a given lock tier."""
+    def reserve_yield_rewards(self, contributor: int, referral: int) -> dict[str, Any]:
+        """Reserve confirmed cumulative deltas independently of when beneficiaries claim."""
         ...
     def set_oracle(self, oracle: ChecksumAddress) -> dict[str, Any]:
-        """Set the oracle address authorized to record mints."""
-        ...
-    def set_referral_bonus_bps(self, bps: int) -> dict[str, Any]:
-        """Set the referral bonus in basis points."""
-        ...
-    def set_sale_tier_active(self, tier: int) -> dict[str, Any]:
-        """Set the currently active sale tier."""
-        ...
-    def set_sale_tier_cap(self, tier: int, cap: int) -> dict[str, Any]:
-        """Set the stablecoin deposit cap for a sale tier."""
-        ...
-    def set_sale_tier_conversion_rate(self, tier: int, rate: int) -> dict[str, Any]:
-        """Set the token conversion rate for a sale tier."""
-        ...
-    def set_streak_bonus_bps_per_month(self, bps: int) -> dict[str, Any]:
-        """Set the streak bonus accrued per month of continuous staking."""
-        ...
-    def set_streak_multiplier_cap(self, bps: int) -> dict[str, Any]:
-        """Set the maximum streak multiplier cap."""
-        ...
-    def set_total_bootstrap_mint_cap_wei(self, cap: int) -> dict[str, Any]:
-        """Set the total bootstrap mint cap."""
+        """Bind the oracle once so governance cannot redirect earned allocations."""
         ...
     def set_treasury_address(self, addr: ChecksumAddress) -> dict[str, Any]:
-        """Set the treasury address."""
+        """Update the treasury destination; earned reward terms remain fixed."""
         ...
     def transfer_ownership(self, new_owner: ChecksumAddress) -> dict[str, Any]: ...

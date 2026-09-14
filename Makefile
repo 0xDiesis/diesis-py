@@ -14,9 +14,9 @@ $(DEV_READY): pyproject.toml
 dev-deps: $(DEV_READY)
 
 codegen:
-	abi-typegen generate \
-		--artifacts ../diesis/contracts/out \
-		--out src/diesis/abi/generated \
+	pnpm --dir ../diesis/contracts exec abi-typegen generate \
+		--artifacts $(abspath ../diesis/contracts/out) \
+		--out $(abspath src/diesis/abi/generated) \
 		--target python \
 		--contracts $(ABI_CONTRACTS) \
 		--clean

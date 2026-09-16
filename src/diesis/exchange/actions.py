@@ -6,8 +6,9 @@ from typing import Any, cast
 
 from web3 import Web3
 from web3.contract import Contract
-from web3.types import RPCEndpoint, TxParams
+from web3.types import TxParams
 
+from .._rpc import _rpc
 from ..abi.generated.IDiesisErc20Factory import IDIESISERC20FACTORY_ABI
 from ..addresses import DIESIS_ERC20_FACTORY
 
@@ -50,38 +51,33 @@ class ExchangeActions:
             abi=ERC20_FACTORY_ABI,
         )
 
-    def _rpc(self, method: str, params: list[Any]) -> Any:
-        response = self._w3.provider.make_request(RPCEndpoint(method), params)
-        if "error" in response:
-            raise RuntimeError(f"RPC error: {response['error']}")
-        return response["result"]
-
     def get_order_book(self, market_id: str, depth: int | None = None) -> Any:
         params: dict[str, Any] = {"marketId": market_id}
         if depth is not None:
             params["depth"] = depth
-        return self._rpc("exchange_getOrderBook", [params])
+        return _rpc(self._w3, "exchange_getOrderBook", [params])
 
     def get_markets(self) -> Any:
-        return self._rpc("exchange_getMarkets", [])
+        return _rpc(self._w3, "exchange_getMarkets", [])
 
     def get_market(self, market_id: str) -> Any:
-        return self._rpc("exchange_getMarket", [market_id])
+        return _rpc(self._w3, "exchange_getMarket", [market_id])
 
     def get_account(self, address: str) -> Any:
-        return self._rpc("exchange_getAccount", [address])
+        return _rpc(self._w3, "exchange_getAccount", [address])
 
     def get_trades(self, market_id: str, limit: int | None = None) -> Any:
         params: dict[str, Any] = {"marketId": market_id}
         if limit is not None:
             params["limit"] = limit
-        return self._rpc("exchange_getTrades", [params])
+        return _rpc(self._w3, "exchange_getTrades", [params])
 
     def get_funding_rates(self, market_id: str) -> Any:
-        return self._rpc("exchange_getFundingRates", [market_id])
+        return _rpc(self._w3, "exchange_getFundingRates", [market_id])
 
     def estimate_fill(self, market_id: str, side: int, amount: int) -> Any:
-        return self._rpc(
+        return _rpc(
+            self._w3,
             "exchange_estimateFill",
             [{"marketId": market_id, "side": side, "amount": hex(amount)}],
         )
@@ -94,19 +90,19 @@ class ExchangeActions:
         ``params`` mirrors the TS SDK shape:
         ``{slotId, sourceList, metadata, sigs}``.
         """
-        return self._rpc("exchange_deployPerp", [params])
+        return _rpc(self._w3, "exchange_deployPerp", [params])
 
     def get_market_deployment_state(self, market_id: str) -> Any:
         """Read the deployment state for ``market_id`` (Cycle A2.1)."""
-        return self._rpc("exchange_getMarketDeploymentState", [market_id])
+        return _rpc(self._w3, "exchange_getMarketDeploymentState", [market_id])
 
     def get_operator_balance(self, operator: str) -> Any:
         """Read the operator-fee-router balance for ``operator``."""
-        return self._rpc("exchange_getOperatorBalance", [operator])
+        return _rpc(self._w3, "exchange_getOperatorBalance", [operator])
 
     def propose_metadata_update(self, params: dict[str, Any]) -> Any:
         """Propose a market-metadata update (24h timelock)."""
-        return self._rpc("exchange_proposeMetadataUpdate", [params])
+        return _rpc(self._w3, "exchange_proposeMetadataUpdate", [params])
 
     # ── A2.1.1: ERC-20 factory precompile EVM dispatch ──────────────────────
 

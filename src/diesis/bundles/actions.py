@@ -10,8 +10,8 @@ from __future__ import annotations
 from typing import Any, cast
 
 from web3 import Web3
-from web3.types import RPCEndpoint
 
+from .._rpc import _rpc
 from .plan import plan_hash
 from .types import (
     _LIFECYCLE_VALUES,
@@ -187,15 +187,9 @@ class BundleActions:
     def __init__(self, w3: Web3) -> None:
         self._w3 = w3
 
-    def _rpc(self, method: str, params: list[Any]) -> Any:
-        response = self._w3.provider.make_request(RPCEndpoint(method), params)
-        if "error" in response:
-            raise RuntimeError(f"RPC error: {response['error']}")
-        return response["result"]
-
     def prepare_bundle(self, plan: BundlePlanV2) -> PreparedBundle:
         """Bind an ordered plan and return its hash and per-member consent digests."""
-        return _prepared_bundle(self._rpc("diesis_prepareBundle", [{"plan": plan_to_wire(plan)}]))
+        return _prepared_bundle(_rpc(self._w3, "diesis_prepareBundle", [{"plan": plan_to_wire(plan)}]))
 
     def submit_bundle(
         self,
@@ -217,10 +211,10 @@ class BundleActions:
                 {"rawTransaction": _raw_to_wire(raw), "consent": consent_to_wire(consent)} for raw, consent in members
             ],
         }
-        return _submit_bundle_result(self._rpc("diesis_submitBundle", [{"bundle": bundle, "planHash": ph}]))
+        return _submit_bundle_result(_rpc(self._w3, "diesis_submitBundle", [{"bundle": bundle, "planHash": ph}]))
 
     def get_bundle_status(self, plan_hash_hex: str) -> BundleStatusResult:
-        return _bundle_status_result(self._rpc("diesis_getBundleStatus", [{"planHash": plan_hash_hex}]))
+        return _bundle_status_result(_rpc(self._w3, "diesis_getBundleStatus", [{"planHash": plan_hash_hex}]))
 
     def send_stealth_bundle(
         self,
@@ -243,4 +237,4 @@ class BundleActions:
             "announcement": announcement,
             "consent": consent_to_wire(consent),
         }
-        return _submit_bundle_result(self._rpc("diesis_sendStealthBundle", [params]))
+        return _submit_bundle_result(_rpc(self._w3, "diesis_sendStealthBundle", [params]))

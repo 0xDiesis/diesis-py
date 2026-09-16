@@ -5,8 +5,8 @@ from __future__ import annotations
 from typing import Any
 
 from web3 import Web3
-from web3.types import RPCEndpoint
 
+from ._rpc import _rpc
 from .bundles.actions import BundleActions
 from .chains import Chain, diesis
 from .exchange.actions import ExchangeActions
@@ -48,35 +48,29 @@ class DiesisClient:
         """Return the underlying Web3 instance."""
         return self._w3
 
-    def _rpc(self, method: str, params: list[Any]) -> Any:
-        response = self._w3.provider.make_request(RPCEndpoint(method), params)
-        if "error" in response:
-            raise RuntimeError(f"RPC error: {response['error']}")
-        return response["result"]
-
     def get_rules(self) -> Any:
         """Fetch chain rules via ``diesis_getRules``."""
-        return self._rpc("diesis_getRules", [])
+        return _rpc(self._w3, "diesis_getRules", [])
 
     def get_pipeline_status(self) -> Any:
         """Fetch pipeline status via ``diesis_getPipelineStatus``."""
-        return self._rpc("diesis_getPipelineStatus", [])
+        return _rpc(self._w3, "diesis_getPipelineStatus", [])
 
     def get_transaction_status(self, tx_hash: str) -> Any:
         """Fetch transaction status via ``diesis_getTransactionStatus``."""
-        return self._rpc("diesis_getTransactionStatus", [tx_hash])
+        return _rpc(self._w3, "diesis_getTransactionStatus", [tx_hash])
 
     def get_block_witness(self, block_hash: str) -> Any:
         """Fetch block witness via ``diesis_getBlockWitness``."""
-        return self._rpc("diesis_getBlockWitness", [block_hash])
+        return _rpc(self._w3, "diesis_getBlockWitness", [block_hash])
 
     def get_block_metadata(self, block_number: int) -> Any:
         """Fetch block metadata via ``diesis_getBlockMetadata``."""
-        return self._rpc("diesis_getBlockMetadata", [block_number])
+        return _rpc(self._w3, "diesis_getBlockMetadata", [block_number])
 
     def get_consensus_commit_status(self, round: int) -> Any:
         """Fetch consensus commit status via ``diesis_getConsensusCommitStatus``."""
-        return self._rpc("diesis_getConsensusCommitStatus", [round])
+        return _rpc(self._w3, "diesis_getConsensusCommitStatus", [round])
 
     def _require_key(self) -> str:
         if self._private_key is None:
@@ -85,7 +79,7 @@ class DiesisClient:
 
     def send_transaction_sync(self, to: str, value: int = 0, data: str = "0x") -> Any:
         """Send a raw transaction synchronously via ``diesis_sendRawTransactionSync``."""
-        return self._rpc("diesis_sendRawTransactionSync", [{"to": to, "value": hex(value), "data": data}])
+        return _rpc(self._w3, "diesis_sendRawTransactionSync", [{"to": to, "value": hex(value), "data": data}])
 
     def sign_order_intent(self, intent: OrderIntent) -> SignedOrderIntent:
         """Sign an order intent using the configured private key."""
@@ -97,7 +91,8 @@ class DiesisClient:
 
     def submit_intent(self, intent: SignedOrderIntent) -> Any:
         """Submit a signed order intent via ``diesis_submitIntent``."""
-        return self._rpc(
+        return _rpc(
+            self._w3,
             "diesis_submitIntent",
             [
                 {

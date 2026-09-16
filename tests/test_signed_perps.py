@@ -1,3 +1,4 @@
+import pytest
 from eth_account import Account
 from eth_account.messages import encode_typed_data
 from web3 import Web3
@@ -9,6 +10,17 @@ from diesis.exchange.signed_perps import (
     sign_perp_actions,
     signed_perp_actions_typed_data,
 )
+
+
+@pytest.mark.parametrize("actions_hash_hex", ["0x", "0x12", "0x" + "11" * 31, "0x" + "11" * 33, "11" * 32])
+def test_signed_perp_actions_rejects_malformed_actions_hash(actions_hash_hex: str) -> None:
+    with pytest.raises(ValueError, match="actions_hash must be a 0x-prefixed bytes32 hex string"):
+        signed_perp_actions_typed_data(
+            "0x0000000000000000000000000000000000000001",
+            1,
+            0,
+            actions_hash_hex,
+        )
 
 
 def test_actions_hash_is_keccak_of_bytes() -> None:

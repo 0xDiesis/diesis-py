@@ -18,6 +18,7 @@ from eth_account.messages import encode_typed_data
 from web3 import Web3
 
 from ..addresses import DIESIS_PERPS_BOOK
+from .utils import _bytes32
 
 SUBMIT_SIGNED_PERP_ACTIONS_V2_SIGNATURE = "submitSignedPerpActionsV2(bytes)"
 
@@ -42,12 +43,6 @@ class SignedPerpActionsV2:
     actions: str
     signature: str
     signer: str
-
-
-def _bytes32(field: str, value: str) -> bytes:
-    if not isinstance(value, str) or not value.startswith("0x") or len(value) != 66:
-        raise ValueError(f"{field} must be a 0x-prefixed bytes32 hex string")
-    return bytes.fromhex(value[2:])
 
 
 def actions_hash(actions: str) -> str:

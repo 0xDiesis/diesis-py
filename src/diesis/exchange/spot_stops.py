@@ -18,6 +18,7 @@ from eth_account.messages import encode_typed_data
 from web3 import Web3
 
 from ..addresses import DIESIS_SPOT_BOOK
+from .utils import _bytes32
 
 TRIGGER_SPOT_STOPS_SIGNATURE = "triggerSpotStops(bytes32,uint16)"
 
@@ -52,12 +53,6 @@ class SignedCancelAllSpotIntent:
 
     intent: CancelAllSpotIntent
     signature: str
-
-
-def _bytes32(field: str, value: str) -> bytes:
-    if not isinstance(value, str) or not value.startswith("0x") or len(value) != 66:
-        raise ValueError(f"{field} must be a 0x-prefixed bytes32 hex string")
-    return bytes.fromhex(value[2:])
 
 
 def cancel_all_domain(chain_id: int = 1980, verifying_contract: str = DIESIS_SPOT_BOOK) -> dict[str, Any]:

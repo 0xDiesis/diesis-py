@@ -1,3 +1,4 @@
+import pytest
 from eth_account import Account
 from eth_account.messages import encode_typed_data
 from web3 import Web3
@@ -15,6 +16,18 @@ from diesis.intents.types import OrderIntent
 # Fixed shared vectors from contracts/test/exchange/ExchangePrecompileInterfaces.t.sol.
 _CANCEL_ALL_DIGEST = "0xb255e856ada29ff3027cc87677dec35a7fc56ede829135704f186c8f30177ad4"
 _STOP_ORDER_DIGEST = "0x17f4cc7860e79c25ed2dbc729a33002c04428bb45739ff5f4758bbae079f67a9"
+
+
+@pytest.mark.parametrize("market_id", ["0x", "0x12", "0x" + "22" * 31, "0x" + "22" * 33, "22" * 32])
+def test_cancel_all_rejects_malformed_market_id(market_id: str) -> None:
+    intent = CancelAllSpotIntent(
+        trader="0x0000000000000000000000000000000000000001",
+        market_id=market_id,
+        expiry=0,
+        nonce=1,
+    )
+    with pytest.raises(ValueError, match="market_id must be a 0x-prefixed bytes32 hex string"):
+        cancel_all_typed_data(intent)
 
 
 def _digest(typed: dict) -> str:

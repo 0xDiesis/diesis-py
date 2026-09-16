@@ -8,58 +8,22 @@ from web3 import Web3
 from web3.contract import Contract
 from web3.types import RPCEndpoint, TxParams
 
+from ..abi.generated.IDiesisErc20Factory import IDIESISERC20FACTORY_ABI
 from ..addresses import DIESIS_ERC20_FACTORY
 
 ERC20_FACTORY_ABI: list[dict[str, Any]] = [
-    {
-        "type": "function",
-        "name": "deploy",
-        "stateMutability": "nonpayable",
-        "inputs": [
-            {
-                "name": "params",
-                "type": "tuple",
-                "components": [
-                    {"name": "symbol", "type": "bytes11"},
-                    {"name": "name", "type": "string"},
-                    {"name": "initialSupply", "type": "uint256"},
-                    {"name": "deployer", "type": "address"},
-                ],
-            }
-        ],
-        "outputs": [{"name": "tokenAddress", "type": "address"}],
-    },
-    {
-        "type": "function",
-        "name": "predictAddress",
-        "stateMutability": "view",
-        "inputs": [
-            {"name": "deployer", "type": "address"},
-            {"name": "symbol", "type": "bytes11"},
-        ],
-        "outputs": [{"name": "", "type": "address"}],
-    },
-    {
-        "type": "function",
-        "name": "templateBytecodeHash",
-        "stateMutability": "view",
-        "inputs": [],
-        "outputs": [{"name": "", "type": "bytes32"}],
-    },
-    {
-        "type": "function",
-        "name": "proposeTemplateUpdate",
-        "stateMutability": "nonpayable",
-        "inputs": [{"name": "newHash", "type": "bytes32"}],
-        "outputs": [],
-    },
-    {
-        "type": "function",
-        "name": "executeTemplateUpdate",
-        "stateMutability": "nonpayable",
-        "inputs": [],
-        "outputs": [],
-    },
+    next(
+        entry
+        for entry in IDIESISERC20FACTORY_ABI
+        if entry["type"] == "function" and entry["name"] == name
+    )
+    for name in (
+        "deploy",
+        "predictAddress",
+        "templateBytecodeHash",
+        "proposeTemplateUpdate",
+        "executeTemplateUpdate",
+    )
 ]
 
 

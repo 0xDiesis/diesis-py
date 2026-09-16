@@ -10,6 +10,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Literal
 
+from ..addresses import DIESIS_BUNDLE_ESCROW as DIESIS_BUNDLE_ESCROW
+
 
 class ExecutionFlags:
     """``u16`` bundle execution bitflags (see the spec precedence table)."""
@@ -18,11 +20,6 @@ class ExecutionFlags:
     TOLERATE_INVALID = 0x02
     HALT_ON_INVALID = 0x04
     PARTIAL_REFUND = 0x08
-
-
-# Escrow precompile reserved on every chain spec so all languages derive an
-# identical bundle EIP-712 domain and reservation target.
-DIESIS_BUNDLE_ESCROW = "0xD1E515000000000000000000000000000000bE5c"
 
 
 @dataclass(frozen=True)

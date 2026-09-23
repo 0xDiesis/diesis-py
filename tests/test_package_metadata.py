@@ -12,9 +12,9 @@ def test_distribution_name_does_not_claim_unrelated_pypi_project() -> None:
     assert config["tool"]["hatch"]["build"]["targets"]["wheel"]["packages"] == ["src/diesis"]
 
 
-def test_readme_documents_source_checkout_installation() -> None:
+def test_readme_documents_pinned_git_installation() -> None:
     readme = (PROJECT_ROOT / "README.md").read_text()
 
     assert "pip install diesis\n" not in readme
-    assert "python -m pip install ." in readme
-    assert "not published on PyPI" in readme
+    assert "'diesis-sdk @ git+https://github.com/0xDiesis/diesis-py.git@<commit>'" in readme
+    assert "not on PyPI" in readme

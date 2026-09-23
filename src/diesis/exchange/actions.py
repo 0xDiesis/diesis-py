@@ -13,11 +13,7 @@ from ..abi.generated.IDiesisErc20Factory import IDIESISERC20FACTORY_ABI
 from ..addresses import DIESIS_ERC20_FACTORY
 
 ERC20_FACTORY_ABI: list[dict[str, Any]] = [
-    next(
-        entry
-        for entry in IDIESISERC20FACTORY_ABI
-        if entry["type"] == "function" and entry["name"] == name
-    )
+    next(entry for entry in IDIESISERC20FACTORY_ABI if entry["type"] == "function" and entry["name"] == name)
     for name in (
         "deploy",
         "predictAddress",

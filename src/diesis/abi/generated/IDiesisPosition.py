@@ -1137,6 +1137,25 @@ IDIESISPOSITION_ABI: list[dict[str, Any]] = json.loads('''
     "inputs": [
       {
         "indexed": true,
+        "internalType": "address",
+        "name": "manager",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "enabled",
+        "type": "bool"
+      }
+    ],
+    "name": "LockManagerSet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
         "internalType": "uint256",
         "name": "tokenId",
         "type": "uint256"
@@ -1424,6 +1443,19 @@ IDIESISPOSITION_ABI: list[dict[str, Any]] = json.loads('''
       }
     ],
     "name": "ValidatorExitFeeSet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "validatorShare",
+        "type": "address"
+      }
+    ],
+    "name": "ValidatorShareSet",
     "type": "event"
   },
   {

@@ -2954,6 +2954,19 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
     "anonymous": false,
     "inputs": [
       {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "bps",
+        "type": "uint256"
+      }
+    ],
+    "name": "ParticipationPoolBpsUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": true,
         "internalType": "uint256",
         "name": "checkpoint",
@@ -2979,6 +2992,19 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
       }
     ],
     "name": "ParticipationRewards",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "authorizer",
+        "type": "address"
+      }
+    ],
+    "name": "RecoveryAuthorizerSet",
     "type": "event"
   },
   {
@@ -3062,6 +3088,19 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
       {
         "indexed": true,
         "internalType": "address",
+        "name": "observer",
+        "type": "address"
+      }
+    ],
+    "name": "StakeObserverSet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
         "name": "delegator",
         "type": "address"
       },
@@ -3085,6 +3124,19 @@ DIESISSTAKING_ABI: list[dict[str, Any]] = json.loads('''
       }
     ],
     "name": "Staked",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256[3]",
+        "name": "weights",
+        "type": "uint256[3]"
+      }
+    ],
+    "name": "SubScoreWeightsUpdated",
     "type": "event"
   },
   {

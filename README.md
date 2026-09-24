@@ -35,7 +35,7 @@ hand-encoding calldata or EIP-712 structs.
 - One `DiesisClient` exposes `exchange`, `bundles`, `patronage`, `privacy`, and
   `staking`.
 - Signing helpers use the same EIP-712 field order and domains as the Rust
-  node and the [TypeScript SDK](https://github.com/0xDiesis/diesis-sdk).
+  node and the [TypeScript SDK](https://github.com/0xDiesis/diesis-js).
 - Inputs are checked before signing. A bad address, a malformed `bytes32`, an
   out-of-range integer, or an unknown order flag raises before a signature
   exists.
@@ -337,7 +337,7 @@ staking = client.w3.eth.contract(address=addresses.DIESIS_STAKING, abi=DIESISSTA
 ```bash
 make test        # pytest
 make quality     # ABI drift check, ruff, mypy --strict, tests
-make codegen     # regenerate ABIs from ../diesis/contracts
+make codegen     # regenerate ABIs from ../../diesis/contracts
 ```
 
 The first `make` target creates `.venv` and installs the dev extras.

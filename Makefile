@@ -1,4 +1,4 @@
-DIESIS_CONTRACTS_DIR ?= ../../diesis/contracts
+DIESIS_CONTRACTS_DIR ?= ../../diesis-core/diesis/contracts
 PYTHON ?= python3
 ABI_CONTRACTS := $(shell paste -sd, $(DIESIS_CONTRACTS_DIR)/abi-contracts.txt)
 VENV ?= .venv

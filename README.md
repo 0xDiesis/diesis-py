@@ -337,7 +337,7 @@ staking = client.w3.eth.contract(address=addresses.DIESIS_STAKING, abi=DIESISSTA
 ```bash
 make test        # pytest
 make quality     # ABI drift check, ruff, mypy --strict, tests
-make codegen     # regenerate ABIs from ../../diesis/contracts
+make codegen     # regenerate ABIs from ../../diesis-core/diesis/contracts
 ```
 
 The first `make` target creates `.venv` and installs the dev extras.

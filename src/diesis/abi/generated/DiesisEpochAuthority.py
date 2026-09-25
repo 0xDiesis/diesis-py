@@ -193,6 +193,55 @@ DIESISEPOCHAUTHORITY_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint64"
       }
     ],
+    "name": "epochIdentityHeader",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "version",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint64",
+        "name": "chainId",
+        "type": "uint64"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "genesisHash",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint64",
+        "name": "identityEpoch",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint64",
+        "name": "activationBlockNumber",
+        "type": "uint64"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "previousIdentityDigest",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint256",
+        "name": "validatorCount",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint64",
+        "name": "epoch",
+        "type": "uint64"
+      }
+    ],
     "name": "epochIdentityMetadata",
     "outputs": [
       {
@@ -952,6 +1001,35 @@ DIESISEPOCHAUTHORITY_ABI: list[dict[str, Any]] = json.loads('''
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "digest",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes",
+        "name": "signerBitmap",
+        "type": "bytes"
+      },
+      {
+        "internalType": "bytes",
+        "name": "aggregateSignature",
+        "type": "bytes"
+      }
+    ],
+    "name": "verifyActiveRandomnessApproval",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {
@@ -1510,6 +1588,9 @@ class DiesisEpochAuthorityContract:
         """Read the bounded active set used by staking and bootstrap synchronization."""
         ...
     def epoch_identity_digest(self, epoch: int) -> bytes: ...
+    def epoch_identity_header(self, epoch: int) -> tuple[int, int, bytes, int, int, bytes, int]:
+        """Read the immutable header retained with a published epoch identity."""
+        ...
     def epoch_identity_metadata(self, epoch: int) -> tuple[int, bytes]: ...
     def epoch_identity_page(self, epoch: int, cursor: int, limit: int) -> list[dict[str, Any]]: ...
     def pending_epoch_certification_fields(self) -> tuple[int, bytes, bytes, int, int, bytes, bytes, bool]: ...
@@ -1517,6 +1598,9 @@ class DiesisEpochAuthorityContract:
     def role_digest(self, validator_id: int, target_epoch: int, role: int, public_identity: bytes) -> bytes: ...
     def role_key_bundle(self, bundle_id: bytes) -> dict[str, Any]: ...
     def validator_withdrawal_ready(self, validator_id: int, timestamp: int, delay_seconds: int) -> bool: ...
+    def verify_active_randomness_approval(self, digest: bytes, signer_bitmap: bytes, aggregate_signature: bytes) -> bool:
+        """Verify an old-active voting-power aggregate for a caller-defined, domain-separated digest."""
+        ...
 
     # Write functions
     def activate_validator_epoch(self) -> dict[str, Any]: ...

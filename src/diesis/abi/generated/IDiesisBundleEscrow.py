@@ -31,7 +31,7 @@ IDIESISBUNDLEESCROW_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       }
     ],
-    "name": "cancelBundleV2",
+    "name": "cancelBundle",
     "outputs": [
       {
         "internalType": "uint256",
@@ -89,7 +89,7 @@ IDIESISBUNDLEESCROW_ABI: list[dict[str, Any]] = json.loads('''
         "type": "address"
       }
     ],
-    "name": "finalizeBundleV2",
+    "name": "finalizeBundle",
     "outputs": [
       {
         "internalType": "uint256",
@@ -123,7 +123,7 @@ IDIESISBUNDLEESCROW_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint256"
       }
     ],
-    "name": "reclaimExpiredBundleV2",
+    "name": "reclaimExpiredBundle",
     "outputs": [
       {
         "internalType": "uint256",
@@ -228,7 +228,7 @@ IDIESISBUNDLEESCROW_ABI: list[dict[str, Any]] = json.loads('''
         "type": "uint64"
       }
     ],
-    "name": "reserveBundleV2",
+    "name": "reserveBundle",
     "outputs": [
       {
         "internalType": "uint256",
@@ -474,16 +474,16 @@ class IDiesisBundleEscrowContract:
         ...
 
     # Write functions
-    def cancel_bundle_v2(self, payer: ChecksumAddress, plan_hash: bytes, escrow_nonce: int) -> dict[str, Any]:
+    def cancel_bundle(self, payer: ChecksumAddress, plan_hash: bytes, escrow_nonce: int) -> dict[str, Any]:
         """Cancel a reservation and credit the full locked amount to the payer."""
         ...
-    def finalize_bundle_v2(self, payer: ChecksumAddress, plan_hash: bytes, escrow_nonce: int, skipped_gas: int, beneficiary: ChecksumAddress) -> dict[str, Any]:
+    def finalize_bundle(self, payer: ChecksumAddress, plan_hash: bytes, escrow_nonce: int, skipped_gas: int, beneficiary: ChecksumAddress) -> dict[str, Any]:
         """Finalize a reservation after the member outcome is known."""
         ...
-    def reclaim_expired_bundle_v2(self, plan_hash: bytes, escrow_nonce: int) -> dict[str, Any]:
+    def reclaim_expired_bundle(self, plan_hash: bytes, escrow_nonce: int) -> dict[str, Any]:
         """Payer-initiated reclaim of an expired, unsettled reservation."""
         ...
-    def reserve_bundle_v2(self, plan_hash: bytes, maximum_builder_payment: int, refund_gas_price: int, maximum_refund: int, escrow_nonce: int, expiry: int) -> dict[str, Any]:
+    def reserve_bundle(self, plan_hash: bytes, maximum_builder_payment: int, refund_gas_price: int, maximum_refund: int, escrow_nonce: int, expiry: int) -> dict[str, Any]:
         """Lock `maximumBuilderPayment + maximumRefund` for a bundle plan."""
         ...
     def withdraw(self) -> dict[str, Any]:

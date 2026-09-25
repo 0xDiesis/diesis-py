@@ -1,6 +1,6 @@
-"""Bundle V2 RPC actions wrapping the ``diesis_*Bundle`` methods.
+"""Bundle RPC actions wrapping the ``diesis_*Bundle`` methods.
 
-Bundle V1 has been removed; these wrappers speak the V2 wire shapes only:
+The initial wire format uses
 ordered plans with detached member consent, canonical plan hashing, and the
 lifecycle/generation/payment fields on ``diesis_getBundleStatus``.
 """
@@ -19,11 +19,11 @@ from .types import (
     BundleFailure,
     BundleLifecycle,
     BundleMember,
-    BundleMemberConsentV2,
+    BundleMemberConsent,
     BundleMemberRole,
     BundleOrdering,
     BundlePaymentView,
-    BundlePlanV2,
+    BundlePlan,
     BundleStatus,
     BundleStatusResult,
     PreparedBundle,
@@ -187,17 +187,17 @@ class BundleActions:
     def __init__(self, w3: Web3) -> None:
         self._w3 = w3
 
-    def prepare_bundle(self, plan: BundlePlanV2) -> PreparedBundle:
+    def prepare_bundle(self, plan: BundlePlan) -> PreparedBundle:
         """Bind an ordered plan and return its hash and per-member consent digests."""
         return _prepared_bundle(_rpc(self._w3, "diesis_prepareBundle", [{"plan": plan_to_wire(plan)}]))
 
     def submit_bundle(
         self,
-        plan: BundlePlanV2,
+        plan: BundlePlan,
         payment: str,
-        members: list[tuple[str, BundleMemberConsentV2]],
+        members: list[tuple[str, BundleMemberConsent]],
     ) -> SubmitBundleResult:
-        """Submit a fully-signed Bundle V2.
+        """Submit a fully-signed bundle.
 
         ``payment`` is the 0x-hex raw reservation transaction; ``members`` pairs
         each ordered member's 0x-hex raw transaction with its detached consent.
@@ -218,15 +218,15 @@ class BundleActions:
 
     def send_stealth_bundle(
         self,
-        plan: BundlePlanV2,
+        plan: BundlePlan,
         funding: str,
         announcement: str,
-        consent: BundleMemberConsentV2,
+        consent: BundleMemberConsent,
     ) -> SubmitBundleResult:
         """Submit a stealth (HALT_ON_INVALID single-member) bundle.
 
-        The announcement signer attaches a detached ``BundleMemberConsentV2`` and
-        the node assembles the ``HALT_ON_INVALID`` Bundle V2 committing exactly one
+        The announcement signer attaches a detached ``BundleMemberConsent`` and
+        the node assembles the ``HALT_ON_INVALID`` bundle committing exactly one
         ordered member (the announcement).
         """
         ph = plan_hash(plan)

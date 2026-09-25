@@ -1,8 +1,7 @@
-"""Bundle V2 types and constants.
+"""Bundle types and constants.
 
-Mirrors ``crates/bundles/src/types.rs`` and ``docs/spec/bundles.md``. Bundle V1
-(access-list consent, payment/flags-only plan hash) has been removed; the V2
-types below are the only accepted shapes.
+Mirrors ``crates/bundles/src/types.rs`` and ``docs/spec/bundles.md``.
+The initial format uses ordered plans and detached member consent.
 """
 
 from __future__ import annotations
@@ -42,7 +41,7 @@ class BundleManifestEntry:
 
 
 @dataclass(frozen=True)
-class BundlePlanV2:
+class BundlePlan:
     """The ordered plan every member's detached consent commits to."""
 
     chain_id: int
@@ -53,7 +52,7 @@ class BundlePlanV2:
 
 
 @dataclass(frozen=True)
-class BundleMemberConsentV2:
+class BundleMemberConsent:
     """A member's detached EIP-712 consent over the plan and its own slot."""
 
     plan_hash: str

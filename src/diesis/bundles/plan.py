@@ -1,6 +1,6 @@
 """Canonical bundle plan hashing and detached-consent signing.
 
-The canonical encoder and plan hash reproduce ``canonical_bundle_v2`` /
+The canonical encoder and plan hash reproduce ``canonical_bundle`` /
 ``plan_hash`` from ``crates/bundles/src/types.rs`` byte-for-byte, so a plan
 hashed here matches the value the node recomputes at ``diesis_submitBundle``
 admission. The cross-language fixed vector in ``docs/spec/bundles.md`` is pinned
@@ -18,12 +18,12 @@ from web3 import Web3
 from .types import (
     DIESIS_BUNDLE_ESCROW,
     BundleManifestEntry,
-    BundleMemberConsentV2,
-    BundlePlanV2,
+    BundleMemberConsent,
+    BundlePlan,
 )
 
 # Domain-separation tag prepended to the canonical bytes before hashing.
-BUNDLE_PLAN_TAG = b"DIESIS_BUNDLE_PLAN_V2"
+BUNDLE_PLAN_TAG = b"DIESIS_BUNDLE_PLAN_V1"
 
 _CONSENT_TYPES = {
     "BundleMemberConsent": [
@@ -54,7 +54,7 @@ def _uint_be(field: str, value: int, width: int) -> bytes:
     return value.to_bytes(width, "big")
 
 
-def canonical_bundle_v2(plan: BundlePlanV2) -> bytes:
+def canonical_bundle(plan: BundlePlan) -> bytes:
     """Explicit, big-endian, length-prefixed canonical encoding of a plan.
 
     Fixed-width scalar fields in declaration order, then the member count, then
@@ -78,9 +78,9 @@ def canonical_bundle_v2(plan: BundlePlanV2) -> bytes:
     return bytes(buf)
 
 
-def plan_hash(plan: BundlePlanV2) -> str:
+def plan_hash(plan: BundlePlan) -> str:
     """Domain-separated plan-hash commitment every member signs consent over."""
-    digest = Web3.keccak(BUNDLE_PLAN_TAG + canonical_bundle_v2(plan))
+    digest = Web3.keccak(BUNDLE_PLAN_TAG + canonical_bundle(plan))
     return "0x" + digest.hex()
 
 
@@ -88,7 +88,7 @@ def consent_domain(chain_id: int, verifying_contract: str = DIESIS_BUNDLE_ESCROW
     """EIP-712 domain for a detached bundle-member consent."""
     return {
         "name": "Diesis Bundle",
-        "version": "2",
+        "version": "1",
         "chainId": chain_id,
         "verifyingContract": Web3.to_checksum_address(verifying_contract),
     }
@@ -116,9 +116,9 @@ def consent_typed_data(
 
 def sign_member_consent(
     private_key: str,
-    plan: BundlePlanV2,
+    plan: BundlePlan,
     member_index: int,
-) -> BundleMemberConsentV2:
+) -> BundleMemberConsent:
     """Sign the detached consent for one ordered member of a plan.
 
     Clients that call ``diesis_prepareBundle`` should prefer signing the
@@ -141,7 +141,7 @@ def sign_member_consent(
         message_data=typed["message"],
     )
     signed = Account.sign_message(signable, private_key)
-    return BundleMemberConsentV2(
+    return BundleMemberConsent(
         plan_hash=ph,
         member_index=member_index,
         transaction_hash=member.transaction_hash,

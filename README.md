@@ -149,10 +149,10 @@ to an expiry and a notional cap.
 one plan. Everyone whose transaction is in the list signs off on the whole
 plan, and a separate payment covers the builder.
 
-**Details.** Build a `BundlePlanV2`, have each member sign a detached consent,
+**Details.** Build a `BundlePlan`, have each member sign a detached consent,
 and submit it with the signed reservation transaction. `plan_hash` and
 `sign_member_consent` reproduce the node's digests locally, so you can build
-and check a bundle offline. `encode_reserve_bundle_v2` and `reservation_value`
+and check a bundle offline. `encode_reserve_bundle` and `reservation_value`
 give you the calldata and value for the payer's reservation.
 `ExecutionFlags` control rollback. The payment stays committed even when
 bundled work rolls back.
@@ -163,14 +163,14 @@ import time
 from diesis.bundles import (
     BundleManifestEntry,
     BundlePaymentTerms,
-    BundlePlanV2,
+    BundlePlan,
     ExecutionFlags,
-    encode_reserve_bundle_v2,
+    encode_reserve_bundle,
     reservation_value,
     sign_member_consent,
 )
 
-plan = BundlePlanV2(
+plan = BundlePlan(
     chain_id=client.chain.id,
     expiry=int(time.time()) + 60,
     flags=ExecutionFlags.STOP_ON_SUCCESS,
@@ -190,7 +190,7 @@ prepared = client.bundles.prepare_bundle(plan)
 consent = sign_member_consent(member_key, plan, member_index=0)
 
 # Payer signs a transaction to the escrow with this data and value.
-reserve_data = encode_reserve_bundle_v2(plan)
+reserve_data = encode_reserve_bundle(plan)
 reserve_value = reservation_value(plan)
 
 result = client.bundles.submit_bundle(

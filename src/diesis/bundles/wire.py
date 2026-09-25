@@ -1,6 +1,6 @@
-"""Wire (JSON-RPC) serialization for Bundle V2 plans and consent.
+"""Wire (JSON-RPC) serialization for bundle plans and consent.
 
-The node deserializes ``BundlePlanV2`` with ``serde(rename_all = "camelCase")``.
+The node deserializes ``BundlePlan`` with ``serde(rename_all = "camelCase")``.
 Two encoding caveats are reproduced here:
 
 * ``flags`` serialize as a string of set ``ExecutionFlags`` names joined by
@@ -16,9 +16,9 @@ from web3 import Web3
 
 from .types import (
     BundleManifestEntry,
-    BundleMemberConsentV2,
+    BundleMemberConsent,
     BundlePaymentTerms,
-    BundlePlanV2,
+    BundlePlan,
     ExecutionFlags,
 )
 
@@ -79,8 +79,8 @@ def member_to_wire(member: BundleManifestEntry) -> dict[str, Any]:
     }
 
 
-def plan_to_wire(plan: BundlePlanV2) -> dict[str, Any]:
-    """Serialize a ``BundlePlanV2`` to its camelCase JSON-RPC form."""
+def plan_to_wire(plan: BundlePlan) -> dict[str, Any]:
+    """Serialize a ``BundlePlan`` to its camelCase JSON-RPC form."""
     return {
         "chainId": plan.chain_id,
         "expiry": plan.expiry,
@@ -90,7 +90,7 @@ def plan_to_wire(plan: BundlePlanV2) -> dict[str, Any]:
     }
 
 
-def consent_to_wire(consent: BundleMemberConsentV2) -> dict[str, Any]:
+def consent_to_wire(consent: BundleMemberConsent) -> dict[str, Any]:
     return {
         "planHash": consent.plan_hash,
         "memberIndex": consent.member_index,

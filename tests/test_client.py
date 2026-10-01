@@ -1,5 +1,7 @@
 from unittest.mock import patch
 
+import pytest
+
 from diesis.bundles.actions import BundleActions
 from diesis.chains import diesis, diesis_testnet
 from diesis.client import DiesisClient
@@ -53,15 +55,6 @@ def test_client_get_rules() -> None:
         assert mock_w3.provider.make_request.call_args[0][0] == "diesis_getRules"
 
 
-def test_client_get_pipeline_status() -> None:
-    with patch("diesis.client.Web3") as MockWeb3:
-        mock_w3 = MockWeb3.return_value
-        mock_w3.provider.make_request.return_value = {"result": {}}
-        client = DiesisClient("https://rpc.diesis.xyz")
-        client.get_pipeline_status()
-        assert mock_w3.provider.make_request.call_args[0][0] == "diesis_getPipelineStatus"
-
-
 def test_client_get_transaction_status() -> None:
     with patch("diesis.client.Web3") as MockWeb3:
         mock_w3 = MockWeb3.return_value
@@ -112,3 +105,90 @@ def test_client_requires_rpc_url_or_w3() -> None:
         raise AssertionError("Should raise ValueError")
     except (ValueError, TypeError):
         pass
+
+
+# Wire fixtures are anchored to core44bed RPC trait and serde response fields.
+def test_actual_node_public_wallet_contracts() -> None:
+    with patch("diesis.client.Web3") as mock:
+        wire = mock.return_value.provider.make_request
+        client = DiesisClient("https://rpc.diesis.xyz")
+        runtime = {
+            "configuredExecutionMode": "parallel",
+            "effectiveExecutionMode": "parallel",
+            "witnessPolicy": "required",
+            "canonicalPass": True,
+            "downgradeReason": None,
+            "checkpointReplayMode": "checkpoint",
+            "blockSequentialFallbackTotal": 0,
+        }
+        lifecycle = {
+            "tx_hash": "0x" + "ab" * 32,
+            "status": "published",
+            "classification": "canonical",
+            "generation": 3,
+            "consensus_round": 12,
+            "node_received_at": 100,
+            "transition_at": 110,
+            "lineage": [],
+        }
+        action = {"status": "native_included", "block_number": 8, "block_hash": "0x" + "cd" * 32, "success": True}
+        for method, arguments, rpc_method, result in [
+            (client.get_runtime_capabilities, (), "diesis_getRuntimeCapabilities", runtime),
+            (client.get_transaction_lifecycle, (lifecycle["tx_hash"],), "diesis_getTransactionLifecycle", lifecycle),
+            (client.get_exchange_action_status, ("0x" + "ef" * 32,), "diesis_getExchangeActionStatus", action),
+        ]:
+            wire.return_value = {"result": result}
+            assert method(*arguments) == result
+            wire.assert_called_with(rpc_method, list(arguments))
+        assert not hasattr(client, "get_pipeline_status")
+        assert not hasattr(client, "get_block_witness")
+        wire.return_value = {"result": None}
+        assert client.get_transaction_lifecycle(lifecycle["tx_hash"]) is None
+
+
+@pytest.mark.parametrize("value", [-1, True, 1.5, "1", 2**53, 2**64])
+def test_node_numeric_parameters_reject_unsafe_wire_values(value: object) -> None:
+    with patch("diesis.client.Web3") as mock:
+        client = DiesisClient("https://rpc.diesis.xyz")
+        for method in (client.get_block_metadata, client.get_consensus_commit_status):
+            with pytest.raises(ValueError):
+                method(value)
+        mock.return_value.provider.make_request.assert_not_called()
+
+
+def test_node_numeric_parameters_remain_json_numbers() -> None:
+    with patch("diesis.client.Web3") as mock:
+        client = DiesisClient("https://rpc.diesis.xyz")
+        for method, name in [
+            (client.get_block_metadata, "diesis_getBlockMetadata"),
+            (client.get_consensus_commit_status, "diesis_getConsensusCommitStatus"),
+        ]:
+            method(2**53 - 1)
+            mock.return_value.provider.make_request.assert_called_with(name, [2**53 - 1])
+
+
+def test_sync_submission_passes_signed_bytes_and_returns_direct_receipt() -> None:
+    with patch("diesis.client.Web3") as mock:
+        receipt = {
+            "transactionHash": "0x" + "ab" * 32,
+            "blockHash": "0x" + "cd" * 32,
+            "blockNumber": 12,
+            "transactionIndex": 0,
+            "gasUsed": 21000,
+            "effectiveGasPrice": "0x1",
+            "status": 1,
+            "logs": [],
+        }
+        mock.return_value.provider.make_request.return_value = {"result": receipt}
+        client = DiesisClient("https://rpc.diesis.xyz")
+        assert client.send_transaction_sync("0x02AB00") == receipt
+        mock.return_value.provider.make_request.assert_called_with("diesis_sendRawTransactionSync", ["0x02AB00"])
+
+
+@pytest.mark.parametrize("value", ["0x", "0x0", "0xzz", "abcd", {"to": "0xabc"}, None])
+def test_sync_submission_rejects_unsigned_or_malformed_input(value: object) -> None:
+    with patch("diesis.client.Web3") as mock:
+        client = DiesisClient("https://rpc.diesis.xyz")
+        with pytest.raises(ValueError):
+            client.send_transaction_sync(value)
+        mock.return_value.provider.make_request.assert_not_called()

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from typing import Any
 
 from web3 import Web3
@@ -52,34 +53,46 @@ class DiesisClient:
         """Fetch chain rules via ``diesis_getRules``."""
         return _rpc(self._w3, "diesis_getRules", [])
 
-    def get_pipeline_status(self) -> Any:
-        """Fetch pipeline status via ``diesis_getPipelineStatus``."""
-        return _rpc(self._w3, "diesis_getPipelineStatus", [])
+    def get_runtime_capabilities(self) -> Any:
+        """Return actual node execution capabilities; this is not signing authority."""
+        return _rpc(self._w3, "diesis_getRuntimeCapabilities", [])
 
     def get_transaction_status(self, tx_hash: str) -> Any:
         """Fetch transaction status via ``diesis_getTransactionStatus``."""
         return _rpc(self._w3, "diesis_getTransactionStatus", [tx_hash])
 
-    def get_block_witness(self, block_hash: str) -> Any:
-        """Fetch block witness via ``diesis_getBlockWitness``."""
-        return _rpc(self._w3, "diesis_getBlockWitness", [block_hash])
+    def get_transaction_lifecycle(self, tx_hash: str) -> Any:
+        """Return lifecycle and orphaned/replaced lineage, or None when unknown."""
+        return _rpc(self._w3, "diesis_getTransactionLifecycle", [tx_hash])
+
+    def get_exchange_action_status(self, action_hash: str) -> Any:
+        """Query relay action identity, which is distinct from an EVM transaction hash."""
+        return _rpc(self._w3, "diesis_getExchangeActionStatus", [action_hash])
 
     def get_block_metadata(self, block_number: int) -> Any:
         """Fetch block metadata via ``diesis_getBlockMetadata``."""
-        return _rpc(self._w3, "diesis_getBlockMetadata", [block_number])
+        return _rpc(self._w3, "diesis_getBlockMetadata", [_safe_rpc_integer(block_number)])
 
     def get_consensus_commit_status(self, round: int) -> Any:
         """Fetch consensus commit status via ``diesis_getConsensusCommitStatus``."""
-        return _rpc(self._w3, "diesis_getConsensusCommitStatus", [round])
+        return _rpc(self._w3, "diesis_getConsensusCommitStatus", [_safe_rpc_integer(round)])
 
     def _require_key(self) -> str:
         if self._private_key is None:
             raise ValueError("private_key is required for signing operations")
         return self._private_key
 
-    def send_transaction_sync(self, to: str, value: int = 0, data: str = "0x") -> Any:
-        """Send a raw transaction synchronously via ``diesis_sendRawTransactionSync``."""
-        return _rpc(self._w3, "diesis_sendRawTransactionSync", [{"to": to, "value": hex(value), "data": data}])
+    def send_transaction_sync(self, serialized_transaction_hex: str) -> Any:
+        """Submit whole serialized signed bytes and return the node's direct receipt.
+
+        Byte framing is validated here; decoding, signature validity and admission
+        remain node responsibilities. A receipt is not finalized inclusion proof.
+        """
+        if not isinstance(serialized_transaction_hex, str) or not re.fullmatch(
+            r"0x(?:[0-9a-fA-F]{2})+", serialized_transaction_hex
+        ):
+            raise ValueError("Sync submission requires whole serialized signed transaction bytes")
+        return _rpc(self._w3, "diesis_sendRawTransactionSync", [serialized_transaction_hex])
 
     def sign_order_intent(self, intent: OrderIntent) -> SignedOrderIntent:
         """Sign an order intent using the configured private key."""
@@ -116,3 +129,10 @@ class DiesisClient:
                 }
             ],
         )
+
+
+def _safe_rpc_integer(value: int) -> int:
+    """Node u64 parameters must also survive JSON consumers without precision loss."""
+    if type(value) is not int or value < 0 or value > 2**53 - 1:
+        raise ValueError("RPC integer must be between zero and the maximum safe JSON integer")
+    return value

@@ -303,18 +303,33 @@ client.privacy.withdraw_shielded(
 
 ## Check node status
 
-**In short.** You can ask the node how far along it is and where your
-transaction is.
-
-**Details.** `get_pipeline_status` reports the consensus, execution, and
-publication heads and the lag between them. `get_transaction_status` returns
-the stage a transaction has reached, such as `preconfirmed` or `executed`.
+The accepted node RPC contract is pinned to core
+`44bed910b4fd18c29e287ecd49a12982a90ac5bb`. Runtime capabilities describe execution
+configuration. Transaction lifecycle returns lineage with active, orphaned, or
+replaced entries; relay action identity is separate from an EVM transaction hash.
+These observations do not establish signing authority or finalized inclusion.
 
 ```python
-client.get_pipeline_status()
-client.get_transaction_status("0x...")
+client.get_runtime_capabilities()
+client.get_transaction_status("0x" + "ab" * 32)
+client.get_transaction_lifecycle("0x" + "ab" * 32)
+client.get_exchange_action_status("0x" + "cd" * 32)
 client.get_rules()
+client.get_block_metadata(123)
+client.get_consensus_commit_status(12)
 ```
+
+Block and round inputs are integers from zero through `2**53 - 1` so the JSON
+wire representation remains exact. Responses preserve the node wire fields,
+including camelCase runtime/status fields and snake_case lifecycle/action fields.
+Unknown lifecycle or action identities may return `None`. The nonexistent
+pipeline-status and block-witness methods have been removed.
+
+`send_transaction_sync(serialized_transaction_hex)` accepts whole, nonempty hex
+bytes for an already signed transaction and returns the direct node receipt.
+It validates byte framing; the node validates transaction encoding and signature.
+The former unsigned `{to, value, data}` call shape is unsupported. RPC errors,
+including disabled sync submission or inclusion timeout, propagate as errors.
 
 ## Addresses and ABIs
 

@@ -118,7 +118,7 @@ def test_actual_node_public_wallet_contracts() -> None:
             "witnessPolicy": "required",
             "canonicalPass": True,
             "downgradeReason": None,
-            "checkpointReplayMode": "checkpoint",
+            "checkpointReplayMode": "plan",
             "blockSequentialFallbackTotal": 0,
         }
         lifecycle = {
@@ -140,8 +140,6 @@ def test_actual_node_public_wallet_contracts() -> None:
             wire.return_value = {"result": result}
             assert method(*arguments) == result
             wire.assert_called_with(rpc_method, list(arguments))
-        assert not hasattr(client, "get_pipeline_status")
-        assert not hasattr(client, "get_block_witness")
         wire.return_value = {"result": None}
         assert client.get_transaction_lifecycle(lifecycle["tx_hash"]) is None
 
@@ -192,3 +190,50 @@ def test_sync_submission_rejects_unsigned_or_malformed_input(value: object) -> N
         with pytest.raises(ValueError):
             client.send_transaction_sync(value)
         mock.return_value.provider.make_request.assert_not_called()
+
+
+# Separate node RPC modules register these methods in crates/node/src/run.rs.
+def test_pipeline_status_preserves_actual_eight_field_wire_contract() -> None:
+    with patch("diesis.client.Web3") as mock:
+        result = {
+            "consensusHead": 11,
+            "executionHead": 10,
+            "publicationHead": 9,
+            "executionLag": 1,
+            "publicationLag": 1,
+            "orderedQueueDepth": 2,
+            "executedQueueDepth": 3,
+            "backpressureMode": "throttle",
+        }
+        mock.return_value.provider.make_request.return_value = {"result": result}
+        client = DiesisClient("https://rpc.diesis.xyz")
+        assert client.get_pipeline_status() == result
+        mock.return_value.provider.make_request.assert_called_with("diesis_getPipelineStatus", [])
+
+
+@pytest.mark.parametrize("result", [None, "0x", "0x0001abcd"])
+def test_block_witness_returns_unverified_optional_bytes(result: str | None) -> None:
+    with patch("diesis.client.Web3") as mock:
+        mock.return_value.provider.make_request.return_value = {"result": result}
+        client = DiesisClient("https://rpc.diesis.xyz")
+        block_hash = "0x" + "AB" * 32
+        assert client.get_block_witness(block_hash) == result
+        mock.return_value.provider.make_request.assert_called_with("diesis_getBlockWitness", [block_hash])
+
+
+@pytest.mark.parametrize("block_hash", ["0x", "0xabc", "0x" + "gg" * 32, "ab" * 32, None, 1])
+def test_block_witness_rejects_invalid_block_identity(block_hash: object) -> None:
+    with patch("diesis.client.Web3") as mock:
+        client = DiesisClient("https://rpc.diesis.xyz")
+        with pytest.raises(ValueError):
+            client.get_block_witness(block_hash)
+        mock.return_value.provider.make_request.assert_not_called()
+
+
+@pytest.mark.parametrize("result", ["0x0", "0xgg", {"proof": "0xab"}, 1, False])
+def test_block_witness_rejects_malformed_transport_bytes(result: object) -> None:
+    with patch("diesis.client.Web3") as mock:
+        mock.return_value.provider.make_request.return_value = {"result": result}
+        client = DiesisClient("https://rpc.diesis.xyz")
+        with pytest.raises(ValueError, match="witness bytes"):
+            client.get_block_witness("0x" + "ab" * 32)

@@ -57,6 +57,27 @@ class DiesisClient:
         """Return actual node execution capabilities; this is not signing authority."""
         return _rpc(self._w3, "diesis_getRuntimeCapabilities", [])
 
+    def get_pipeline_status(self) -> Any:
+        """Return node pipeline heads, lags, queue depths and backpressure mode.
+
+        Values describe local processing, not certified finality.
+        """
+        return _rpc(self._w3, "diesis_getPipelineStatus", [])
+
+    def get_block_witness(self, block_hash: str) -> str | None:
+        """Return unverified serialized witness bytes as hex, or None.
+
+        This transport does not validate the witness or its block commitment.
+        """
+        if not isinstance(block_hash, str) or not re.fullmatch(r"0x[0-9a-fA-F]{64}", block_hash):
+            raise ValueError("Block witness requires a 32-byte block hash")
+        result = _rpc(self._w3, "diesis_getBlockWitness", [block_hash])
+        if result is None:
+            return None
+        if not isinstance(result, str) or not re.fullmatch(r"0x(?:[0-9a-fA-F]{2})*", result):
+            raise ValueError("Invalid block witness bytes response")
+        return result
+
     def get_transaction_status(self, tx_hash: str) -> Any:
         """Fetch transaction status via ``diesis_getTransactionStatus``."""
         return _rpc(self._w3, "diesis_getTransactionStatus", [tx_hash])

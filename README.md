@@ -308,9 +308,13 @@ The accepted node RPC contract is pinned to core
 configuration. Transaction lifecycle returns lineage with active, orphaned, or
 replaced entries; relay action identity is separate from an EVM transaction hash.
 These observations do not establish signing authority or finalized inclusion.
+Legacy transaction status publication fields derive from executed level; use
+the lifecycle `published` transition to observe actual publication.
 
 ```python
 client.get_runtime_capabilities()
+client.get_pipeline_status()
+client.get_block_witness("0x" + "ab" * 32)
 client.get_transaction_status("0x" + "ab" * 32)
 client.get_transaction_lifecycle("0x" + "ab" * 32)
 client.get_exchange_action_status("0x" + "cd" * 32)
@@ -322,8 +326,12 @@ client.get_consensus_commit_status(12)
 Block and round inputs are integers from zero through `2**53 - 1` so the JSON
 wire representation remains exact. Responses preserve the node wire fields,
 including camelCase runtime/status fields and snake_case lifecycle/action fields.
-Unknown lifecycle or action identities may return `None`. The nonexistent
-pipeline-status and block-witness methods have been removed.
+Unknown lifecycle or action identities may return `None`. Pipeline status preserves
+the node's eight camelCase fields, including `backpressureMode` of `healthy` or
+`throttle`. Block witness accepts a 32-byte block hash and returns serialized hex
+bytes or `None`. These bytes are unverified; retrieving them does not establish a
+valid proof or certified block commitment. Availability depends on the node RPC
+configuration.
 
 `send_transaction_sync(serialized_transaction_hex)` accepts whole, nonempty hex
 bytes for an already signed transaction and returns the direct node receipt.

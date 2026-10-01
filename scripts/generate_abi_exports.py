@@ -8,12 +8,12 @@ GENERATED_DIR = Path(__file__).resolve().parents[1] / "src" / "diesis" / "abi" /
 HEADER = '"""Auto-generated ABI re-exports."""\n\n'
 
 
-def main() -> None:
-    modules = sorted(path.stem for path in GENERATED_DIR.glob("*.py") if path.stem != "__init__")
+def generate_exports(generated_dir: Path) -> None:
+    modules = sorted(path.stem for path in generated_dir.glob("*.py") if path.stem != "__init__")
     lines = [HEADER]
     lines.extend(f"from .{module} import *  # noqa: F401, F403\n" for module in modules)
-    GENERATED_DIR.joinpath("__init__.py").write_text("".join(lines), encoding="utf-8")
+    generated_dir.joinpath("__init__.py").write_text("".join(lines), encoding="utf-8")
 
 
 if __name__ == "__main__":
-    main()
+    generate_exports(GENERATED_DIR)

@@ -14,73 +14,38 @@ from diesis.abi.generated.DiesisPatron import (
 )
 
 
-def test_artifact_dir_resolver_uses_valid_explicit_contracts_root(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    contracts_root = tmp_path / "contracts"
-    (contracts_root / "foundry.toml").parent.mkdir(parents=True)
-    (contracts_root / "foundry.toml").write_text("[profile.default]\n")
-    artifact_dir = contracts_root / "out"
-    sentinel = artifact_dir / "DiesisConfig.sol" / "DiesisConfig.json"
-    sentinel.parent.mkdir(parents=True)
-    sentinel.write_text('{"abi": []}')
-    monkeypatch.setenv("DIESIS_CONTRACTS_DIR", str(contracts_root))
-
-    assert _resolve_artifact_dir(tmp_path) == artifact_dir
-
-
-def test_artifact_dir_resolver_rejects_an_incomplete_explicit_contracts_root(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    monkeypatch.setenv("DIESIS_CONTRACTS_DIR", str(tmp_path / "contracts"))
-    with pytest.raises(FileNotFoundError, match="DIESIS_CONTRACTS_DIR"):
+def test_artifact_dir_resolver_requires_explicit_artifacts(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.delenv("DIESIS_ARTIFACTS_DIR", raising=False)
+    monkeypatch.setenv("DIESIS_CONTRACTS_DIR", str(tmp_path))
+    with pytest.raises(FileNotFoundError, match="DIESIS_ARTIFACTS_DIR"):
         _resolve_artifact_dir(tmp_path)
 
 
-def test_artifact_dir_resolver_finds_the_core_node_from_a_linked_worktree(
+def test_artifact_dir_resolver_accepts_existing_explicit_artifacts(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    monkeypatch.delenv("DIESIS_CONTRACTS_DIR", raising=False)
-    worktree_tests = tmp_path / ".worktrees" / "sdk" / "tests"
-    worktree_tests.mkdir(parents=True)
-    node_root = tmp_path / "diesis"
-    (node_root / "Cargo.toml").parent.mkdir(parents=True)
-    (node_root / "Cargo.toml").write_text("[workspace]\n")
-    (node_root / "contracts" / "foundry.toml").parent.mkdir(parents=True)
-    (node_root / "contracts" / "foundry.toml").write_text("[profile.default]\n")
-    artifact_dir = node_root / "contracts" / "out"
-    sentinel = artifact_dir / "DiesisConfig.sol" / "DiesisConfig.json"
-    sentinel.parent.mkdir(parents=True)
-    sentinel.write_text('{"abi": []}')
-
-    assert _resolve_artifact_dir(worktree_tests) == artifact_dir
+    monkeypatch.setenv("DIESIS_ARTIFACTS_DIR", str(tmp_path))
+    assert _resolve_artifact_dir(tmp_path) == tmp_path.resolve()
 
 
-def _is_authoritative_contracts_root(contracts_root: Path) -> bool:
-    return (contracts_root / "foundry.toml").is_file() and (
-        contracts_root / "out" / "DiesisConfig.sol" / "DiesisConfig.json"
-    ).is_file()
+def test_artifact_dir_resolver_rejects_missing_directory(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("DIESIS_ARTIFACTS_DIR", str(tmp_path / "missing"))
+    with pytest.raises(FileNotFoundError):
+        _resolve_artifact_dir(tmp_path)
 
 
 def _resolve_artifact_dir(anchor: Path) -> Path:
-    override = os.environ.get("DIESIS_CONTRACTS_DIR")
-    if override is not None:
-        contracts_root = Path(override).expanduser().resolve()
-        if _is_authoritative_contracts_root(contracts_root):
-            return contracts_root / "out"
-        raise FileNotFoundError(f"DIESIS_CONTRACTS_DIR is not an authoritative contracts root: {contracts_root}")
-
-    for ancestor in (anchor, *anchor.parents):
-        node_root = ancestor / "diesis"
-        contracts_root = node_root / "contracts"
-        if (node_root / "Cargo.toml").is_file() and _is_authoritative_contracts_root(contracts_root):
-            return contracts_root / "out"
-
-    raise FileNotFoundError("unable to locate diesis/contracts/out; set DIESIS_CONTRACTS_DIR to the contracts root")
+    del anchor
+    override = os.environ.get("DIESIS_ARTIFACTS_DIR")
+    if not override or not Path(override).is_absolute():
+        raise FileNotFoundError("Explicit absolute DIESIS_ARTIFACTS_DIR required")
+    root = Path(override).resolve(strict=True)
+    if not root.is_dir():
+        raise FileNotFoundError("DIESIS_ARTIFACTS_DIR must be a directory")
+    return root
 
 
-ARTIFACT_DIR = _resolve_artifact_dir(Path(__file__).resolve().parent)
-CANONICAL_CONTRACT_LIST = ARTIFACT_DIR.parent / "abi-contracts.txt"
+CANONICAL_CONTRACT_LIST = Path(__file__).resolve().parents[1] / "scripts/abi-contracts.txt"
 
 
 def _canonical_contract_names() -> list[str]:
@@ -100,10 +65,30 @@ def test_generated_bindings_match_the_canonical_contract_list() -> None:
 
 def test_generated_bindings_match_their_foundry_artifacts() -> None:
     """The canonical list drives complete ABI parity with Foundry artifacts."""
+    import subprocess
+    import sys
+
+    artifacts = _resolve_artifact_dir(Path(__file__).parent)
+    manifest_path = Path(os.environ["DIESIS_ARTIFACT_MANIFEST"])
+    subprocess.run(
+        [
+            sys.executable,
+            str(Path(__file__).parents[1] / "scripts/verify-contract-artifacts.py"),
+            "--preflight",
+            os.environ["DIESIS_ARTIFACT_PREFLIGHT"],
+            "--check",
+            str(manifest_path),
+        ],
+        check=True,
+    )
+    manifest = json.loads(manifest_path.read_text())
+    assert artifacts == Path(manifest["artifactRoot"]).resolve(strict=True)
+    selected = {entry["contract"]: entry for entry in manifest["selectedArtifacts"]}
+    assert set(selected) == set(_canonical_contract_names())
     for contract_name in _canonical_contract_names():
         module = import_module(f"diesis.abi.generated.{contract_name}")
         abi_constants = [value for name, value in vars(module).items() if name.endswith("_ABI")]
-        artifact_path = ARTIFACT_DIR / f"{contract_name}.sol" / f"{contract_name}.json"
+        artifact_path = artifacts / selected[contract_name]["path"]
 
         assert len(abi_constants) == 1
         assert abi_constants[0] == json.loads(artifact_path.read_text())["abi"]
@@ -142,6 +127,52 @@ def test_patron_reservation_exit_binding_shape_matches_contract_api() -> None:
 
     assert get_type_hints(DiesisPatronContract.max_active_reservations_per_grant)["return"] is int
     assert get_type_hints(DiesisPatronContract.outstanding_reservation_exit_claims)["return"] is int
-    assert get_type_hints(DiesisPatronContract.reservation_exit_snapshot)["return"] == dict[str, Any]
-    assert get_type_hints(DiesisPatronContract.reservation_exit_settlement)["return"] == dict[str, Any]
+    assert get_type_hints(DiesisPatronContract.reservation_exit_snapshot)["return"] == tuple[int, bool, bool]
+    assert (
+        get_type_hints(DiesisPatronContract.reservation_exit_settlement)["return"] == tuple[bytes, int, int, int, int]
+    )
     assert get_type_hints(DiesisPatronContract.withdraw_reservation_exit)["return"] == dict[str, Any]
+
+
+def test_patron_tuple_reads_and_transaction_write_use_exact_function_signatures() -> None:
+    from types import SimpleNamespace
+    from unittest.mock import Mock
+
+    from web3 import Web3
+
+    reservation = bytes.fromhex("22" * 32)
+    contributor = Web3.to_checksum_address("0x" + "11" * 20)
+    snapshot = (9, False, True)
+    settlement = (bytes.fromhex("33" * 32), 10, 11, 12, 13)
+    results = {
+        "reservationExitSnapshot(bytes32,address)": snapshot,
+        "reservationExitSettlement(bytes32)": settlement,
+    }
+    calls: list[tuple[str, tuple[Any, ...]]] = []
+
+    def get_function(signature: str) -> Any:
+        def bind(*args: Any) -> Any:
+            calls.append((signature, args))
+            return SimpleNamespace(
+                call=lambda: results[signature],
+                build_transaction=lambda transaction: {**transaction, "data": "0xfixture"},
+            )
+
+        return bind
+
+    contract = Mock()
+    contract.get_function_by_signature.side_effect = get_function
+    w3 = Mock()
+    w3.eth.contract.return_value = contract
+    patron = DiesisPatronContract(contributor, w3)
+    assert patron.reservation_exit_snapshot(reservation, contributor) == snapshot
+    assert patron.reservation_exit_settlement(reservation) == settlement
+    assert patron.withdraw_reservation_exit(reservation, {"from": contributor}) == {
+        "from": contributor,
+        "data": "0xfixture",
+    }
+    assert calls == [
+        ("reservationExitSnapshot(bytes32,address)", (reservation, contributor)),
+        ("reservationExitSettlement(bytes32)", (reservation,)),
+        ("withdrawReservationExit(bytes32)", (reservation,)),
+    ]

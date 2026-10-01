@@ -19,7 +19,7 @@ middleware still work.
 
 Chain ID `1980` · Token **DS** · Runtime **web3.py 7** · Python **3.10+**
 
-*Greek δίεσις: the smallest interval in music.<br>Diesis aims for the smallest interval between blocks.*
+_Greek δίεσις: the smallest interval in music.<br>Diesis aims for the smallest interval between blocks._
 
 </div>
 
@@ -357,13 +357,41 @@ staking = client.w3.eth.contract(address=addresses.DIESIS_STAKING, abi=DIESISSTA
 
 ## Develop
 
+Runtime consumers support Python 3.10+. The provenance/codegen tooling requires
+Python 3.11+ and the repository-pinned pnpm version. Install the SDK-owned exact
+abi-typegen 0.7.0 dependency without running download scripts:
+
 ```bash
-make test        # pytest
-make quality     # ABI drift check, ruff, mypy --strict, tests
-make codegen     # regenerate ABIs from ../../diesis-core/diesis/contracts
+pnpm install --frozen-lockfile --ignore-scripts
 ```
 
-The first `make` target creates `.venv` and installs the dev extras.
+Use independently qualified artifact inputs and the raw verified generator binary:
+
+```bash
+export DIESIS_ARTIFACT_PREFLIGHT=/absolute/path/preflight.json
+export DIESIS_ARTIFACT_MANIFEST=/absolute/path/manifest.json
+export DIESIS_ARTIFACTS_DIR=/absolute/path/qualified/out
+export ABI_TYPEGEN=/absolute/path/verified/abi-typegen
+make codegen-check # reproduce byte-identical bindings without source edits
+make codegen       # regenerate from these same qualified inputs
+make quality       # ABI parity, ruff, mypy, tests
+```
+
+`ABI_TYPEGEN` is required and must name an absolute raw executable path, not an
+npm shim. Script-free pnpm installation does not download that executable. The
+qualifier downloads and verifies the official platform binary separately, then
+provides its explicit path. The executable digest, exact version and published
+source must match the manifest. Missing inputs or verifier failures stop
+generation; there is no implicit contracts/out, SDK binary, or checked-in
+contracts/src/abi fallback.
+
+The reviewed `scripts/qualify-contract-inputs.py` provides the isolated Linux
+x86_64 CI acquisition/build workflow. It verifies official compiler/generator
+release integrity and performs one captured source-only compile before manifest
+verification. Local fake-fixture tests do not qualify hosted CI, compilation or
+publication. See [codegen prerequisites](scripts/CODEGEN.md) for the remaining
+source/provenance gates. The first development make target creates `.venv` and
+installs dev extras; an existing environment can be selected with `VENV`.
 
 ## License
 

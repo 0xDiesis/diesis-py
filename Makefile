@@ -1,6 +1,4 @@
-DIESIS_CONTRACTS_DIR ?= ../../diesis-core/diesis/contracts
 PYTHON ?= python3
-ABI_CONTRACTS := $(shell paste -sd, $(DIESIS_CONTRACTS_DIR)/abi-contracts.txt)
 VENV ?= .venv
 VENV_BIN := $(VENV)/bin
 DEV_READY := $(VENV)/.diesis-dev-ready
@@ -15,16 +13,10 @@ $(DEV_READY): pyproject.toml
 dev-deps: $(DEV_READY)
 
 codegen:
-	pnpm --dir $(DIESIS_CONTRACTS_DIR) exec abi-typegen generate \
-		--artifacts $(abspath $(DIESIS_CONTRACTS_DIR)/out) \
-		--out $(abspath src/diesis/abi/generated) \
-		--target python \
-		--contracts $(ABI_CONTRACTS) \
-		--clean
-	$(PYTHON) scripts/generate_abi_exports.py
+	$(PYTHON) scripts/codegen.py
 
-codegen-check: codegen
-	git diff --exit-code -- src/diesis/abi/generated
+codegen-check:
+	$(PYTHON) scripts/codegen.py --check
 
 lint: dev-deps
 	$(VENV_BIN)/ruff check src/ tests/

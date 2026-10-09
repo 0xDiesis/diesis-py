@@ -1,0 +1,50 @@
+[build-system]
+requires = ["hatchling>=1.30"]
+build-backend = "hatchling.build"
+
+[project]
+name = "diesis-sdk"
+version = "0.1.0"
+description = "Python SDK for the Diesis chain — exchange, intents, bundles, and patronage"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+keywords = ["diesis", "evm", "blockchain", "defi", "sdk", "web3"]
+dependencies = [
+    "web3>=7.16,<8",
+    "eth-account>=0.13.7",
+    "eth-typing>=6.0",
+    "eth-abi>=5.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=9.0",
+    "pytest-asyncio>=1.4",
+    "mypy>=2.1",
+    "ruff>=0.15",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/diesis"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 120
+exclude = ["src/diesis/abi/generated/**"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+
+[[tool.mypy.overrides]]
+module = "diesis.abi.generated.*"
+ignore_errors = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

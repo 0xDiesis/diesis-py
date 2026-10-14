@@ -396,3 +396,65 @@ installs dev extras; an existing environment can be selected with `VENV`.
 ## License
 
 MIT
+
+
+## Local portable Names and signed-error helpers
+
+The new helpers in this source-only delivery require its built local wheel. An
+older installed SDK revision does not provide them. Build with `python -m build
+--wheel`, then install the exact wheel into an isolated consumer:
+
+```bash
+python -m pip install /absolute/path/to/diesis_sdk-0.1.0-py3-none-any.whl
+```
+
+```python
+from diesis import read_native_name, decode_signed_action_error, RpcError
+
+# rpc implements async identity() and request(method, params, *, timeout,
+# max_response_bytes). Use one explicit configured endpoint. The adapter must
+# bound bytes before buffering, enforce timeout, and refuse redirects/fallback.
+observation = await read_native_name(
+    rpc,
+    chain_id=1980,
+    input_name="alice.ds",
+    expected_genesis_hash=configured_genesis_hash,
+    expected_rpc_identity=configured_rpc_revision,
+    current=lambda: request_generation == current_generation,
+)
+print(observation["owner"], observation["recipient"], observation["anchor"])
+
+try:
+    client.submit_intent(intent)
+except RpcError as error:
+    failure = decode_signed_action_error(error)
+    # Preserve error.error/code/message/data. Reconcile the original identity.
+    print(failure["status"], failure.get("reason"), failure["admission"])
+```
+
+The Names reader requires an explicit ASCII `.ds` name, checks registry/resolver
+code and canonical resolver.registry(), reads using
+`{blockHash, requireCanonical: True}`, and confirms the numbered block/hash/time,
+chain/genesis and RPC revision before returning. Unsupported canonical selectors
+fail without a latest fallback. A read group lasts at most 15 seconds with a
+262,144-byte response cap; callers may choose tighter bounds. Cancellation and a
+false `current()` retire the request. Transport adapters must honor cancellation.
+
+`NativeNameObservationV1` uses the same version-1 JSON shape as the JavaScript
+reader, including canonical decimal strings for anchor integers, expiry and
+ownership epoch. Owner differs from recipient. Expiry equality is active; zero
+expiry is perpetual. Expired stored recipients are observations only. No-resolver,
+unsupported-resolver, zero recipient and unregistered states are explicit. Failed
+or malformed reads raise `NativeNamesReadError`. Genesis is observed every time;
+expected identity is only checked when configured. `rpc-observation` is neither
+finality nor send authority. Wallets must configure their expected identity and
+recheck the exact reviewed record before signing.
+
+`_rpc` now raises `RpcError`, a `RuntimeError` subclass retaining the original
+provider error. `decode_signed_action_error` accepts that exception, raw errors
+and cause wrappers. Only known version-1 signed reasons with matching dedicated
+codes and conservative `retryable: False`, `admission: "unknown"` decode as known.
+Unknown/malformed/legacy data and transport loss remain unknown. Messages never
+grant retry permission, and the decoder never dispatches. Source and fixture
+checks do not establish package publication, endpoint availability or financial
+runtime qualification. Other SDK languages have no implied parity.

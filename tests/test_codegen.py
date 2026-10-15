@@ -93,3 +93,23 @@ def test_rejects_previous_generator_release():
         codegen.validate_generator_identity(
             {"version": "abi-typegen 0.7.0", "sourceCommit": "e7e56176a4be4dd104ec3a05020fbacee414f88e"}
         )
+
+
+def test_current_hardened_contract_revision_is_accepted(tmp_path):
+    artifacts, manifest = fixture(tmp_path)
+    manifest["contractsRevision"] = "ef995163891c0469a7fa09a89a6e66c1705a7fe4"
+    assert codegen.artifact_contract_names(manifest, artifacts) == ["A"]
+
+
+@pytest.mark.parametrize(
+    "revision",
+    [
+        "e905d65c6a52df39f1d73906e9f5e91bd69011e9",
+        "281dcae85f6c695c00323b359877630ae4857b2e",
+    ],
+)
+def test_previous_contract_revisions_are_rejected(tmp_path, revision):
+    artifacts, manifest = fixture(tmp_path)
+    manifest["contractsRevision"] = revision
+    with pytest.raises(ValueError, match="contracts revision"):
+        codegen.artifact_contract_names(manifest, artifacts)

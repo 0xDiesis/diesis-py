@@ -16,7 +16,7 @@ from pathlib import Path, PurePosixPath
 
 import tomllib
 
-REVISION = "e905d65c6a52df39f1d73906e9f5e91bd69011e9"
+REVISION = "ef995163891c0469a7fa09a89a6e66c1705a7fe4"
 FORGE_COMMIT = "cae51ad458f6abb64852b7709eb784352429825d"
 GENERATOR_COMMIT = "66d6e86e8aa6ebc06b22ebf8355cbaea256f0502"
 SRI = "sha512-Kcamsoy2aRv4R3NYl6moleJa8fWdApyAgtaxZjKci0kaU66WYMuzizf9HYnrvBmQvUBru8sNtAXMI0F++om4fg=="

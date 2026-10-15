@@ -19,7 +19,7 @@ spec.loader.exec_module(module)
 
 class QualifierTests(unittest.TestCase):
     def test_exact_source_and_release_tuple(self):
-        self.assertEqual(module.REVISION, "e905d65c6a52df39f1d73906e9f5e91bd69011e9")
+        self.assertEqual(module.REVISION, "ef995163891c0469a7fa09a89a6e66c1705a7fe4")
         self.assertEqual(module.FORGE_COMMIT, "cae51ad458f6abb64852b7709eb784352429825d")
         self.assertEqual(module.GENERATOR_COMMIT, "66d6e86e8aa6ebc06b22ebf8355cbaea256f0502")
 

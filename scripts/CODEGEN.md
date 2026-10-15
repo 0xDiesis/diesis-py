@@ -15,7 +15,7 @@ not compile, read contracts/src/abi, invoke the contracts package, or default to
 an existing out directory. Python wrappers intentionally remain enabled; single
 Python target output is written directly to the chosen intermediate directory.
 
-CI invokes `qualify-contract-inputs.py` against exact contracts e905d65, on Linux
+CI invokes `qualify-contract-inputs.py` against exact contracts ef995163891c0469a7fa09a89a6e66c1705a7fe4, on Linux
 x86_64 only. It installs locked checksum-verified dependency archives, verifies
 Forge 1.8.3/source cae51ad and official solc 0.8.35+47b9dedd, verifies the npm08
 registry integrity/signatures/provenance and platform archive checksum, and runs

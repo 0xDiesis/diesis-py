@@ -13,7 +13,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Any
 
-CONTRACTS_REVISION = "e905d65c6a52df39f1d73906e9f5e91bd69011e9"
+CONTRACTS_REVISION = "ef995163891c0469a7fa09a89a6e66c1705a7fe4"
 ROOT = Path(__file__).resolve().parents[1]
 
 

@@ -19,8 +19,8 @@ REVISION = "17f837ac61c4e1088fb4acbb95e45d6f1d7b8e9d"
 SOLAR_COMMIT = "e7a91fc70f29dc8d0c236d56a2aa7706dc2555cf"
 COMPILER_VERSION = "0.8.38+commit.e7a91fc7.solar.0.3.0"
 FORGE_COMMIT = "cae51ad458f6abb64852b7709eb784352429825d"
-GENERATOR_COMMIT = "66d6e86e8aa6ebc06b22ebf8355cbaea256f0502"
-SRI = "sha512-Kcamsoy2aRv4R3NYl6moleJa8fWdApyAgtaxZjKci0kaU66WYMuzizf9HYnrvBmQvUBru8sNtAXMI0F++om4fg=="
+GENERATOR_COMMIT = "9d9b8c38ce8bfdb12e29222ded734d7758321efb"
+SRI = "sha512-Et+WDzyg+NWH0RFtOUqRoa5leK44PJnSAXPZ0bVTQjZqEydqBd5Z9XQu0Sv002PFVMs1BzfT3gsP4zkMoMGK7A=="
 
 
 def require(condition, message):
@@ -101,7 +101,7 @@ def validate_signature_provenance(report):
     packages = [
         item
         for item in report.get("verified", [])
-        if item.get("name") == "@0xdoublesharp/abi-typegen" and item.get("version") == "0.8.0"
+        if item.get("name") == "@0xdoublesharp/abi-typegen" and item.get("version") == "0.9.1"
     ]
     require(len(packages) == 1, "exact verified package required")
     bundles = [
@@ -123,7 +123,7 @@ def validate_signature_provenance(report):
     expected_digest = base64.b64decode(SRI.split("-", 1)[1], validate=True).hex()
     require(
         statement.get("subject")
-        == [{"name": "pkg:npm/%400xdoublesharp/abi-typegen@0.8.0", "digest": {"sha512": expected_digest}}],
+        == [{"name": "pkg:npm/%400xdoublesharp/abi-typegen@0.9.1", "digest": {"sha512": expected_digest}}],
         "SLSA subject differs from pinned package integrity",
     )
     definition = statement["predicate"]["buildDefinition"]
@@ -134,7 +134,7 @@ def validate_signature_provenance(report):
     require(
         definition.get("externalParameters", {}).get("workflow")
         == {
-            "ref": "refs/tags/v0.8.0",
+            "ref": "refs/tags/v0.9.1",
             "repository": "https://github.com/doublesharp/abi-typegen",
             "path": ".github/workflows/release.yml",
         },
@@ -144,7 +144,7 @@ def validate_signature_provenance(report):
         definition.get("resolvedDependencies")
         == [
             {
-                "uri": "git+https://github.com/doublesharp/abi-typegen@refs/tags/v0.8.0",
+                "uri": "git+https://github.com/doublesharp/abi-typegen@refs/tags/v0.9.1",
                 "digest": {"gitCommit": GENERATOR_COMMIT},
             }
         ],
@@ -253,7 +253,7 @@ def qualify(checkout, work):
     solc = executable(work / "solar", binaries[0])
     validate_compiler_version(run([solc, "--version"]))
     registry = json_download(
-        "https://registry.npmjs.org/@0xdoublesharp/abi-typegen/0.8.0", work / "typegen-registry.json"
+        "https://registry.npmjs.org/@0xdoublesharp/abi-typegen/0.9.1", work / "typegen-registry.json"
     )
     require(
         registry["gitHead"] == GENERATOR_COMMIT and registry["dist"]["integrity"] == SRI, "published generator identity"
@@ -269,7 +269,7 @@ def qualify(checkout, work):
                 "packageManager": json.loads((Path(__file__).parents[1] / "package.json").read_text())[
                     "packageManager"
                 ],
-                "dependencies": {"@0xdoublesharp/abi-typegen": "0.8.0"},
+                "dependencies": {"@0xdoublesharp/abi-typegen": "0.9.1"},
             }
         )
     )
@@ -288,12 +288,12 @@ def qualify(checkout, work):
     checksums = json.loads(npm["package/checksums.json"])
     archive_name = f"abi-typegen-{native_target}.tar.gz"
     data = download(
-        "https://github.com/doublesharp/abi-typegen/releases/download/v0.8.0/" + archive_name,
+        "https://github.com/doublesharp/abi-typegen/releases/download/v0.9.1/" + archive_name,
         work / "typegen-platform.tgz",
     )
     require(sha(data) == checksums["files"][archive_name], "generator platform checksum")
     typegen = executable(work / "abi-typegen", tar_files(data)["abi-typegen"])
-    require(run([typegen, "--version"]).strip() == "abi-typegen 0.8.0", "generator actual version")
+    require(run([typegen, "--version"]).strip() == "abi-typegen 0.9.1", "generator actual version")
     outputs = {k: str(work / k) for k in ("out", "cache", "captures", "build-info")}
     for directory in outputs.values():
         Path(directory).mkdir()
@@ -349,7 +349,7 @@ def qualify(checkout, work):
         "generator": {
             "path": str(typegen),
             "binarySha256": sha(typegen.read_bytes()),
-            "version": "abi-typegen 0.8.0",
+            "version": "abi-typegen 0.9.1",
             "sourceCommit": GENERATOR_COMMIT,
         },
         "outputs": outputs,

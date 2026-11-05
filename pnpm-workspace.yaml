@@ -1,0 +1,4 @@
+packages: []
+
+minimumReleaseAgeExclude:
+  - '@0xdoublesharp/abi-typegen@0.9.1'

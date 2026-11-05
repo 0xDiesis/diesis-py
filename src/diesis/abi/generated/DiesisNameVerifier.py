@@ -62,13 +62,13 @@ class DiesisNameVerifierContract:
         """Calls attestationHash((bytes32,bytes32,address,bytes32,bytes32,uint64,uint64,bytes)) through web3.py."""
         return self.contract.get_function_by_signature("attestationHash((bytes32,bytes32,address,bytes32,bytes32,uint64,uint64,bytes))")(attestation).call()
 
-    def attestations_bytes32(self, attestation_id: bytes) -> tuple[bytes, ChecksumAddress, bytes, bytes, ChecksumAddress, int, int, bool]:
-        """Calls attestations(bytes32) through web3.py."""
-        return self.contract.get_function_by_signature("attestations(bytes32)")(attestation_id).call()
-
     def attestations_bytes32_bytes32(self, node: bytes, attestation_type: bytes) -> Sequence[bytes]:
         """Calls attestations(bytes32,bytes32) through web3.py."""
         return self.contract.get_function_by_signature("attestations(bytes32,bytes32)")(node, attestation_type).call()
+
+    def attestations_bytes32(self, attestation_id: bytes) -> tuple[bytes, ChecksumAddress, bytes, bytes, ChecksumAddress, int, int, bool]:
+        """Calls attestations(bytes32) through web3.py."""
+        return self.contract.get_function_by_signature("attestations(bytes32)")(attestation_id).call()
 
     def is_attested(self, node: bytes, attestation_type: bytes, issuer: ChecksumAddress) -> bool:
         """Calls isAttested(bytes32,bytes32,address) through web3.py."""
@@ -155,14 +155,6 @@ class DiesisNameVerifierContract:
         """Decodes attestationHash((bytes32,bytes32,address,bytes32,bytes32,uint64,uint64,bytes)) output without RPC."""
         return _strict_abi_decode(["bytes32"], bytes.fromhex(data.removeprefix("0x")))[0]
 
-    def encode_attestations_bytes32(self, attestation_id: bytes) -> str:
-        """Encodes attestations(bytes32) calldata without RPC."""
-        return self.contract.encode_abi("attestations(bytes32)", args=[attestation_id])
-
-    def decode_attestations_bytes32_result(self, data: str) -> tuple[bytes, ChecksumAddress, bytes, bytes, ChecksumAddress, int, int, bool]:
-        """Decodes attestations(bytes32) output without RPC."""
-        return _strict_abi_decode(["(bytes32,address,bytes32,bytes32,address,uint64,uint64,bool)"], bytes.fromhex(data.removeprefix("0x")))[0]
-
     def encode_attestations_bytes32_bytes32(self, node: bytes, attestation_type: bytes) -> str:
         """Encodes attestations(bytes32,bytes32) calldata without RPC."""
         return self.contract.encode_abi("attestations(bytes32,bytes32)", args=[node, attestation_type])
@@ -170,6 +162,14 @@ class DiesisNameVerifierContract:
     def decode_attestations_bytes32_bytes32_result(self, data: str) -> Sequence[bytes]:
         """Decodes attestations(bytes32,bytes32) output without RPC."""
         return _strict_abi_decode(["bytes32[]"], bytes.fromhex(data.removeprefix("0x")))[0]
+
+    def encode_attestations_bytes32(self, attestation_id: bytes) -> str:
+        """Encodes attestations(bytes32) calldata without RPC."""
+        return self.contract.encode_abi("attestations(bytes32)", args=[attestation_id])
+
+    def decode_attestations_bytes32_result(self, data: str) -> tuple[bytes, ChecksumAddress, bytes, bytes, ChecksumAddress, int, int, bool]:
+        """Decodes attestations(bytes32) output without RPC."""
+        return _strict_abi_decode(["(bytes32,address,bytes32,bytes32,address,uint64,uint64,bool)"], bytes.fromhex(data.removeprefix("0x")))[0]
 
     def encode_is_attested(self, node: bytes, attestation_type: bytes, issuer: ChecksumAddress) -> str:
         """Encodes isAttested(bytes32,bytes32,address) calldata without RPC."""

@@ -194,17 +194,17 @@ class IDiesisPositionContract:
             raise ValueError("Function is not payable")
         return self.contract.get_function_by_signature("revokeFunctionApproval(uint256,uint8)")(token_id, fn).build_transaction(transaction)
 
-    def safe_transfer_from_address_address_uint256_bytes(self, _from: ChecksumAddress, to: ChecksumAddress, token_id: int, data: bytes, transaction: dict[str, Any]) -> dict[str, Any]:
-        """Builds a transaction for safeTransferFrom(address,address,uint256,bytes)."""
-        if transaction.get("value", 0):
-            raise ValueError("Function is not payable")
-        return self.contract.get_function_by_signature("safeTransferFrom(address,address,uint256,bytes)")(_from, to, token_id, data).build_transaction(transaction)
-
     def safe_transfer_from_address_address_uint256(self, _from: ChecksumAddress, to: ChecksumAddress, token_id: int, transaction: dict[str, Any]) -> dict[str, Any]:
         """Builds a transaction for safeTransferFrom(address,address,uint256)."""
         if transaction.get("value", 0):
             raise ValueError("Function is not payable")
         return self.contract.get_function_by_signature("safeTransferFrom(address,address,uint256)")(_from, to, token_id).build_transaction(transaction)
+
+    def safe_transfer_from_address_address_uint256_bytes(self, _from: ChecksumAddress, to: ChecksumAddress, token_id: int, data: bytes, transaction: dict[str, Any]) -> dict[str, Any]:
+        """Builds a transaction for safeTransferFrom(address,address,uint256,bytes)."""
+        if transaction.get("value", 0):
+            raise ValueError("Function is not payable")
+        return self.contract.get_function_by_signature("safeTransferFrom(address,address,uint256,bytes)")(_from, to, token_id, data).build_transaction(transaction)
 
     def set_approval_for_all(self, operator: ChecksumAddress, approved: bool, transaction: dict[str, Any]) -> dict[str, Any]:
         """Builds a transaction for setApprovalForAll(address,bool)."""
@@ -493,22 +493,22 @@ class IDiesisPositionContract:
             raise ValueError("Unexpected output for void function")
         return None
 
-    def encode_safe_transfer_from_address_address_uint256_bytes(self, _from: ChecksumAddress, to: ChecksumAddress, token_id: int, data: bytes) -> str:
-        """Encodes safeTransferFrom(address,address,uint256,bytes) calldata without RPC."""
-        return self.contract.encode_abi("safeTransferFrom(address,address,uint256,bytes)", args=[_from, to, token_id, data])
-
-    def decode_safe_transfer_from_address_address_uint256_bytes_result(self, data: str) -> None:
-        """Decodes safeTransferFrom(address,address,uint256,bytes) output without RPC."""
-        if data.removeprefix("0x"):
-            raise ValueError("Unexpected output for void function")
-        return None
-
     def encode_safe_transfer_from_address_address_uint256(self, _from: ChecksumAddress, to: ChecksumAddress, token_id: int) -> str:
         """Encodes safeTransferFrom(address,address,uint256) calldata without RPC."""
         return self.contract.encode_abi("safeTransferFrom(address,address,uint256)", args=[_from, to, token_id])
 
     def decode_safe_transfer_from_address_address_uint256_result(self, data: str) -> None:
         """Decodes safeTransferFrom(address,address,uint256) output without RPC."""
+        if data.removeprefix("0x"):
+            raise ValueError("Unexpected output for void function")
+        return None
+
+    def encode_safe_transfer_from_address_address_uint256_bytes(self, _from: ChecksumAddress, to: ChecksumAddress, token_id: int, data: bytes) -> str:
+        """Encodes safeTransferFrom(address,address,uint256,bytes) calldata without RPC."""
+        return self.contract.encode_abi("safeTransferFrom(address,address,uint256,bytes)", args=[_from, to, token_id, data])
+
+    def decode_safe_transfer_from_address_address_uint256_bytes_result(self, data: str) -> None:
+        """Decodes safeTransferFrom(address,address,uint256,bytes) output without RPC."""
         if data.removeprefix("0x"):
             raise ValueError("Unexpected output for void function")
         return None

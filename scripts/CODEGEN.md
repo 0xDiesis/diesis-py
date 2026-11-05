@@ -18,7 +18,7 @@ Python target output is written directly to the chosen intermediate directory.
 `qualify-contract-inputs.py` accepts exact contracts
 `17f837ac61c4e1088fb4acbb95e45d6f1d7b8e9d` on Linux x86_64 or macOS arm64.
 It verifies locked dependency archives, Forge 1.8.3/source cae51ad, Solar
-0.3.0/source e7a91fc7 (Solidity 0.8.38), and abi-typegen 0.8.0 package integrity,
+0.3.0/source e7a91fc7 (Solidity 0.8.38), and abi-typegen 0.9.1 package integrity,
 npm signatures/provenance, and platform archive checksums. It performs one
 offline source-only build. The capture wrapper adapts Solar's declared compatible
 version to Forge's solc banner format; compiler inputs and outputs remain exact.

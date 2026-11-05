@@ -61,10 +61,10 @@ def required_path(name: str) -> Path:
 
 
 def validate_generator_identity(generator: dict[str, Any]) -> None:
-    if generator.get("sourceCommit") != "66d6e86e8aa6ebc06b22ebf8355cbaea256f0502":
+    if generator.get("sourceCommit") != "9d9b8c38ce8bfdb12e29222ded734d7758321efb":
         raise ValueError("Generator source differs from published input")
-    if generator.get("version") != "abi-typegen 0.8.0":
-        raise ValueError("Exact abi-typegen 0.8.0 required")
+    if generator.get("version") != "abi-typegen 0.9.1":
+        raise ValueError("Exact abi-typegen 0.9.1 required")
 
 
 def main() -> None:
@@ -97,8 +97,8 @@ def main() -> None:
     if hashlib.sha256(generator.read_bytes()).hexdigest() != manifest["generator"]["binarySha256"]:
         raise ValueError("Generator binary differs from qualified input")
     version = subprocess.check_output([str(generator), "--version"], text=True).strip()
-    if version != "abi-typegen 0.8.0":
-        raise ValueError("Exact abi-typegen 0.8.0 required")
+    if version != "abi-typegen 0.9.1":
+        raise ValueError("Exact abi-typegen 0.9.1 required")
     destination = ROOT / "src/diesis/abi/generated"
     with TemporaryDirectory(prefix="diesis-python-codegen-") as temporary:
         generated = Path(temporary) / "generated"

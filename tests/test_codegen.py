@@ -67,9 +67,9 @@ def test_drift_detection_does_not_write_existing_generated_files(tmp_path):
 
 def test_generator_source_must_match_published_commit():
     with pytest.raises(ValueError, match="Generator source"):
-        codegen.validate_generator_identity({"version": "abi-typegen 0.8.0", "sourceCommit": "0" * 40})
+        codegen.validate_generator_identity({"version": "abi-typegen 0.9.1", "sourceCommit": "0" * 40})
     codegen.validate_generator_identity(
-        {"version": "abi-typegen 0.8.0", "sourceCommit": "66d6e86e8aa6ebc06b22ebf8355cbaea256f0502"}
+        {"version": "abi-typegen 0.9.1", "sourceCommit": "9d9b8c38ce8bfdb12e29222ded734d7758321efb"}
     )
 
 

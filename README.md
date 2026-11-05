@@ -359,7 +359,7 @@ staking = client.w3.eth.contract(address=addresses.DIESIS_STAKING, abi=DIESISSTA
 
 Runtime consumers support Python 3.10+. The provenance/codegen tooling requires
 Python 3.11+ and the repository-pinned pnpm version. Install the SDK-owned exact
-abi-typegen 0.8.0 dependency without running download scripts:
+abi-typegen 0.9.1 dependency without running download scripts:
 
 ```bash
 pnpm install --frozen-lockfile --ignore-scripts

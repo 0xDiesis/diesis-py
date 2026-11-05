@@ -155,17 +155,17 @@ class DiesisPublicResolverContract:
             raise ValueError("Function is not payable")
         return self.contract.get_function_by_signature("renounceOwnership()")().build_transaction(transaction)
 
-    def set_addr_bytes32_address(self, node: bytes, value: ChecksumAddress, transaction: dict[str, Any]) -> dict[str, Any]:
-        """Builds a transaction for setAddr(bytes32,address)."""
-        if transaction.get("value", 0):
-            raise ValueError("Function is not payable")
-        return self.contract.get_function_by_signature("setAddr(bytes32,address)")(node, value).build_transaction(transaction)
-
     def set_addr_bytes32_uint256_bytes(self, node: bytes, coin_type: int, value: bytes, transaction: dict[str, Any]) -> dict[str, Any]:
         """Builds a transaction for setAddr(bytes32,uint256,bytes)."""
         if transaction.get("value", 0):
             raise ValueError("Function is not payable")
         return self.contract.get_function_by_signature("setAddr(bytes32,uint256,bytes)")(node, coin_type, value).build_transaction(transaction)
+
+    def set_addr_bytes32_address(self, node: bytes, value: ChecksumAddress, transaction: dict[str, Any]) -> dict[str, Any]:
+        """Builds a transaction for setAddr(bytes32,address)."""
+        if transaction.get("value", 0):
+            raise ValueError("Function is not payable")
+        return self.contract.get_function_by_signature("setAddr(bytes32,address)")(node, value).build_transaction(transaction)
 
     def set_agent_record(self, node: bytes, agent_id: bytes, record: tuple[bytes, str, bytes, bytes, bytes, int, int, bool], transaction: dict[str, Any]) -> dict[str, Any]:
         """Builds a transaction for setAgentRecord(bytes32,bytes32,(bytes32,string,bytes,bytes32,bytes32,uint64,uint64,bool))."""
@@ -382,22 +382,22 @@ class DiesisPublicResolverContract:
         """Decodes routeRecord(bytes32,bytes32) output without RPC."""
         return _strict_abi_decode(["(bytes32,uint8,bytes,address,bytes32,bool,bool)"], bytes.fromhex(data.removeprefix("0x")))[0]
 
-    def encode_set_addr_bytes32_address(self, node: bytes, value: ChecksumAddress) -> str:
-        """Encodes setAddr(bytes32,address) calldata without RPC."""
-        return self.contract.encode_abi("setAddr(bytes32,address)", args=[node, value])
-
-    def decode_set_addr_bytes32_address_result(self, data: str) -> None:
-        """Decodes setAddr(bytes32,address) output without RPC."""
-        if data.removeprefix("0x"):
-            raise ValueError("Unexpected output for void function")
-        return None
-
     def encode_set_addr_bytes32_uint256_bytes(self, node: bytes, coin_type: int, value: bytes) -> str:
         """Encodes setAddr(bytes32,uint256,bytes) calldata without RPC."""
         return self.contract.encode_abi("setAddr(bytes32,uint256,bytes)", args=[node, coin_type, value])
 
     def decode_set_addr_bytes32_uint256_bytes_result(self, data: str) -> None:
         """Decodes setAddr(bytes32,uint256,bytes) output without RPC."""
+        if data.removeprefix("0x"):
+            raise ValueError("Unexpected output for void function")
+        return None
+
+    def encode_set_addr_bytes32_address(self, node: bytes, value: ChecksumAddress) -> str:
+        """Encodes setAddr(bytes32,address) calldata without RPC."""
+        return self.contract.encode_abi("setAddr(bytes32,address)", args=[node, value])
+
+    def decode_set_addr_bytes32_address_result(self, data: str) -> None:
+        """Decodes setAddr(bytes32,address) output without RPC."""
         if data.removeprefix("0x"):
             raise ValueError("Unexpected output for void function")
         return None

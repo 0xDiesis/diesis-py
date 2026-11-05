@@ -385,11 +385,11 @@ source must match the manifest. Missing inputs or verifier failures stop
 generation; there is no implicit contracts/out, SDK binary, or checked-in
 contracts/src/abi fallback.
 
-The reviewed `scripts/qualify-contract-inputs.py` provides the isolated Linux
-x86_64 CI acquisition/build workflow. It verifies official compiler/generator
+The reviewed `scripts/qualify-contract-inputs.py` provides isolated Linux x86_64
+and macOS arm64 acquisition/build workflows. It verifies official compiler/generator
 release integrity and performs one captured source-only compile before manifest
-verification. Local fake-fixture tests do not qualify hosted CI, compilation or
-publication. See [codegen prerequisites](scripts/CODEGEN.md) for the remaining
+verification. The macOS path was executed for the current revision; hosted Linux
+CI and publication remain separate. See [codegen prerequisites](scripts/CODEGEN.md) for the remaining
 source/provenance gates. The first development make target creates `.venv` and
 installs dev extras; an existing environment can be selected with `VENV`.
 

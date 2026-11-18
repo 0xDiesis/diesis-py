@@ -97,7 +97,7 @@ def test_rejects_previous_generator_release():
 
 def test_current_hardened_contract_revision_is_accepted(tmp_path):
     artifacts, manifest = fixture(tmp_path)
-    manifest["contractsRevision"] = "17f837ac61c4e1088fb4acbb95e45d6f1d7b8e9d"
+    manifest["contractsRevision"] = "6fcf1f12b86aaac451f699ffb84d70e725bbb122"
     assert codegen.artifact_contract_names(manifest, artifacts) == ["A"]
 
 
@@ -106,6 +106,7 @@ def test_current_hardened_contract_revision_is_accepted(tmp_path):
     [
         "e905d65c6a52df39f1d73906e9f5e91bd69011e9",
         "281dcae85f6c695c00323b359877630ae4857b2e",
+        "17f837ac61c4e1088fb4acbb95e45d6f1d7b8e9d",
     ],
 )
 def test_previous_contract_revisions_are_rejected(tmp_path, revision):

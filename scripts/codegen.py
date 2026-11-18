@@ -13,7 +13,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Any
 
-CONTRACTS_REVISION = "17f837ac61c4e1088fb4acbb95e45d6f1d7b8e9d"
+CONTRACTS_REVISION = "6fcf1f12b86aaac451f699ffb84d70e725bbb122"
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -91,7 +91,7 @@ def main() -> None:
         raise ValueError("Artifact root differs from the qualified manifest")
     names = artifact_contract_names(manifest, artifacts)
     canonical = (ROOT / "scripts/abi-contracts.txt").read_text(encoding="utf-8").splitlines()
-    if len(canonical) != 45 or len(set(canonical)) != 45 or set(names) != set(canonical):
+    if len(canonical) != 47 or len(set(canonical)) != 47 or set(names) != set(canonical):
         raise ValueError("Complete accepted contract selection required")
     validate_generator_identity(manifest["generator"])
     if hashlib.sha256(generator.read_bytes()).hexdigest() != manifest["generator"]["binarySha256"]:

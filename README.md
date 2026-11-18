@@ -387,9 +387,9 @@ contracts/src/abi fallback.
 
 The reviewed `scripts/qualify-contract-inputs.py` provides isolated Linux x86_64
 and macOS arm64 acquisition/build workflows. It verifies official compiler/generator
-release integrity and performs one captured source-only compile before manifest
-verification. The macOS path has not completed for the current revision yet; hosted Linux
-CI and publication remain separate. See [codegen prerequisites](scripts/CODEGEN.md) for the remaining
+release integrity and performs one captured source-only forgeds and Solar compile
+before manifest verification. The macOS path was executed for the current revision;
+hosted Linux CI and publication remain separate. See [codegen prerequisites](scripts/CODEGEN.md) for the remaining
 source/provenance gates. The first development make target creates `.venv` and
 installs dev extras; an existing environment can be selected with `VENV`.
 

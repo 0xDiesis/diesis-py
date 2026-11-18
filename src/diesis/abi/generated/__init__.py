@@ -15,6 +15,8 @@ from .DiesisPatron import *  # noqa: F401, F403
 from .DiesisPrivacyPools import *  # noqa: F401, F403
 from .DiesisPublicResolver import *  # noqa: F401, F403
 from .DiesisReverseRegistrar import *  # noqa: F401, F403
+from .DiesisSecurityAccount import *  # noqa: F401, F403
+from .DiesisSecurityAccountFactory import *  # noqa: F401, F403
 from .DiesisSettlementRouter import *  # noqa: F401, F403
 from .DiesisShieldedPool import *  # noqa: F401, F403
 from .DiesisStaking import *  # noqa: F401, F403

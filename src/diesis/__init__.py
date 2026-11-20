@@ -29,6 +29,15 @@ __all__ = [
 
 from .names_read import NativeNameObservationV1, NativeNamesReadError, NativeNamesRpc, read_native_name
 from .rpc_errors import RpcError, decode_signed_action_error
+from .state_proof import (
+    ProvenAccount,
+    ProvenSlot,
+    StateProofError,
+    VerifiedStateProof,
+    parse_state_proof,
+    state_proof_request,
+    verify_state_proof,
+)
 
 __all__ += [
     "NativeNameObservationV1",
@@ -37,4 +46,11 @@ __all__ += [
     "read_native_name",
     "RpcError",
     "decode_signed_action_error",
+    "ProvenAccount",
+    "ProvenSlot",
+    "StateProofError",
+    "VerifiedStateProof",
+    "parse_state_proof",
+    "state_proof_request",
+    "verify_state_proof",
 ]

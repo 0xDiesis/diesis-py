@@ -314,7 +314,6 @@ the lifecycle `published` transition to observe actual publication.
 ```python
 client.get_runtime_capabilities()
 client.get_pipeline_status()
-client.get_block_witness("0x" + "ab" * 32)
 client.get_transaction_status("0x" + "ab" * 32)
 client.get_transaction_lifecycle("0x" + "ab" * 32)
 client.get_exchange_action_status("0x" + "cd" * 32)
@@ -328,10 +327,45 @@ wire representation remains exact. Responses preserve the node wire fields,
 including camelCase runtime/status fields and snake_case lifecycle/action fields.
 Unknown lifecycle or action identities may return `None`. Pipeline status preserves
 the node's eight camelCase fields, including `backpressureMode` of `healthy` or
-`throttle`. Block witness accepts a 32-byte block hash and returns serialized hex
-bytes or `None`. These bytes are unverified; retrieving them does not establish a
-valid proof or certified block commitment. Availability depends on the node RPC
-configuration.
+`throttle`.
+
+## Verify account and storage state
+
+`get_state_proof` calls `diesis_getStateProof` for one account and up to 32
+distinct storage slots at an exact block height. The response
+(`schemaVersion: 2`) carries the canonical RLP header, the quorum-signed MPQ7
+certificate and an EIP-1186 Merkle Patricia proof against the block's MPT state
+root. `get_state_proof` checks only that the response answers the request.
+
+`verify_state_proof` authenticates the result against a block hash you already
+trust. It requires the header to hash to that block hash and carry the
+requested height, then follows the account path from the header's state root
+and each slot path from the proven account's storage root. A missing account
+returns `account=None`, and a missing slot returns zero. Any altered node,
+value, root or header raises `StateProofError`.
+
+```python
+from diesis import verify_state_proof
+
+proof = client.get_state_proof(1234, address, [slot])
+state = verify_state_proof(
+    proof,
+    block_number=1234,
+    address=address,
+    storage_keys=[slot],
+    trusted_block_hash=trusted_block_hash,
+)
+state.account.balance if state.account else 0
+state.storage[0].value
+```
+
+The SDK does not check the certificate's validator signatures. Take
+`trusted_block_hash` from a source you already trust, never from the same
+response. To authenticate the certificate against your own genesis committee
+and epoch history, pass `{"request", "expectedBlockHash", "response"}` to the
+node's `diesis-state-proof-verify --mpt-trust-anchor PATH`. Standard
+`eth_getProof` returns the same EIP-1186 proof without the header and
+certificate.
 
 `send_transaction_sync(serialized_transaction_hex)` accepts whole, nonempty hex
 bytes for an already signed transaction and returns the direct node receipt.
@@ -405,7 +439,7 @@ older installed SDK revision does not provide them. Build with `python -m build
 --wheel`, then install the exact wheel into an isolated consumer:
 
 ```bash
-python -m pip install /absolute/path/to/diesis_sdk-0.1.0-py3-none-any.whl
+python -m pip install /absolute/path/to/diesis_sdk-0.2.0-py3-none-any.whl
 ```
 
 ```python

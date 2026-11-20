@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+from collections.abc import Sequence
 from typing import Any
 
 from web3 import Web3
@@ -16,6 +17,7 @@ from .intents.types import OrderIntent, SignedOrderIntent, TradingKeyAuthorizati
 from .patronage.actions import PatronageActions
 from .privacy.actions import PrivacyActions
 from .staking.actions import StakingActions
+from .state_proof import parse_state_proof, state_proof_request
 
 
 class DiesisClient:
@@ -64,19 +66,14 @@ class DiesisClient:
         """
         return _rpc(self._w3, "diesis_getPipelineStatus", [])
 
-    def get_block_witness(self, block_hash: str) -> str | None:
-        """Return unverified serialized witness bytes as hex, or None.
+    def get_state_proof(self, block_number: int, address: str, storage_keys: Sequence[str] = ()) -> dict[str, Any]:
+        """Return the unverified MPT proof for an account and storage slots at an exact height.
 
-        This transport does not validate the witness or its block commitment.
+        Pass the result to :func:`diesis.verify_state_proof` with a block hash from
+        a trusted source before using any value.
         """
-        if not isinstance(block_hash, str) or not re.fullmatch(r"0x[0-9a-fA-F]{64}", block_hash):
-            raise ValueError("Block witness requires a 32-byte block hash")
-        result = _rpc(self._w3, "diesis_getBlockWitness", [block_hash])
-        if result is None:
-            return None
-        if not isinstance(result, str) or not re.fullmatch(r"0x(?:[0-9a-fA-F]{2})*", result):
-            raise ValueError("Invalid block witness bytes response")
-        return result
+        request = state_proof_request(block_number, address, storage_keys)
+        return parse_state_proof(_rpc(self._w3, "diesis_getStateProof", [request]), request)
 
     def get_transaction_status(self, tx_hash: str) -> Any:
         """Fetch transaction status via ``diesis_getTransactionStatus``."""

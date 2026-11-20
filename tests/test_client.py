@@ -209,31 +209,3 @@ def test_pipeline_status_preserves_actual_eight_field_wire_contract() -> None:
         client = DiesisClient("https://rpc.diesis.xyz")
         assert client.get_pipeline_status() == result
         mock.return_value.provider.make_request.assert_called_with("diesis_getPipelineStatus", [])
-
-
-@pytest.mark.parametrize("result", [None, "0x", "0x0001abcd"])
-def test_block_witness_returns_unverified_optional_bytes(result: str | None) -> None:
-    with patch("diesis.client.Web3") as mock:
-        mock.return_value.provider.make_request.return_value = {"result": result}
-        client = DiesisClient("https://rpc.diesis.xyz")
-        block_hash = "0x" + "AB" * 32
-        assert client.get_block_witness(block_hash) == result
-        mock.return_value.provider.make_request.assert_called_with("diesis_getBlockWitness", [block_hash])
-
-
-@pytest.mark.parametrize("block_hash", ["0x", "0xabc", "0x" + "gg" * 32, "ab" * 32, None, 1])
-def test_block_witness_rejects_invalid_block_identity(block_hash: object) -> None:
-    with patch("diesis.client.Web3") as mock:
-        client = DiesisClient("https://rpc.diesis.xyz")
-        with pytest.raises(ValueError):
-            client.get_block_witness(block_hash)
-        mock.return_value.provider.make_request.assert_not_called()
-
-
-@pytest.mark.parametrize("result", ["0x0", "0xgg", {"proof": "0xab"}, 1, False])
-def test_block_witness_rejects_malformed_transport_bytes(result: object) -> None:
-    with patch("diesis.client.Web3") as mock:
-        mock.return_value.provider.make_request.return_value = {"result": result}
-        client = DiesisClient("https://rpc.diesis.xyz")
-        with pytest.raises(ValueError, match="witness bytes"):
-            client.get_block_witness("0x" + "ab" * 32)
